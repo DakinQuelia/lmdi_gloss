@@ -1,0 +1,28 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_LEXICON}</h1>
+<p>{L_ACP_LEXICON_EXPLAIN}</p>
+
+<form id="acp_lexicon" method="post" action="{C_ACTION}">
+<fieldset>
+	<dl>
+		<dt><label>{L_ALLOW_FEATURE}{L_COLON}</label><br />
+		<span>{L_ALLOW_FEATURE_EXPLAIN}</span></dt>
+		<dd>
+		<label><input type="radio" id="lmdi_gloss_ucp" name="lmdi_gloss_ucp"
+		value="1" class="radio" {ALLOW_FEATURE_YES}/>{L_YES}</label>
+		<label><input type="radio" id="lmdi_gloss_ucp" name="lmdi_gloss_ucp"
+		value="0" class="radio" {ALLOW_FEATURE_NO}/>{L_NO}</label>
+		</dd>
+	</dl>
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="config"
+		value="{L_SUBMIT}" />&nbsp;
+	</p>
+</fieldset>
+</form>
+
+
+<!-- INCLUDE overall_footer.html -->

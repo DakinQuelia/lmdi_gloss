@@ -1,0 +1,16 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+     lmdi.gloss.listener:
+        class: lmdi\gloss\event\main_listener
+        arguments:
+            - @dbal.conn
+            - @config
+            - @template
+            - @cache
+            - @user
+            - %lmdi.gloss.tables.glossary%
+        tags:
+            - { name: event.listener }
+

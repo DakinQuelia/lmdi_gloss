@@ -1,0 +1,41 @@
+{
+	"name": "lmdi/gloss",
+	"type": "phpbb-extension",
+	"description": "Glossary for phpBB 3.1",
+	"homepage": "http://www.insecte.org/ext/readme.txt",
+	"version": "1.0.0",
+	"time": "2015-11-26",
+	"license": "GPL-2.0",
+	"authors": 
+	[	{
+			"name": "Pierre Duhem",
+			"email": "pierre@duhem.com",
+			"homepage": "http://www.insecte.org/ext/readme.txt",
+			"role": "Developer of Glossary extension"
+		},
+		{
+			"name":	"Renate Regitz",
+			"email":	"",
+			"homepage": "http://www.kaninchenwissen.de/",
+			"role":	"Developer of original Lexicon mod"
+		},
+		{
+			"name":	"lugsciath",
+			"email":	"",
+			"homepage": "https://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=352566",
+			"role":	"Developer of original Acronym mod"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "LMDI Glossary",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.0-RC2,<3.2.*@dev"
+		}
+	}
+}
