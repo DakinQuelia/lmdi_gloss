@@ -82,7 +82,7 @@ while ($row = $db->sql_fetchrow ($result)) {
 
      $cpt++;
      $corps .= "<tr class=\"deg\"><td class=\"glossi\" colspan=\"2\" id=$l>&nbsp;$l</td>";
-	$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"./styles/prosilver/theme/top.gif\"></a></td></tr>";
+	$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"./styles/top.gif\"></a></td></tr>";
      while ($arow = $db->sql_fetchrow ($result2)) {
 		// print_r ($arow);
 		// echo ("<br>");

@@ -35,6 +35,7 @@ $lang = array_merge ($lang, array(
 	'GLOSS_DESC'	=> 'Definition of term',
 	'GLOSS_PICT'	=> 'Picture',
 	'GLOSS_REGIS'	=> 'Save',
+	'GLOSS_SUPPR'	=> 'Delete',
 	'GLOSS_EDITION'	=> 'Glossary Edition Page',
 	'GLOSS_ED_TERM'	=> 'Term',
 	'GLOSS_ED_DEF'		=> 'Definition',
