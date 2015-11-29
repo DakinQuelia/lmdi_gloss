@@ -21,7 +21,7 @@ $click = $user->lang['GLOSS_CLICK'];
 $view = $user->lang['GLOSS_VIEW'];
 $url = request_var ('url', '');
 $term = request_var ('terme', '', true);
-$terme = "<p class=\"copyright\"><b>$term</b>.</p>";
+$terme = "<p class=\"copyright\"><b>$term</b></p>";
 $corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=$url></a></p>";
 $retour = "<p class=\"copyright\">$click</p>";
 // Fin du code utile
@@ -31,15 +31,15 @@ page_header($view);
 
 // Appel du gabarit défini dans le dossier styles/lmdi31/template
 $template->set_filenames (array (
-    'body' => 'glosspict.html',
+    'body' => 'glossaire.html',
 ));
 
 // Passage des chaînes à afficher
 $template->assign_vars (array (
 	'U_TITRE'			=> $view,
-	'U_TERME'			=> $terme,
+	'U_ILLUST'		=> $terme,
 	'U_CORPS'			=> $corps,
-	'U_RETOUR'		=> $retour,
+	'U_BIBLIO'		=> $retour,
 ));
 
 
