@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Glossary for phpBB 3.1",
 	"homepage": "http://www.insecte.org/ext/readme.txt",
-	"version": "1.0.1",
-	"time": "2015-11-27",
+	"version": "1.0.2",
+	"time": "2015-11-29",
 	"license": "GPL-2.0",
 	"authors": 
 	[	{
@@ -17,13 +17,13 @@
 			"name":	"Renate Regitz",
 			"email":	"",
 			"homepage": "http://www.kaninchenwissen.de/",
-			"role":	"Developer of original Lexicon mod"
+			"role":	"Developer of original Lexicon MOD"
 		},
 		{
 			"name":	"lugsciath",
 			"email":	"",
 			"homepage": "https://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=352566",
-			"role":	"Developer of original Acronym mod"
+			"role":	"Developer of original Acronym MOD"
 		}
 	],
 	"require": {

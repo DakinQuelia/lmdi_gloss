@@ -7,10 +7,10 @@ services:
         arguments:
             - @dbal.conn
             - @config
+            - @controller.helper
             - @template
             - @cache
             - @user
             - %lmdi.gloss.tables.glossary%
         tags:
             - { name: event.listener }
-

@@ -34,11 +34,15 @@ class main_listener implements EventSubscriberInterface
 	/* @var \phpbb\config\config */
 	protected $config;
 
+	/* @var \phpbb\controller\helper */
+	protected $controller_helper;
+
 	protected $glossary_table;
 
 	public function __construct(
 		\phpbb\db\driver\driver_interface $db,
 		\phpbb\config\config $config,
+		\phpbb\controller\helper $controller_helper,
 		\phpbb\template\template $template,
 		\phpbb\cache\service $cache,
 		\phpbb\user $user,
@@ -47,6 +51,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		$this->db = $db;
 		$this->config = $config;
+		$this->controller_helper = $controller_helper;
 		$this->template = $template;
 		$this->cache = $cache;
 		$this->user = $user;
@@ -58,6 +63,7 @@ class main_listener implements EventSubscriberInterface
 	return array(
 		'core.user_setup'					=> 'load_language_on_setup',
 		'core.page_header'					=> 'build_url',
+		// 'core.page_header'	=> 'add_page_header_link',
 		'core.viewtopic_post_rowset_data'		=> 'insertion_glossaire',
 		);
 	}
