@@ -38,6 +38,6 @@ CREATE TABLE `phpbb3_glossary` (
 
 ## Dummy entries
 INSERT INTO phpbb3_glossary (variants, term, description, picture, lang) 
-VALUES('test, tests, tested', 'Test', 'Test definition', 'no', 'en');
+VALUES('test, tests, tested', 'Test', 'Test definition', 'nopict', 'en');
 INSERT INTO phpbb3_glossary (variants, term, description, picture, lang) 
-VALUES('test2', 'Second test', 'Dummydefinition', 'no', 'en');
+VALUES('test2', 'Second test', 'Dummydefinition', 'nopict', 'en');
