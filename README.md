@@ -9,8 +9,8 @@
 5. Navigate in the ACP to `Customise -> Manage extensions`.
 6. Look for `Delete Re:` under the Disabled Extensions list, and click its `Enable` link.
 
-For the time being, I can't manage the template from the extension folder. Copy glossaire.html
-in styles/prosilver/templates.
+For the time being, I can't manage to use the template from the extension folder. 
+Copy the file glossaire.html from the extension root into styles/prosilver/templates.
 
 ## Uninstall
 
