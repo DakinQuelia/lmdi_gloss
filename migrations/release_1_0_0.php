@@ -77,6 +77,7 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 				$this->table_prefix . 'glossary'   => array(
 					'COLUMNS'   => array(
 						'term_id'	=> array ('UINT', null, 'auto_increment'),
+						'variants'	=> array ('VCHAR:80', ''),
 						'term'	=> array ('VCHAR:80', ''),
 						'description'	=> array ('VCHAR:512', ''),
 						'picture'	=> array ('VCHAR:80', ''),
