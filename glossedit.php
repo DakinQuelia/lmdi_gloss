@@ -125,7 +125,7 @@ switch ($action) {
 		$description = $db->sql_escape (request_var ('desc', "", true));
 		$picture     = $db->sql_escape (request_var ('pict', "", true));
 		if (!strlen ($picture))
-			$picture = "pasdimage";
+			$picture = "nopict";
 		$lang        = $db->sql_escape (request_var ('lang', "fr", true));
 		if ($term_id == 0) {
 			$sql  = "INSERT INTO $table ";
@@ -221,7 +221,16 @@ switch ($action) {
 				$corps .= "\n<tr class=\"deg\">";
 				$corps .= "<td class=\"deg0\" id=\"$code\"><b>$term</b></td>";
 				$corps .= "<td class=\"deg0\">$desc</td>";
-				$corps .= "<td class=\"deg1\">$pict</td>";
+				//	Lien cliquable si l'image est différente de nopict.
+				if ($pict != "nopict") {
+					$params = "url=glossaire/{$pict}.jpg&terme=$term";
+					$url = append_sid ("glosspict.php", $params);
+					$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
+					}
+				else {
+					$corps .= "<td class=\"deg1\">$pict</td>";
+					}
+				
 				$corps .= "<td class=\"deg1\">";
 				$corps .= "<a href=\"";
 				$corps .= append_sid ($phpbb_root_path."ext/lmdi/gloss/glossedit.".$phpEx, "code=$code&action=edit");

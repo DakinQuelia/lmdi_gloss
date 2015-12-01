@@ -95,9 +95,9 @@ while ($row = $db->sql_fetchrow ($result)) {
 		$corps .= "<td class=\"deg0\">$desc</td>";
           $corps .= "<td class=\"deg1\">";
 		/*	Pour chaque ligne du résultat, nous ne mettons un lien cliquable que si
-			l'image est différente de pasdimage.
+			l'image est différente de nopict.
 			*/
-          if ($pict != "pasdimage") {
+          if ($pict != "nopict") {
 			$params = "url=glossaire/{$pict}.jpg&terme=$term";
 			$url = append_sid ("glosspict.php", $params);
                $corps .= "<a href=\"$url\">$str_action</a></td>";

@@ -27,6 +27,8 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('lmdi_glossary', 1)),
 			array('config.add', array('lmdi_glossary_ucp', 0)),
 			
+			array('custom', array(array(&$this, 'insert_sample_data'))),
+			
 			array('module.add', array(
 				'acp',
 				'ACP_CAT_DOT_MODS',
@@ -71,10 +73,47 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 					'lmdi_gloss' => array('BOOL', 0),
 				),
 			),
+			'add_tables'   => array(
+				$this->table_prefix . 'glossary'   => array(
+					'COLUMNS'   => array(
+						'term_id'	=> array ('UINT', null, 'auto_increment'),
+						'term'	=> array ('VCHAR:80', ''),
+						'description'	=> array ('VCHAR:512', ''),
+						'picture'	=> array ('VCHAR:80', ''),
+						'lang'	=> array ('VCHAR:15', 'fr'),
+					),
+				'PRIMARY_KEY'   => 'term_id',
+				),
+			),
 		);
 	}
+	
+	public function insert_sample_data()
+	{
+		global $user;
+		// Define sample data
+		$sample_data = array(
+				array (
+					'variants' => 'test, tests, tested',
+					'term' => 'Test',
+					'description' => 'Test definition, etc.',
+					'picture' => 'nopict',
+					'lang' => 'en',
+				),
+				array (
+					'variants' => 'try, demo, trial',
+					'term' => 'Test2',
+					'description' => 'Second test definition, etc.',
+					'picture' => 'nopict',
+					'lang' => 'en',
+				),
+			);
+		// Insert sample data
+		$this->db->sql_multi_insert($this->table_prefix . 'glossary', $sample_data);
+	}
 
-	public function revert_schema()
+
+    	public function revert_schema()
 	{
 		return array(
 			'drop_columns'	=> array(
