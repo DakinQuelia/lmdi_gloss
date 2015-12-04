@@ -42,7 +42,7 @@ $lang = array_merge ($lang, array(
 	'GLOSS_ED_PICT'	=> 'Illustration',
 	'GLOSS_ED_PIEXPL'	=> 'Indiquez ici le nom du fichier contenant l\'illustration. Ne mentionnez pas l\'extension, qui doit être *.jpg. Téléchargez le fichier dans le dossier ext/lmdi/gloss/glossaire.',
 	'GLOSS_ED_ACT'		=> 'Action',
-	'GLOSS_ED_EXPL'	=> 'Un lien d\'édition existe à l\'extrémité de chaque ligne, pour apporter des modifications. Pour créer une nouvelle rubrique, cliquez ',
+	'GLOSS_ED_EXPL'	=> 'Un lien d\'édition existe à l\'extrémité de chaque ligne, pour apporter des modifications.<br>Pour créer une nouvelle rubrique, cliquez ',
 	'GLOSS_ED_ICI'		=> 'ici',
 	'GLOSS_ED_EDIT'	=> 'Éditer',
 // ACP

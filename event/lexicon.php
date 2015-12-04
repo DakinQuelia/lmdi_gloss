@@ -1,14 +1,15 @@
 <?php
 /**
 * @author Renate Regitz http://www.kaninchenwissen.de/
-* Version reprise pour l'extension
+* Version reprise pour l'extension Glossary
 * Ce code est utilisé pour extraire de la table glossary le terme correspondant
 * au code passé en paramètre. Il renvoie le contenu de la rubrique qui va
 * apparaître dans la fenêtre surgissante.
+* Extraction of the term from the glossary table. The returned text will
+* be the code for the popup window.
 **/
 
 define('IN_PHPBB', true);
-
 
 // Inclusion du fichier common.php (dans la racine)
 $phpbb_root_path = '../../../../';

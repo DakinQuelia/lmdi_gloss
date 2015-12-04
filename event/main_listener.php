@@ -35,14 +35,14 @@ class main_listener implements EventSubscriberInterface
 	protected $config;
 
 	/* @var \phpbb\controller\helper */
-	protected $controller_helper;
+	protected $helper;
 
 	protected $glossary_table;
 
 	public function __construct(
 		\phpbb\db\driver\driver_interface $db,
 		\phpbb\config\config $config,
-		\phpbb\controller\helper $controller_helper,
+		\phpbb\controller\helper $helper,
 		\phpbb\template\template $template,
 		\phpbb\cache\service $cache,
 		\phpbb\user $user,
@@ -51,7 +51,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		$this->db = $db;
 		$this->config = $config;
-		$this->controller_helper = $controller_helper;
+		$this->helper = $helper;
 		$this->template = $template;
 		$this->cache = $cache;
 		$this->user = $user;
@@ -90,9 +90,8 @@ class main_listener implements EventSubscriberInterface
 	{
 		global $phpbb_root_path;
 		global $phpEx;
-		$url_gloss = append_sid ($phpbb_root_path . "ext/lmdi/gloss/glossaire." . $phpEx);
 		$this->template->assign_vars(array(
-			'U_GLOSSAIRE'		=> $url_gloss,
+			'U_GLOSSAIRE'		=> $this->helper->route('lmdi_gloss_controller', array('mode' => 'glossaire')),
 			'L_GLOSSAIRE'		=> $this->user->lang['LGLOSSAIRE'],
 			'T_GLOSSAIRE'		=> $this->user->lang['TGLOSSAIRE'],
 		));
@@ -174,6 +173,7 @@ class main_listener implements EventSubscriberInterface
 				if (!($part{0} == '<' && $parts[$index + 1]{0} == '>') &&
 					!($part{0} == '[' && $parts[$index + 1]{0} == ']') &&
 					empty($img) && empty($code) && empty($link) && empty($script) ) {
+					// var_dump ($part);
 					$part = preg_replace ($rech, $remp, $part);
 					// var_dump ($part);
 					$parts[$index] = $part;
@@ -219,7 +219,7 @@ class main_listener implements EventSubscriberInterface
 					$remp .= $variant;
 					$remp .= "</acronym>";
 					$firstspace = '/\b(';
-					$lastspace = ')\b/u';
+					$lastspace = ')\b/u';	// u for UTF-8
 					$rech = $firstspace . $variant . $lastspace;
 					// var_dump ($rech); echo ("<br>\n");
 					$glossterms['rech'][] = $rech;
