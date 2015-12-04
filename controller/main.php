@@ -88,8 +88,8 @@ class main
 		$mode = $this->request->variable('mode', '');
 		$action = $this->request->variable('action', '');
 		$code = $this->request->variable('code', '-1');
-		var_dump ($code);
-		var_dump ($action);
+		// var_dump ($code);
+		// var_dump ($action);
 		
 		// String loading
 		$this->user->add_lang_ext('lmdi/gloss', 'gloss');
