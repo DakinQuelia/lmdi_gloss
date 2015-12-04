@@ -219,7 +219,7 @@ class main_listener implements EventSubscriberInterface
 					$remp .= $variant;
 					$remp .= "</acronym>";
 					$firstspace = '/\b(';
-					$lastspace = ')\b/';
+					$lastspace = ')\b/u';
 					$rech = $firstspace . $variant . $lastspace;
 					// var_dump ($rech); echo ("<br>\n");
 					$glossterms['rech'][] = $rech;
