@@ -174,7 +174,7 @@ class glossedit
 			$form .= "</div></div></div>";
 			$abc_links = $form;
 			break;
-		case "save" :		// Enregistrement
+		case "save" :	
 			$term_id     = $this->db->sql_escape (request_var ('term_id', 0));
 			$term        = $this->db->sql_escape (request_var ('term', "", true));
 			$variants    = $this->db->sql_escape (request_var ('vari', "", true));
@@ -205,8 +205,9 @@ class glossedit
 				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);	
 				}	
-			$params = "mode=glossedit&code=$term_id#$term_id";	// Redirection to term_id
+			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
+			$url .= "#$term_id";	// Anchor target term_id
 			redirect ($url);
 			// header("Location:$url");
 			exit ();
@@ -220,8 +221,9 @@ class glossedit
 			// echo ("Valeur de la requête : $sql.<br>\n");
 			$this->db->sql_query ($sql);	
 			$cap = substr (request_var ('term', "", true), 0, 1);
-			$params = "mode=glossedit#$cap";		// Redirection to initial cap
+			$params = "mode=glossedit";
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
+			$url .= "#$cap";		// Anchor target = initial cap 
 			redirect ($url);
 			// header("Location:$url");
 			exit ();

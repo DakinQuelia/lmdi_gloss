@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Glossary for phpBB 3.1",
 	"homepage": "http://www.insecte.org/ext/readme.txt",
-	"version": "1.1.0",
-	"time": "2015-12-4",
+	"version": "1.1.1",
+	"time": "2015-12-5",
 	"license": "GPL-2.0",
 	"authors": 
 	[	{
@@ -12,6 +12,12 @@
 			"email": "pierre@duhem.com",
 			"homepage": "http://www.insecte.org/ext/readme.txt",
 			"role": "Developer of Glossary extension"
+		},
+		{
+			"name": "Gijs Martens",
+			"email": "admin@godfathertalks.com",
+			"homepage": "http://www.godfathertalks.com",
+			"role": "Synfony scheme"
 		},
 		{
 			"name":	"Renate Regitz",
