@@ -188,15 +188,17 @@ class main_listener implements EventSubscriberInterface
 	/*	Production of the term list and the replacement list, in an array named glossterms.
 		The replacement string follows this model:
 		<acronym class='id302' title=''>word</acronym>
+		The title element can contain the 50 first characters of description (see ACP).
 		Production de la liste des termes et calcul d'une chaîne de remplacement.
 		Les éléments sont placés dans le tableau glossterms. Ce tableau contient pour
 		chaque rubrique un élément rech qui est la chaîne à rechercher et un
-		élément remp qui est la chaîne de remplacement. Cette chaîne produit un
-		balisage au modèle de :
+		élément remp qui est la chaîne de remplacement :
 		<acronym class='id302' title=''>rostre</acronym>
+		L'élément 'title' peut contenir les 50 premiers caractères de la chaîne de description.
 		*/
 	function compute_glossary_list() 
 	{
+		global $config;
 		$glossterms = $this->cache->get('_glossterms');
 		if ($glossterms === false) 
 		{
@@ -205,21 +207,34 @@ class main_listener implements EventSubscriberInterface
 			$sql .= "ORDER BY LENGTH(TRIM(variants)) DESC";
 			$result = $this->db->sql_query($sql);
 			$glossterms = array();
+			$title = $config['lmdi_glossary_title'];
 			while ($row = $this->db->sql_fetchrow($result)) 
 			{
 				$variants = explode (",", $row['variants']);
 				// var_dump ($variants);
+				if ($title)
+				{
+					$desc = trim ($row['description']);
+					if (strlen ($desc) > 50)
+					{
+						$desc = substr ($desc, 0, 50);
+					}
+					// $desc = addslashes ($desc);
+				}
+				else
+				{
+					$desc = '';
+				}
+				var_dump ($desc);
 				$cnt = count ($variants);
 				for ($i = 0 ; $i < $cnt ; $i++) 
 				{
 					$variant = trim ($variants[$i]);
-					$remp  = "<acronym class='id$row[term_id]' title=''>";
-					// $remp .= preg_quote(trim($row['description']));
-					// $remp .= "'>";
+					$remp  = "<acronym class=\"id$row[term_id]\" title=\"$desc\">";
 					$remp .= $variant;
 					$remp .= "</acronym>";
 					$firstspace = '/\b(';
-					$lastspace = ')\b/u';	// u for UTF-8
+					$lastspace = ')\b/ui';	// PCRE - u for UTF-8 - i case insensitive
 					$rech = $firstspace . $variant . $lastspace;
 					// var_dump ($rech); echo ("<br>\n");
 					$glossterms['rech'][] = $rech;

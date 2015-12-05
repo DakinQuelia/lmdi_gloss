@@ -26,6 +26,7 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 		return array(
 			array('config.add', array('lmdi_glossary', 1)),
 			array('config.add', array('lmdi_glossary_ucp', 0)),
+			array('config.add', array('lmdi_glossary_title', 0)),
 			
 			array('custom', array(array(&$this, 'insert_sample_data'))),
 			
@@ -130,6 +131,7 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 		return array(
 			array('config.remove', array('lmdi_glossary')),
 			array('config.remove', array('lmdi_glossary_ucp')),
+			array('config.remove', array('lmdi_glossary_title')),
 			
 			array('module.remove', array(
 				'acp',

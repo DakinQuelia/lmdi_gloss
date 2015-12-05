@@ -1,7 +1,7 @@
 <?php
 /**
 * @author Renate Regitz http://www.kaninchenwissen.de/
-* Version reprise pour l'extension Glossary
+* Version reprise pour l'extension Glossary par Pierre Duhem
 * Ce code est utilisé pour extraire de la table glossary le terme correspondant
 * au code passé en paramètre. Il renvoie le contenu de la rubrique qui va
 * apparaître dans la fenêtre surgissante.

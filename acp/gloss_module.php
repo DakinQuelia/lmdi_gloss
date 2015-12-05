@@ -34,6 +34,8 @@ protected $lexicon_table;
 		switch ($action) {
 			case 'config':
 				// Update configuration
+				$title = request_var('lmdi_gloss_title', '0');
+				set_config ('lmdi_glossary_title', $title);
 				$ucp = request_var('lmdi_gloss_ucp', '0');
 				set_config ('lmdi_glossary_ucp', $ucp);
 				$ucp = (int) $ucp;
@@ -56,6 +58,8 @@ protected $lexicon_table;
 			'C_ACTION'      	=> $action_config,
 			'ALLOW_FEATURE_NO' 	=> $config['lmdi_glossary_ucp'] == 0 ? 'checked="checked"' : '',
 			'ALLOW_FEATURE_YES' => $config['lmdi_glossary_ucp'] == 1 ? 'checked="checked"' : '',
+			'ALLOW_TITLE_NO' 	=> $config['lmdi_glossary_title'] == 0 ? 'checked="checked"' : '',
+			'ALLOW_TITLE_YES'	=> $config['lmdi_glossary_title'] == 1 ? 'checked="checked"' : '',
 			));
 
 	}	

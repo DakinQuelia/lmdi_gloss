@@ -52,8 +52,10 @@ $lang = array_merge ($lang, array(
 	'ACP_LEXICON_EXPLAIN'	=> 'Glossary settings',
 	'ACP_GLOSS_TITLE'	=> 'Entomological Glossary',
 	'ACP_GLOSS'		=> 'Settings',
-	'ALLOW_FEATURE'		=> 'Enable GlossaryFeature',
-     'ALLOW_FEATURE_EXPLAIN'	=> 'Users will be able to enable/disable the glossary feature in posts from the user control panel.',
+	'ALLOW_FEATURE'		=> 'Enable Glossary Feature',
+     'ALLOW_FEATURE_EXPLAIN'	=> 'You may enable/disable the feature for the whole board. Each user can disable the glossary feature in posts from the user control panel.',
+	'ALLOW_TITLE'		=> 'Enable Tooltip',
+     'ALLOW_TITLE_EXPLAIN'	=> 'You may enable/disable the display of the term description in a tooltip when hovering over the term. Long description will be truncated at 50 characters.',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Entomological Glossary',
      'UCP_GLOSS'		=> 'Main page',

@@ -78,6 +78,7 @@ class glossaire
 
 	function main()
 	{
+		// SELECT DISTINCT UPPER(LEFT(TRIM(term),1)) AS a FROM phpbb3_glossary ORDER BY a
 		$sql  = 'SELECT DISTINCT UPPER(LEFT(TRIM(term),1)) AS a
 				FROM ' . $this->glossary_table . '
 				ORDER BY a';
