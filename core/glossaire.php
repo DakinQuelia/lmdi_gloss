@@ -133,63 +133,35 @@ class glossaire
 					   $corps .= "&nbsp;</td>";
 					   }
 				$corps .= "</tr>";
-				}	// Fin du while sur le contenu
+				}	// Fin du while sur le contenu - end of while on contents
 			$this->db->sql_freeresult ($result2);
-			}	// Fin du while sur les initiales
+			}	// Fin du while sur les initiales - End of while on initial caps
 		$this->db->sql_freeresult ($result);
-		// Fermeture de la table
 		$corps .= "</table>";
+		// End of the ABC links with a link to the Edition page for administrators
 		// Fermeture de la ligne de liens avec un lien vers la page d'administration
 		$str_admin = $this->user->lang['GLOSS_EDITION'];
 		if ($this->auth->acl_get('a_')) {
 			$abc_links .= ' -- <a href="';
 			$abc_links .= append_sid("{$this->phpbb_root_path}app.php/gloss?mode=glossedit");
-			// $abc_links .= append_sid("{$this->phpbb_root_path}ext/lmdi/gloss/glossedit.{$this->phpEx}");
 			$abc_links .= '">' . $str_admin . '</a>';
 			}
 		$abc_links .= "</p><br />";
 
 		// Bibliographie 
-		$biblio = "
-		<p class=\"m\">
-		<u>Bibliographie</u><br /> 
-		<br />Aguilar d' (J.), Glossaire entomologique, Delachaux et Niestlé, Paris, 2004
-		<br />Berland (L.), Faune de France n° 10 - Hyménoptères vespiformes. vol. I., 1925
-		<br />Chinery (M.), Insectes de France et d'Europe occidentale, Flammarion, Paris, 2005
-		<br />Chatenet du  (G.), Guide des coléoptères d'Europe, Delachaux et Niestlé, Paris, 1986
-		<br />Haupt (J. et H.), Guide des mouches et des moustiques, Delachaux et Niestlé, Paris, 2000
-		<br />Paulian (R.), Biologie des coléoptères, Editions Lechevalier, Paris, 1988
-		<br />Roth (M.), Initiation à la morphologie, la systématique et la biologie des Insectes, Initiations et documentations techniques, n° 23, Orstom, Paris, 1980
-		<br />Séguy (E.), Faune de France n° 6 - Diptères Anthomyides, 1923
-		<br />Séguy (E.), Dictionnaire des termes d'Entomologie, éditions Paul Lechevalier, Paris, 1967
-		<br />Tolman (T.), Lewintgton (R.), Guide des papillons d'Europe et d'Afrique du Nord Delachaux et Niestlé, Paris, 2007
-		<br />Villemant (C.), Blanchot (P.), Portraits d'insectes, Seuil 2004
-		<br /><br /> 
-		<u>Webographie</u><br /><br />
-		<a href=\"http://www.galerie-insecte.org/galerie/fichier.php\">Galerie-insecte</a> <br />
-		<a href=\"http://www7.inra.fr/hyppz/glossair.htm\">INRA, Le glossaire de HYPPZ</a><br />  
-		<a href=\"http://www.libellules.org/fra/fra_index.php\">SFO Société Française d'Odonatologie, glossaire odonatologique</a><br />
-		<a href=\"http://www.ird.fr/\">IRD, institut de recherche pour le développement </a><br />
-		<br />
-		<u>Illustrations</u><br /><br />
-		<a href=\"http://www.faunedefrance.org\">Faune de France</a> <br /> <br /> 
-		<u>Photographes et illustrateurs</u> <br /><br />
-		<a href=\"http://www.galerie-insecte.org/galerie/auteur.php?aut=107\">Alastor</a>,
-		<a href=\"http://www.galerie-insecte.org/galerie/auteur.php?aut=1574\">Fred Chevaillot</a>,
-		<a href=\"http://www.galerie-insecte.org/galerie/auteur.php?aut=5\">bobgaia</a>,
-		<a href=\"http://www.galerie-insecte.org/galerie/auteur.php?aut=2408\">lweit</a> 
-		<br /> 
-		</p>";
-
+		$biblio = $this->user->lang['GLOSS_BIBLIO'];
+		
 		// Information sur l'existence d'une illustration
+		// Comment string about the presence of a picture
 		$illustration = $this->user->lang['ILLUSTRATION'];
 
-		page_header('Glossaire entomologique');
+		$titre = $this->user->lang['TGLOSSAIRE'];
+		page_header($titre);
 		$this->template->set_filenames (array(
 			'body' => 'gloss/glossaire.html',
 		));
 		$this->template->assign_vars (array (
-			'U_TITRE'			=> $this->user->lang['TGLOSSAIRE'],
+			'U_TITRE'			=> $titre,
 			'U_ABC'			=> $abc_links,
 			'U_ILLUST'		=> $illustration,
 			'U_CORPS'			=> $corps,

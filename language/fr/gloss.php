@@ -25,6 +25,15 @@ $lang = array_merge ($lang, array(
 	'GLOSS_DISPLAY'	=> 'Afficher',
 	'GLOSS_CLICK'		=> 'Cliquez sur l\'image pour revenir à la page précédente.',
 	'GLOSS_VIEW'		=> 'Afficheur du glossaire',
+	'GLOSS_BIBLIO'		=> "
+		<p class=\"m\">
+		<u>Bibliographie</u><br /> 
+		<br /><br /> 
+		<u>Webographie</u><br /><br />
+		<br />
+		<u>Illustrations</u><br /><br />
+		<br /> 
+		</p>",
 // Glossary edition page
 	'GLOSS_EDIT'	=>'Édition d\'une fiche du glossaire',
 	'GLOSS_CREAT'	=>'Création d\'une fiche du glossaire',
