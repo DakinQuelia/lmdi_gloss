@@ -225,7 +225,7 @@ class main_listener implements EventSubscriberInterface
 				{
 					$desc = '';
 				}
-				var_dump ($desc);
+				// var_dump ($desc);
 				$cnt = count ($variants);
 				for ($i = 0 ; $i < $cnt ; $i++) 
 				{
