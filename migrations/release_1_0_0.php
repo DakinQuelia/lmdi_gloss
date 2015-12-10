@@ -29,6 +29,7 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('lmdi_glossary_title', 0)),
 			
 			array('custom', array(array(&$this, 'insert_sample_data'))),
+			array('custom', array(array(&$this, 'utf8_unicode_ci'))),
 			
 			array('module.add', array(
 				'acp',
@@ -71,7 +72,7 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 		return array(
 			'add_columns'	=> array(
 				$this->table_prefix . 'users'			=> array(
-					'lmdi_gloss' => array('BOOL', 0),
+					'lmdi_gloss' => array('BOOL', 1),
 				),
 			),
 			'add_tables'   => array(
@@ -89,6 +90,13 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 			),
 		);
 	}
+	
+	public function utf8_unicode_ci()
+	{
+		$sql = "alter table phpbb3_glossary convert to character set utf8 collate utf8_unicode_ci";
+		$this->db->sql_query($sql);
+	}
+	
 	
 	public function insert_sample_data()
 	{
