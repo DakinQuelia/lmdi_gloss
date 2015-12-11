@@ -78,8 +78,7 @@ class glossedit
 	{
 	global $table_prefix, $phpbb_root_path, $phpEx;
 	$this->user->add_lang_ext('lmdi/gloss', 'gloss');
-	// var_dump ($this->user->lang);
-
+	
 	$abc_links = "";
 	$illustration = "";
 	$corps = "";
@@ -183,7 +182,8 @@ class glossedit
 			if (!strlen ($picture))
 				$picture = "nopict";
 			$lang        = $this->db->sql_escape (request_var ('lang', "fr", true));
-			if ($term_id == 0) {
+			if ($term_id == 0) 
+			{
 				$sql  = "INSERT INTO $table ";
 				$sql .= "(variants, term, description, picture, lang) ";
 				$sql .= " VALUES ";
@@ -191,8 +191,9 @@ class glossedit
 				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);	
 				$term_id = $this->db->sql_nextid();
-				}
-			else {
+			}
+			else 
+			{
 				$sql  = "UPDATE $table SET ";
 				$sql .= "term_id       = \"$term_id\", ";
 				$sql .= "variants      = \"$variants\", ";
@@ -204,13 +205,12 @@ class glossedit
 				$sql .= "LIMIT 1";
 				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);	
-				}	
+			}	
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$term_id";	// Anchor target term_id
 			redirect ($url);
 			// header("Location:$url");
-			exit ();
 			break;
 		case "delete" :
 			$term_id     = $this->db->sql_escape (request_var ('term_id', 0));
@@ -226,7 +226,6 @@ class glossedit
 			$url .= "#$cap";		// Anchor target = initial cap 
 			redirect ($url);
 			// header("Location:$url");
-			exit ();
 			break;
 		case "rien" :
 			$sql  = "SELECT DISTINCT UPPER(LEFT(TRIM(term),1)) AS a ";
@@ -281,10 +280,11 @@ class glossedit
 					$corps .= "\n<tr class=\"deg\">";
 					$corps .= "<td class=\"deg0\" id=\"$code\"><b>$term</b></td>";
 					$corps .= "<td class=\"deg0\">$desc</td>";
-					//	Lien cliquable si l'image est différente de nopict.
+					// Lien cliquable si l'image est différente de nopict.
+					// Clickable link if picture != nopict
 					if ($pict != "nopict") {
-						$params = "url=glossaire/{$pict}.jpg&terme=$term";
-						$url = append_sid ("glosspict.php", $params);
+						$params  = "mode=glosspict&pict=$pict&terme=$term";
+						$url = append_sid ($phpbb_root_path."app.php/gloss", $params);
 						$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
 						}
 					else {
@@ -294,7 +294,6 @@ class glossedit
 					$corps .= "<a href=\"";
 					$params = "mode=glossedit&code=$code&action=edit";
 					$corps .= append_sid ($phpbb_root_path."app.php/gloss", $params);
-					// $corps .= append_sid ($phpbb_root_path."ext/lmdi/gloss/glossedit.".$phpEx, $params);
 					$corps .= "\">$str_edit</a></td>";
 					$corps .= "</tr>";
 					}	// Fin du while sur le contenu
@@ -309,7 +308,7 @@ class glossedit
 			$str_ici = $this->user->lang['GLOSS_ED_ICI'];
 			$illustration  = $this->user->lang['GLOSS_ED_EXPL'];
 			$illustration .= "<a href=\"";
-			$illustration .= append_sid ($phpbb_root_path."ext/lmdi/gloss/glossedit.".$phpEx, "code=-1&action=edit");
+			$illustration .= append_sid ($phpbb_root_path."app.php/gloss", "mode=glossedit&code=-1&action=edit");
 			$illustration .= "\"><b>$str_ici</b></a>.";		
 			break;
 		}	// Fin du switch sur action
