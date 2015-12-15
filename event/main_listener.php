@@ -194,7 +194,8 @@ class main_listener implements EventSubscriberInterface
 		chaque rubrique un élément rech qui est la chaîne à rechercher et un
 		élément remp qui est la chaîne de remplacement :
 		<acronym class='id302' title=''>rostre</acronym>
-		L'élément 'title' peut contenir les 50 premiers caractères de la chaîne de description.
+		L'élément 'title' peut contenir les 50 premiers caractères de la chaîne de 
+		description (voir dans le panneau d'administration).
 		*/
 	function compute_glossary_list() 
 	{

@@ -55,6 +55,7 @@ services:
             - @auth
             - @ext.manager
             - @path_helper
+            - @cache
             - %core.php_ext%
             - %core.root_path%
             - %lmdi.gloss.tables.glossary%

@@ -28,6 +28,8 @@ class glossedit
 	protected $ext_manager;
 	/** @var \phpbb\path_helper */
 	protected $path_helper;
+	/** @var \phpbb\cache\service */
+	protected $cache;
 	// Strings
 	protected $ext_path;
 	protected $ext_path_web;
@@ -35,14 +37,6 @@ class glossedit
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\controller\helper		 	$helper
-	* @param \phpbb\config\config				$config
-	* @param									$phpEx
-	* @param									$phpbb_root_path
-	* @param string 							$glossary_table
 	*
 	*/
 	public function __construct(
@@ -53,6 +47,7 @@ class glossedit
 		\phpbb\auth\auth $auth, 
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
+		\phpbb\cache\service $cache,
 		$phpEx, 
 		$phpbb_root_path, 
 		$glossary_table)
@@ -62,11 +57,12 @@ class glossedit
 		$this->db 			= $db;
 		$this->helper 			= $helper;
 		$this->auth			= $auth;
+		$this->ext_manager	 	= $ext_manager;
+		$this->path_helper	 	= $path_helper;
+		$this->cache             = $cache;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
-		$this->ext_manager	 	= $ext_manager;
-		$this->path_helper	 	= $path_helper;
 
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
@@ -206,6 +202,9 @@ class glossedit
 				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);	
 			}	
+			// Purge the cache
+			$this->cache->destroy('_glossterms', '');	
+			// Redirection
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$term_id";	// Anchor target term_id
