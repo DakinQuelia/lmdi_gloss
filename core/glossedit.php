@@ -203,7 +203,7 @@ class glossedit
 				$this->db->sql_query ($sql);	
 			}	
 			// Purge the cache
-			$this->cache->destroy('_glossterms', '');	
+			$this->cache->destroy('_glossterms');	
 			// Redirection
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
@@ -219,6 +219,9 @@ class glossedit
 			$sql .= "LIMIT 1";
 			// echo ("Valeur de la requête : $sql.<br>\n");
 			$this->db->sql_query ($sql);	
+			// Purge the cache
+			$this->cache->destroy('_glossterms');	
+			// Redirection
 			$cap = substr (request_var ('term', "", true), 0, 1);
 			$params = "mode=glossedit";
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
