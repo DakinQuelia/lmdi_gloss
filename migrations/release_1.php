@@ -228,7 +228,7 @@ class release_1 extends \phpbb\db\migration\migration
 				'ucp',
 				'UCP_GLOSS_TITLE',
 				array(
-					'module_basename'	=> '\lmdi\gloss\ucp\ucp_psb_module',
+					'module_basename'	=> '\lmdi\gloss\ucp\ucp_gloss_module',
 					'module_mode'		=> array('settings'),
 					'module_auth'       => 'ext_lmdi/gloss',
 					'module_display'	=> 0,
