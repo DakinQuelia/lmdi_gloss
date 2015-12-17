@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
 * Event listener
 */
-class main_listener implements EventSubscriberInterface
+class listener implements EventSubscriberInterface
 {
 	/** @var \phpbb\cache\service */
 	protected $cache;
@@ -63,7 +63,7 @@ class main_listener implements EventSubscriberInterface
 	return array(
 		'core.user_setup'					=> 'load_language_on_setup',
 		'core.page_header'					=> 'build_url',
-		// 'core.page_header'	=> 'add_page_header_link',
+		'core.permissions'					=> 'add_permissions',
 		'core.viewtopic_post_rowset_data'		=> 'insertion_glossaire',
 		);
 	}
@@ -96,7 +96,23 @@ class main_listener implements EventSubscriberInterface
 			'T_GLOSSAIRE'		=> $this->user->lang['TGLOSSAIRE'],
 		));
 	}
-
+	
+	/**
+	* Add custom permissions language variables
+	*
+	* @param object $event The event object
+	* @return null
+	* @access public
+	*/
+	public function add_permissions($event)
+	{
+		/*
+		$permissions = $event['permissions'];
+		$permissions['u_lmdi_glosspary'] = array('lang' => 'ACL_U_LMDI_GLOSSARY', 'cat' => 'misc');
+		$event['permissions'] = $permissions;
+		*/
+	}
+	
 	// Event: core.viewtopic_post_rowset_data
 	// Called for each post in the topic
 	// event.rowset_data.post_text = text of the post

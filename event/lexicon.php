@@ -12,9 +12,10 @@
 define('IN_PHPBB', true);
 
 // Inclusion du fichier common.php (dans la racine)
+// Inclusion of common.php (in forum root)
 $phpbb_root_path = '../../../../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
-include($phpbb_root_path . 'common.' . $phpEx);
+include($phpbb_root_path. 'common.' . $phpEx);
 
 // Session management
 $user->session_begin();
@@ -28,7 +29,6 @@ if ($id) {
      // Search lexicon entry in DB
      $sql = "SELECT * FROM " . GLOSSARY_TABLE .
           " WHERE term_id = '$id' LIMIT 1; ";
-     // echo ("Valeur de la requête : $sql.<br>\n");
      $result = $db->sql_query($sql);
      $row = $db->sql_fetchrow($result);
 	$entry = '<h3><a title="'. $user->lang['CLOSE_WINDOW']. '" id="lexiconClose" href="#">x</a></h3>

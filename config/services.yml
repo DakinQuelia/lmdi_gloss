@@ -3,7 +3,7 @@ imports:
 
 services:
      lmdi.gloss.listener:
-        class: lmdi\gloss\event\main_listener
+        class: lmdi\gloss\event\listener
         arguments:
             - @dbal.conn
             - @config
