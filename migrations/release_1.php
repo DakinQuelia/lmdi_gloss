@@ -186,6 +186,9 @@ class release_1 extends \phpbb\db\migration\migration
 					'lmdi_gloss',
 				),
 			),
+			'drop_tables'   => array(
+				$this->table_prefix . 'glossary',
+			),
 		);
 	}
 
