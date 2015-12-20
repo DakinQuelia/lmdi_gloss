@@ -65,9 +65,12 @@ $lang = array_merge ($lang, array(
      'ALLOW_FEATURE_EXPLAIN'	=> 'You may enable/disable the feature for the whole board. Each user can disable the glossary feature in posts from the user control panel.',
 	'ALLOW_TITLE'		=> 'Enable Tooltip',
      'ALLOW_TITLE_EXPLAIN'	=> 'You may enable/disable the display of the term description in a tooltip when hovering over the term. Long description will be truncated at 50 characters.',
+	'GLOSS_GROUP_DESC'		=> 'Group of Glossary editors',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Entomological Glossary',
-     'UCP_GLOSS'		=> 'Main page',
+     'UCP_GLOSS_MANAGE'	=> 'Entomological Glossary',
+	'UCP_CONFIG_SAVED'	=> 'User configuration updated successfully<br /><br />%sClick here to return to the download settings%s',
+	'UCP_GLOSS'		=> 'Main page',
 	'UCP_ENABLE'		=> 'Enable the glossary feature',
 	'UCP_ENABLE_EXPLAIN' => 'The glossary displays an explanation and eventually a picture when you click on technical terms in the posts.',
 	

@@ -141,7 +141,7 @@ class glossaire
 		// End of the ABC links with a link to the Edition page for administrators
 		// Fermeture de la ligne de liens avec un lien vers la page d'administration
 		$str_admin = $this->user->lang['GLOSS_EDITION'];
-		if ($this->auth->acl_get('u_lmdi_glossary') || $this->auth->acl_get('a_lmdi_glossary')) {	
+		if ($this->auth->acl_get('u_lmdi_glossary') || $this->auth->acl_get('a_')) {	
 			$abc_links .= ' -- <a href="';
 			$abc_links .= append_sid("{$this->phpbb_root_path}app.php/gloss?mode=glossedit");
 			$abc_links .= '">' . $str_admin . '</a>';

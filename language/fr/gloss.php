@@ -65,8 +65,11 @@ $lang = array_merge ($lang, array(
      'ALLOW_FEATURE_EXPLAIN'        => 'Vous pouvez valider ou inhiber la fonction au niveau du forum. Si vous validez, l\'utilisateur pourra inhiber l\'affichage des termes du glossaire dans les messages du forum (à partir du panneau de l\'utilisateur).',
 	'ALLOW_TITLE'        => 'Validation des infobulles',
      'ALLOW_TITLE_EXPLAIN'        => 'Vous pouvez valider ou inhiber l\'affichage d\'une infobulle lorsque le curseur passe au-dessus du terme dans les messages du forum. Si la description est trop longue, elle est tronquée à 50 caractères.',
+	'GLOSS_GROUP_DESC'		=> 'Groupe des éditeurs du glossaire',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Glossaire entomologique',
+	'UCP_GLOSS_MANAGE'	=> 'Glossaire entomologique',
+	'UCP_CONFIG_SAVED'	=> 'La configuration a bien été enregistrée.<br /><br />%sCliquez ici pour revenir à la page précédente%s',
 	'UCP_GLOSS'		=> 'Page principale',
 	'UCP_ENABLE'		=> 'Validation de la fonction de glossaire',
 	'UCP_ENABLE_EXPLAIN' => 'Le glossaire affiche une explication (et éventuellement une illustration) lorsque vous cliquez sur les termes techniques dans les sujets du forum.',

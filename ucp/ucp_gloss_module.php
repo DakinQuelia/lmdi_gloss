@@ -50,16 +50,23 @@ class ucp_gloss_module
 		if ($request->is_set_post('submit'))
 		{
 			if (!check_form_key('ucp_gloss'))
-				{
-					trigger_error('FORM_INVALID');
-				}
-			$ucp = request_var ('gloss', '0');
-			// Update the lmdi_gloss column in table users
-			$uid = $this->user->data['user_id'];
-			$sql  = "UPDATE " . USERS_TABLE;
-			$sql .= " SET lmdi_gloss = $ucp ";
-			$sql .= "WHERE user_id = $uid ";
-			$this->db->sql_query($sql);
+			{
+				trigger_error('FORM_INVALID');
+			}
+			else 
+			{
+				$ucp = request_var ('gloss', '0');
+				// Update the lmdi_gloss column in table users
+				$uid = $this->user->data['user_id'];
+				$sql  = "UPDATE " . USERS_TABLE;
+				$sql .= " SET lmdi_gloss = $ucp ";
+				$sql .= "WHERE user_id = $uid ";
+				$this->db->sql_query($sql);
+				// Information message
+				$basic_link = $this->u_action . "&amp;mode=$mode";
+				$message = sprintf($user->lang['UCP_CONFIG_SAVED'], '<a href="' . $basic_link . '">', '</a>');
+				trigger_error($message);
+			}
 		}
 		else
 		{

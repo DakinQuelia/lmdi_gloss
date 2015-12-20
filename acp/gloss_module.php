@@ -50,7 +50,7 @@ protected $lexicon_table;
 				$db->sql_query($sql);
 				// Information message
 				$message = $user->lang['CONFIG_UPDATED'];
-				trigger_error($message . adm_back_link($this->u_action));
+				trigger_error($message . adm_back_link ($this->u_action));
 				break;
 			}	
 
