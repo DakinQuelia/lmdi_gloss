@@ -106,11 +106,11 @@ class listener implements EventSubscriberInterface
 	*/
 	public function add_permissions($event)
 	{
-		/*
+		
 		$permissions = $event['permissions'];
-		$permissions['u_lmdi_glosspary'] = array('lang' => 'ACL_U_LMDI_GLOSSARY', 'cat' => 'misc');
+		$permissions['u_lmdi_glossary'] = array('lang' => 'ACL_U_LMDI_GLOSSARY', 'cat' => 'misc');
+		$permissions['a_lmdi_glossary'] = array('lang' => 'ACL_A_LMDI_GLOSSARY', 'cat' => 'misc');
 		$event['permissions'] = $permissions;
-		*/
 	}
 	
 	// Event: core.viewtopic_post_rowset_data

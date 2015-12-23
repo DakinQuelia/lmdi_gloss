@@ -9,7 +9,12 @@
 
 namespace lmdi\gloss\migrations;
 
-class release_1 extends \phpbb\db\migration\migration
+use \phpbb\db\migration\container_aware_migration;
+
+global $phpbb_root_path;
+include ($phpbb_root_path . 'includes/functions_user.php');
+
+class release_1 extends container_aware_migration
 {
 	
 	var 	$str_desc = "Glossary Editor Group";
@@ -51,6 +56,15 @@ class release_1 extends \phpbb\db\migration\migration
 	
 	public function update_data()
 	{
+		// To get the $user array
+		$user = $this->container->get('user');
+		// Load the lang file
+		$user->add_lang_ext('lmdi/gloss', 'gloss');
+		$titre_role_a = $user->lang('ROLE_A_LMDI_GLOSSARY');
+		$titre_role_u = $user->lang('ROLE_U_LMDI_GLOSSARY');
+		$descr_role_a = $user->lang('ROLE_A_LMDI_DESC');
+		$descr_role_u = $user->lang('ROLE_U_LMDI_DESC');
+		
 		return array(
 			// ACP modules
 			array('module.add', array(
@@ -90,6 +104,9 @@ class release_1 extends \phpbb\db\migration\migration
 			array('config.add', array('lmdi_glossary', 1)),
 			array('config.add', array('lmdi_glossary_ucp', 0)),
 			array('config.add', array('lmdi_glossary_title', 0)),
+			array('config.add', array('lmdi_glossary_usergroup', 0)),
+			array('config.add', array('lmdi_glossary_admingroup')),
+			
 			
 			// Modify collation setting of the glossary table
 			array('custom', array(array(&$this, 'utf8_unicode_ci'))),
@@ -100,24 +117,39 @@ class release_1 extends \phpbb\db\migration\migration
 			// Creation of a group for the editors of the glossary
 			// array('custom', array(array(&$this, 'group_creation'))),
 			
-			// Add a permission (set = true, unset = false)
-			array('permission.add', array('u_lmdi_glossary', false, 'u_')),
-
-			// Role addition
-			array('permission.role_add', array('ROLE_GLOSSARY_EDITOR', 'u_', 'Editor of glossary entries')),
 			
-			// Set permissions
-			array('permission.permission_set', array('ROLE_GLOSSARY_EDITOR', 'u_lmdi_glossary', 'role')),
+			// Add roles
+			array('permission.role_add', array($titre_role_a, 'a_', $descr_role_a)),
+			array('permission.role_add', array($titre_role_u, 'u_', $descr_role_u)),
+
+			// Add permissions (global = true, local = false)
+			array('permission.add', array('a_lmdi_glossary', true)),
+			array('permission.add', array('u_lmdi_glossary', true)),
+
+			// Assign permissions to the roles
+			array('permission.permission_set', array($titre_role_a, 'a_lmdi_glossary', 'role')),
+			array('permission.permission_set', array($titre_role_u, 'u_lmdi_glossary', 'role')),
 				
 		);
 	}
 	
 	public function revert_data()
 	{
+		// To get the $user array
+		$user = $this->container->get('user');
+		// Load the lang file
+		$user->add_lang_ext('lmdi/gloss', 'gloss');
+		$titre_role_a = $user->lang('ROLE_A_LMDI_GLOSSARY');
+		$titre_role_u = $user->lang('ROLE_U_LMDI_GLOSSARY');
+		// $descr_role_a = $user->lang('ROLE_A_LMDI_DESC');
+		// $descr_role_u = $user->lang('ROLE_U_LMDI_DESC');
+		
 		return array(
 			array('config.remove', array('lmdi_glossary')),
 			array('config.remove', array('lmdi_glossary_ucp')),
 			array('config.remove', array('lmdi_glossary_title')),
+			array('config.remove', array('lmdi_glossary_usergroup')),
+			array('config.remove', array('lmdi_glossary_admingroup')),
 			
 			/*
 			array('module.remove', array(
@@ -140,13 +172,16 @@ class release_1 extends \phpbb\db\migration\migration
 			array('custom', array(array(&$this, 'group_deletion'))),
 			
 			// Unset permissions
-			array('permission.permission_unset', array('ROLE_GLOSSARY_EDITOR', 'u_lmdi_glossary', 'role')),
-			
-			// Remove permissions
-			array('permission.remove', array('u_lmdi_glossary')),
+			array('permission.permission_unset', array($titre_role_a, 'a_lmdi_glossary')),
+			array('permission.permission_unset', array($titre_role_u, 'u_lmdi_glossary')),
 			
 			// Role suppression
-			array('permission.role_remove', array('ROLE_GLOSSARY_EDITOR')),
+			array('permission.role_remove', array($titre_role_a)),
+			array('permission.role_remove', array($titre_role_u)),
+			
+			// Remove permissions
+			array('permission.remove', array('a_lmdi_glossary')),
+			array('permission.remove', array('u_lmdi_glossary')),
 			
 			/*
 			array('module.remove', array(
@@ -217,34 +252,7 @@ class release_1 extends \phpbb\db\migration\migration
 		$this->db->sql_multi_insert($this->table_prefix . 'glossary', $sample_data);
 	}
 
-	public function group_creation()
-	{
-		// global $user;
-		// $user->add_lang_ext('lmdi/gloss', 'gloss');
-		// $str_desc = $this->user->lang['GLOSS_GROUP_DESC'];
-		$str_desc = "Glossary Editor Group";
-		
-		// Glossary group creation
-		$group_id = '';
-		$group_type = 0;
-		$group_name = "GLOSSARY";
-		$group_desc = $this->str_desc;
-
-		$group_attributes = array(
-		    'group_colour' => '00FFFF',
-		    'group_rank' => 0,
-		    'group_avatar' => 0,
-		    'group_avatar_type' => 0,
-		    'group_avatar_width' => 0,
-		    'group_avatar_height' => 0,
-		    'group_legend' => 0,
-		    'group_receive_pm' => 1,
-			);    
-		// In file includes/functions_user.php
-		$group = group_create($group_id, $group_type, $group_name, $group_desc, $group_attributes);
-		// var_dump ($group);
-	}
-	
+	// group_creation in acp/gloss_module
 	public function group_deletion()
 	{
 		global $table_prefix;

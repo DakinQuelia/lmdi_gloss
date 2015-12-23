@@ -46,4 +46,5 @@ if (empty($lang) || !is_array($lang))
 // User Permissions
 $lang = array_merge($lang, array(
 	'ACL_U_LMDI_GLOSSARY'		=> 'Peut éditer les rubriques du glossaire.',
+	'ACL_A_LMDI_GLOSSARY'		=> 'Peut éditer les rubriques du glossaire.',
 ));
