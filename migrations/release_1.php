@@ -105,7 +105,7 @@ class release_1 extends container_aware_migration
 			array('config.add', array('lmdi_glossary_ucp', 0)),
 			array('config.add', array('lmdi_glossary_title', 0)),
 			array('config.add', array('lmdi_glossary_usergroup', 0)),
-			array('config.add', array('lmdi_glossary_admingroup')),
+			array('config.add', array('lmdi_glossary_admingroup', 0)),
 			
 			
 			// Modify collation setting of the glossary table
