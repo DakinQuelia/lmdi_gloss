@@ -15,8 +15,20 @@ class gloss_module {
 	var $u_action;
 	var $action;
 	/** @var string */
-	protected $lexicon_table;
-
+	
+	function get_def_language ($table, $colonne)
+	{
+		global $db;
+		$sql = "SELECT DEFAULT($colonne) lg 
+			FROM (SELECT 1) AS dummy
+			LEFT JOIN $table ON True LIMIT 1";	
+		$result = $db->sql_query($sql);
+		$row = $db->sql_fetchrow ($result);
+		$default = $row['lg'];
+		$db->sql_freeresult ($result);
+		return ($default);
+	}
+	
 	function role_addition ($group, $role)
 	{
 		global $table_prefix, $db;
@@ -26,7 +38,8 @@ class gloss_module {
 		$sql = "INSERT into ${table_prefix}acl_groups 
 			(group_id, forum_id, auth_option_id, auth_role_id, auth_setting)
 			VALUES ($group_id, 0, 0, $role_id, 0)";
-		var_dump ($sql);
+		// INSERT into phpbb3_acl_groups (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES (4416, 0, 0, 52, 0)
+		// var_dump ($sql);
 		$db->sql_query($sql);
 	}
 	
@@ -38,7 +51,7 @@ class gloss_module {
 		// ?? Vérifications préalables
 		$sql = "DELETE from ${table_prefix}acl_groups 
 			WHERE group_id = '$group_id' AND auth_role_id = '$role_id'";
-		var_dump ($sql);
+		// DELETE from phpbb3_acl_groups WHERE group_id = '4415' AND auth_role_id = '52'
 		$db->sql_query($sql);
 	}
 	
@@ -94,6 +107,34 @@ class gloss_module {
 		}
 	}
 	   
+	function build_lang_select ()
+	{
+		global $table_prefix, $db, $user;
+		
+		$table = $table_prefix . 'glossary';
+		$lg = $this->get_def_language ($table, 'lang');		
+		$select  = "";
+		
+		$sql = 'SELECT lang_iso
+			FROM ' . LANG_TABLE . '
+			ORDER BY lang_iso';
+		$result = $db->sql_query($sql);
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$lang = $row['lang_iso'];
+			if ($lang == $lg)
+			{
+				$select .= "<option value=\"$lang\" selected>$lang</option>";
+			}
+			else
+			{
+				$select .= "<option value=\"$lang\">$lang</option>";
+			}
+		}
+		$db->sql_freeresult($result);
+		return ($select);
+	}
+	
 	function main ($id, $mode) 
 	{
 		global $db, $user, $auth, $template, $cache, $request;
@@ -126,6 +167,15 @@ class gloss_module {
 				// Update the lmdi_gloss column in table users
 				$sql  = 'UPDATE ' . USERS_TABLE . " SET lmdi_gloss = $ucp ";
 				$db->sql_query($sql);
+				// Language selection
+				$lang = request_var('lang', '');
+				$table = $table_prefix . 'glossary';
+				$lg = $this->get_def_language ($table, 'lang');
+				if ($lang != $lg)
+				{
+					$sql = "ALTER TABLE ${table_prefix}glossary ALTER COLUMN lang SET DEFAULT '$lang'";
+					$db->sql_query($sql);
+				}
 				// Usergroup creation/deletion
 				$ug = request_var('lmdi_gloss_ugroup', '0');
 				if ($config['lmdi_glossary_usergroup'] != $ug)
@@ -134,9 +184,11 @@ class gloss_module {
 					$usergroup = $user->lang['GLOSSARY_EDITORS'];
 					$userrole  = $user->lang['ROLE_U_LMDI_GLOSSARY'];
 					$groupdesc   = $user->lang['ROLE_U_LMDI_DESC'];
+					/*
 					var_dump ($usergroup);
 					var_dump ($userrole);
 					var_dump ($groupdesc);
+					*/
 					if ($ug) 
 					{
 						$this->group_creation ($usergroup, $groupdesc);
@@ -157,9 +209,11 @@ class gloss_module {
 					$admingroup = $user->lang['GLOSSARY_ADMINISTRATORS'];
 					$adminrole  = $user->lang['ROLE_A_LMDI_GLOSSARY'];
 					$groupdesc   = $user->lang['ROLE_A_LMDI_DESC'];
+					/*
 					var_dump ($admingroup);
 					var_dump ($adminrole);
 					var_dump ($groupdesc);
+					*/
 					if ($ag) 
 					{
 						$this->group_creation ($admingroup, $groupdesc);
@@ -177,6 +231,7 @@ class gloss_module {
 				break;
 			}	
 
+		$select = $this->build_lang_select ();
 		$template->assign_vars (array(
 			'C_ACTION'      	=> $action_config,
 			'ALLOW_FEATURE_NO' 	=> $config['lmdi_glossary_ucp'] == 0 ? 'checked="checked"' : '',
@@ -187,6 +242,7 @@ class gloss_module {
 			'CREATE_UGROUP_YES'	=> $config['lmdi_glossary_usergroup'] == 1 ? 'checked="checked"' : '',
 			'CREATE_AGROUP_NO' 	=> $config['lmdi_glossary_admingroup'] == 0 ? 'checked="checked"' : '',
 			'CREATE_AGROUP_YES'	=> $config['lmdi_glossary_admingroup'] == 1 ? 'checked="checked"' : '',
+			'S_LANG_OPTIONS'    => $select,
 			));
 
 	}	

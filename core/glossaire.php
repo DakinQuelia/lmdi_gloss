@@ -101,7 +101,7 @@ class glossaire
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$l = $row['a'];
-			$abc_links .= "<a href =\"#$l\">$l</a> " ;
+			$abc_links .= "&nbsp;<a href =\"#$l\">$l</a>&nbsp;" ;
 
 			$sql  = 'SELECT * 
 					FROM ' . $this->glossary_table . "

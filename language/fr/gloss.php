@@ -78,6 +78,8 @@ $lang = array_merge ($lang, array(
 	'CREATE_UGROUP_EXPLAIN'	=> 'Vous pouvez créer un groupe d\'utilisateurs auquel vous attribuerez le rôle d\'éditeur des rubriques du glossaire qui a été créé lors de l\'installation de l\'extension. Vous pouvez ensuite placer dans ce groupe les utilisateurs chargés de cette tâche.',
 	'CREATE_AGROUP'		=> 'Création d\'un groupe d\'administrateurs',
 	'CREATE_AGROUP_EXPLAIN'	=> 'Vous pouvez créer un groupe pour gérer les administrateurs du glossaire. Vous pouvez ensuite y ajouter les administrateurs sélectionnés.',
+	'LANGUAGE'		=> 'Langue par défaut',
+	'LANGUAGE_EXPLAIN'	=> 'Code de langue (par défaut langue du forum) qui est enregistré si vous ne spécifiez pas une autre langue dans le formulaire de saisie.',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Glossaire entomologique',
 	'UCP_GLOSS_MANAGE'	=> 'Glossaire entomologique',

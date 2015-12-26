@@ -78,6 +78,8 @@ $lang = array_merge ($lang, array(
 	'CREATE_UGROUP_EXPLAIN'	=> 'You may create an usergroup and assign to it the glossary editor role created when installing the extension. You may then add users to this group.',
 	'CREATE_AGROUP'		=> 'Creation of an administrator group',
 	'CREATE_AGROUP_EXPLAIN'	=> 'You may create a group to manage the glossary administrators. You may then add administrators to this group.',
+	'LANGUAGE'		=> 'Default language',
+	'LANGUAGE_EXPLAIN'	=> 'Language code (board language by default) which will be registered in the base for the glossary term if you don\'t specify another language in the editing form.',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Entomological Glossary',
      'UCP_GLOSS_MANAGE'	=> 'Entomological Glossary',
