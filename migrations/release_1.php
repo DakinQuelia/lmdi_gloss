@@ -46,7 +46,7 @@ class release_1 extends container_aware_migration
 						'term'	=> array ('VCHAR:80', ''),
 						'description'	=> array ('VCHAR:512', ''),
 						'picture'	=> array ('VCHAR:80', ''),
-						'lang'	=> array ('VCHAR:15', 'fr'),
+						'lang'	=> array ('VCHAR:2', 'en'),
 					),
 				'PRIMARY_KEY'   => 'term_id',
 				),
