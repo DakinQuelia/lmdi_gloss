@@ -78,13 +78,10 @@ class glosspict
 	{
 		global $phpbb_root_path, $phpEx;
 	
-		// $this->user->add_lang_ext('lmdi/gloss', 'gloss');
-
 		$click = $this->user->lang['GLOSS_CLICK'];
 		$view = $this->user->lang['GLOSS_VIEW'];
 		$pict = request_var ('pict', '');
 		$pict = $this->ext_path_web . "glossaire/" . $pict . ".jpg";
-		// var_dump ($pict);
 		$term = request_var ('term', '', true);
 		$terme = "<p class=\"copyright\"><b>$term</b></p>";
 		$corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=$pict></a></p>";

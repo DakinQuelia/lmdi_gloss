@@ -20,7 +20,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge ($lang, array(
 // Static Glossary page
     	'LGLOSSAIRE'			=> 'Glossaire',
-	'TGLOSSAIRE'			=> 'Glossaire entomologique',
+	'TGLOSSAIRE'			=> 'Glossaire',
 	'ILLUSTRATION'	=>  "Certains termes sont illustrés.<br>Il existe dans ce cas un lien cliquable au bout de la ligne, cliquez dessus pour afficher l'illustration.<br>Sur la page de visualisation, cliquez sur l'image pour revenir.",
 	'GLOSS_DISPLAY'	=> 'Afficher',
 	'GLOSS_CLICK'		=> 'Cliquez sur l\'image pour revenir à la page précédente.',
@@ -49,11 +49,14 @@ $lang = array_merge ($lang, array(
 	'GLOSS_ED_TERM'	=> 'Terme',
 	'GLOSS_ED_DEF'		=> 'Définition',
 	'GLOSS_ED_PICT'	=> 'Illustration',
-	'GLOSS_ED_PIEXPL'	=> 'Indiquez ici le nom du fichier contenant l\'illustration. Ne mentionnez pas l\'extension, qui doit être *.jpg. Téléchargez le fichier dans le dossier ext/lmdi/gloss/glossaire.',
+	'GLOSS_ED_PIEXPL'	=> 'Nom du fichier contenant l\'illustration. Ne mentionnez pas l\'extension, qui doit être *.jpg. Le fichier doit être dans le dossier ext/lmdi/gloss/glossaire.',
 	'GLOSS_ED_ACT'		=> 'Action',
 	'GLOSS_ED_EXPL'	=> 'Un lien d\'édition existe à l\'extrémité de chaque ligne, pour apporter des modifications.<br>Pour créer une nouvelle rubrique, cliquez ',
 	'GLOSS_ED_ICI'		=> 'ici',
 	'GLOSS_ED_EDIT'	=> 'Éditer',
+	'GLOSS_LANG'		=> 'Langue',
+	'UPLOAD_FILE'		=> 'Image à charger depuis votre ordinateur',
+	
 // Installation
 	'ROLE_A_LMDI_GLOSSARY'	=> 'Administrateurs du glossaire',
 	'ROLE_U_LMDI_GLOSSARY'	=> 'Éditeurs du glossaire',
@@ -62,9 +65,9 @@ $lang = array_merge ($lang, array(
 // ACP
 	'ACP_GLOSS_TITLE'	=> 'Glossaire',
 	'GLOSS_PAGE'		=> 'Glossaire',
-	'ACP_LEXICON'	=> 'Glossaire entomologique',
+	'ACP_LEXICON'	=> 'Glossaire',
 	'ACP_LEXICON_EXPLAIN'	=> 'Paramétrage du glossaire',
-	'ACP_GLOSS_TITLE'	=> 'Glossaire entomologique',
+	'ACP_GLOSS_TITLE'	=> 'Glossaire',
 	'ACP_GLOSS'	=> 'Paramétrage',
      'ALLOW_FEATURE'        => 'Validation de la fonction de glossaire',
      'ALLOW_FEATURE_EXPLAIN'        => 'Vous pouvez valider ou inhiber la fonction au niveau du forum. Si vous validez, l\'utilisateur pourra s\'il le souhaite inhiber l\'affichage des termes du glossaire dans les messages du forum (à partir du panneau de l\'utilisateur).',
@@ -81,8 +84,8 @@ $lang = array_merge ($lang, array(
 	'LANGUAGE'		=> 'Langue par défaut',
 	'LANGUAGE_EXPLAIN'	=> 'Code de langue (par défaut langue du forum) qui est enregistré si vous ne spécifiez pas une autre langue dans le formulaire de saisie.',
 // UCP
-	'UCP_GLOSS_TITLE'	=> 'Glossaire entomologique',
-	'UCP_GLOSS_MANAGE'	=> 'Glossaire entomologique',
+	'UCP_GLOSS_TITLE'	=> 'Glossaire',
+	'UCP_GLOSS_MANAGE'	=> 'Glossaire',
 	'UCP_CONFIG_SAVED'	=> 'La configuration a bien été enregistrée.<br /><br />%sCliquez ici pour revenir à la page précédente.%s',
 	'UCP_GLOSS'		=> 'Page principale',
 	'UCP_ENABLE'		=> 'Validation de la fonction de glossaire',

@@ -138,8 +138,8 @@ class glossaire
 			}	// Fin du while sur les initiales - End of while on initial caps
 		$this->db->sql_freeresult ($result);
 		$corps .= "</table>";
-		// End of the ABC links with a link to the Edition page for administrators
-		// Fermeture de la ligne de liens avec un lien vers la page d'administration
+		// End of the ABC links with a link to the Edition page for administrators/editors
+		// Fermeture de la ligne de liens avec un lien vers la page d'édition
 		$str_admin = $this->user->lang['GLOSS_EDITION'];
 		if ($this->auth->acl_get('u_lmdi_glossary') || $this->auth->acl_get('a_lmdi_glossary')) {	
 			$abc_links .= ' -- <a href="';

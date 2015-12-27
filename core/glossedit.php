@@ -70,6 +70,19 @@ class glossedit
 	
 	var $u_action;
 
+	function get_def_language ($table, $colonne)
+	{
+		global $db;
+		$sql = "SELECT DEFAULT($colonne) lg 
+			FROM (SELECT 1) AS dummy
+			LEFT JOIN $table ON True LIMIT 1";	
+		$result = $db->sql_query($sql);
+		$row = $db->sql_fetchrow ($result);
+		$default = $row['lg'];
+		$db->sql_freeresult ($result);
+		return ($default);
+	}
+
 	function main()
 	{
 	global $table_prefix, $phpbb_root_path, $phpEx;
@@ -100,7 +113,7 @@ class glossedit
 				$term = "";
 				$desc = "";
 				$pict = "";
-				$lang = "fr";
+				$lang = $this->get_def_language ($table, 'lang');
 				$str_action = $this->user->lang['GLOSS_CREAT'];
 				}
 			else {			// Édition d'une fiche
@@ -126,11 +139,13 @@ class glossedit
 			$str_desc  = $this->user->lang['GLOSS_DESC'] . $str_colon;
 			$str_pict  = $this->user->lang['GLOSS_PICT'] . $str_colon;
 			$str_pictex= $this->user->lang['GLOSS_ED_PIEXPL'];
+			$str_upload= $this->user->lang['UPLOAD_FILE'];
+			$str_lang  = $this->user->lang['GLOSS_LANG'] . $str_colon;
 			$str_regis = $this->user->lang['GLOSS_REGIS'];
 			$str_suppr = $this->user->lang['GLOSS_SUPPR'];
 			$form  = "<form action=\"";
 			$form .= append_sid ($phpbb_root_path."app.php/gloss?mode=glossedit");
-			$form .= "\" method=\"post\" id=\"glossedit\">";
+			$form .= "\" method=\"post\" id=\"glossedit\" enctype=\"multipart/form-data\">";
 			$form .= "<div class=\"panel\"><div class=\"inner\"><div class=\"content\">";
 			$form .= "<h2 class=\"login-title\">$str_action</h2>";
 			// Deux lignes cachées pour le numéro et la langue
@@ -155,13 +170,29 @@ class glossedit
 			$form .= "</dd>";
 			$form .= "</dl>";
 			$form .= "<dl>";
-			$form .= "<dt><label for=\"pict\">$str_pict</label><br />";
-			$form .= "<span>$str_pictex</span></dt>";
-			$form .= "<dd><input type=\"text\" tabindex=\"4\" name=\"pict\" ";
-			$form .= "id=\"pict\" size=\"25\" value=\"$pict\" class=\"inputbox autowidth\" /></dd>";
+			$form .= "<dt><label for=\"lang\">$str_lang</label></dt>";
+			$form .= "<dd><input type=\"text\" tabindex=\"5\" name=\"lang\" ";
+			$form .= "id=\"lang\" size=\"25\" value=\"$lang\" class=\"inputbox autowidth\" /></dd>";
 			$form .= "</dl>";
+			if ($pict == "" || $pict == "nopict")
+			{
+				$form .= "<dl>";
+				$form .= "<dt><label for=\"upload_file\">$str_pict</label><br />";
+				$form .= "<span>$str_upload</span></dt>";
+				$form .= "<input type=\"file\" name=\"upload_file\" id=\"upload_file\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "</dl>";
+			}
+			else
+			{
+				$form .= "<dl>";
+				$form .= "<dt><label for=\"pict\">$str_pict</label><br />";
+				$form .= "<span>$str_pictex</span></dt>";
+				$form .= "<dd><input type=\"text\" tabindex=\"4\" name=\"pict\" ";
+				$form .= "id=\"pict\" size=\"25\" value=\"$pict\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "</dl>";
+			}
 			$form .= "<dl>";
-			$form .= "<dl><dt>&nbsp;</dt>";
+			$form .= "<dt>&nbsp;</dt>";
 			$form .= "<dd><input type=\"submit\" name=\"save\" id=\"save\" tabindex=\"5\" value=\"$str_regis\" class=\"button1\" />&nbsp;&nbsp;";
 			$form .= "<input type=\"submit\" name=\"delete\" id=\"delete\" tabindex=\"6\" value=\"$str_suppr\" class=\"button1\" /></dd>";
 			$form .= "</dl>";
@@ -174,17 +205,44 @@ class glossedit
 			$term        = $this->db->sql_escape (request_var ('term', "", true));
 			$variants    = $this->db->sql_escape (request_var ('vari', "", true));
 			$description = $this->db->sql_escape (request_var ('desc', "", true));
+			$lang        = $this->db->sql_escape (request_var ('lang', "fr", true));
+			/*
 			$picture     = $this->db->sql_escape (request_var ('pict', "", true));
 			if (!strlen ($picture))
 				$picture = "nopict";
-			$lang        = $this->db->sql_escape (request_var ('lang', "fr", true));
+			*/
+			$errors = array ();
+			include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+			// Set upload directory
+			$upload_dir = $this->ext_path_web . 'glossaire';
+			$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
+			// Upload file
+			$upload = new \fileupload();
+			$upload->set_allowed_extensions(array('jpg', 'jpeg'));
+			$upload->set_allowed_dimensions(false, false, 800, 800);
+			$file = $upload->form_upload('upload_file');
+			$file->move_file($upload_dir, true);
+			if (sizeof($file->error))
+			{
+				$file->remove();
+				$file_error = $file->error;
+				$errors = array_merge($errors, $file_error);
+			}
+			if (!sizeof($errors))
+			{
+				// phpbb_chmod doesn't work well here on some servers so be explicit
+				@chmod($this->ext_path_web . 'glossaire/' . $file->uploadname, 0644);
+			}
+			// Name to include in the table
+			$picture = $file->uploadname;
+			$picture = substr($picture, 0, strpos($picture, "."));
+			$picture = $this->db->sql_escape ($picture);
 			if ($term_id == 0) 
 			{
 				$sql  = "INSERT INTO $table ";
 				$sql .= "(variants, term, description, picture, lang) ";
 				$sql .= " VALUES ";
 				$sql .= "(\"$variants\", \"$term\", \"$description\", \"$picture\", \"$lang\")";
-				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);	
 				$term_id = $this->db->sql_nextid();
 			}
@@ -199,7 +257,6 @@ class glossedit
 				$sql .= "lang          = \"$lang\" ";
 				$sql .= "WHERE term_id = \"$term_id\" ";
 				$sql .= "LIMIT 1";
-				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);	
 			}	
 			// Purge the cache
@@ -209,7 +266,6 @@ class glossedit
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$term_id";	// Anchor target term_id
 			redirect ($url);
-			// header("Location:$url");
 			break;
 		case "delete" :
 			$term_id     = $this->db->sql_escape (request_var ('term_id', 0));
