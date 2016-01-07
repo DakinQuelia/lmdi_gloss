@@ -55,7 +55,7 @@ class ucp_gloss_module
 			}
 			else 
 			{
-				$ucp = request_var ('gloss', '0');
+				$ucp = $request->variable ('gloss', '0');
 				// Update the lmdi_gloss column in table users
 				$uid = $this->user->data['user_id'];
 				$sql  = "UPDATE " . USERS_TABLE;

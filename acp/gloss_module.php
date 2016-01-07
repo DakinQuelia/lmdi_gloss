@@ -147,16 +147,16 @@ class gloss_module {
 		$this->tpl_name = 'acp_gloss_body';
 		$this->page_title = 'ACP_LEXICON';
 
-		$action = request_var ('action', '');
+		$action = $request->variable ('action', '');
 		$action_config = $this->u_action . "&action=config";
 	
 		    
 		switch ($action) {
 			case 'config':
 				// Update configuration
-				$title = request_var('lmdi_gloss_title', '0');
+				$title = $request->variable('lmdi_gloss_title', '0');
 				set_config ('lmdi_glossary_title', $title);
-				$ucp = request_var('lmdi_gloss_ucp', '0');
+				$ucp = $request->variable('lmdi_gloss_ucp', '0');
 				set_config ('lmdi_glossary_ucp', $ucp);
 				$ucp = (int) $ucp;
 				// Update UCP module display toggle
@@ -168,7 +168,7 @@ class gloss_module {
 				$sql  = 'UPDATE ' . USERS_TABLE . " SET lmdi_gloss = $ucp ";
 				$db->sql_query($sql);
 				// Language selection
-				$lang = request_var('lang', '');
+				$lang = $request->variable('lang', '');
 				$table = $table_prefix . 'glossary';
 				$lg = $this->get_def_language ($table, 'lang');
 				if ($lang != $lg)
@@ -177,7 +177,7 @@ class gloss_module {
 					$db->sql_query($sql);
 				}
 				// Usergroup creation/deletion
-				$ug = request_var('lmdi_gloss_ugroup', '0');
+				$ug = $request->variable('lmdi_gloss_ugroup', '0');
 				if ($config['lmdi_glossary_usergroup'] != $ug)
 				{
 					set_config ('lmdi_glossary_usergroup', $ug);
@@ -202,7 +202,7 @@ class gloss_module {
 						
 				}
 				// Admin group creation/deletion
-				$ag = request_var('lmdi_gloss_agroup', '0');
+				$ag = $request->variable('lmdi_gloss_agroup', '0');
 				if ($config['lmdi_glossary_admingroup'] != $ag)
 				{
 					set_config ('lmdi_glossary_admingroup', $ag);
