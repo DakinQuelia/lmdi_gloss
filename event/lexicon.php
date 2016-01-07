@@ -24,7 +24,7 @@ $user->setup();
 if (!defined('GLOSSARY_TABLE'))
 	define('GLOSSARY_TABLE', $table_prefix . 'glossary');
 
-$id = request_var('id', '0');
+$id = $request->variable ('id', '0');
 if ($id) {
      // Search lexicon entry in DB
      $sql = "SELECT * FROM " . GLOSSARY_TABLE .
