@@ -1,7 +1,8 @@
 /* table.css */
-/* Feuille de style pour les tables dans la partie forum */
+/* Feuille de style pour les tables du glossaire */
+/* Stylesheet for the glossary tables */
 /* Prosilver */
-/* (c) Pierre Duhem 2015 */
+/* (c) Pierre Duhem 2015-2016 */
 
 table.deg {
     border-collapse:collapse;
@@ -74,14 +75,14 @@ td.deg2 {
 	}
 .glossi {
 	padding: 5px 0 5px 0;
-	background-color: #071491;
+	background-color: #017AB6;
 	color: white;
 	font-size: 140%;
 	font-weight: bold;
 	}
 .haut {
 	padding: 0;
-	background-color: #071491;
+	background-color: #017AB6;
 	text-align: center;
 	vertical-align: bottom;
 	}
