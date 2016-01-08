@@ -30,6 +30,10 @@ class glossedit
 	protected $path_helper;
 	/** @var \phpbb\cache\service */
 	protected $cache;
+	/** @var \phpbb\config\config */
+	protected $config;
+	/** @var \phpbb\files\factory */
+	protected $files_factory;
 	// Strings
 	protected $ext_path;
 	protected $ext_path_web;
@@ -48,6 +52,8 @@ class glossedit
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
 		\phpbb\cache\service $cache,
+		\phpbb\config\config $config,
+		\phpbb\files\factory $files_factory,
 		$phpEx, 
 		$phpbb_root_path, 
 		$glossary_table)
@@ -60,6 +66,8 @@ class glossedit
 		$this->ext_manager	 	= $ext_manager;
 		$this->path_helper	 	= $path_helper;
 		$this->cache             = $cache;
+		$this->config            = $config;
+		$this->files_factory 	= $files_factory;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
@@ -85,7 +93,8 @@ class glossedit
 
 	function main()
 	{
-	global $table_prefix, $phpbb_root_path, $phpEx;
+	global $table_prefix, $phpbb_root_path, $phpEx, $request;
+	
 	$this->user->add_lang_ext('lmdi/gloss', 'gloss');
 	
 	$abc_links = "";
@@ -94,10 +103,10 @@ class glossedit
 	$biblio = "";
 	$table = $table_prefix . "glossary";
 
-	$num    = request_var ('code', 0);
-	$action = request_var ('action', "rien");
-	$delete = request_var ('delete', "rien");
-	$save   = request_var ('save', "rien");
+	$num    = $request->variable ('code', 0);
+	$action = $request->variable ('action', "rien");
+	$delete = $request->variable ('delete', "rien");
+	$save   = $request->variable ('save', "rien");
 	if ($delete != 'rien')
 		$action = 'delete';
 	if ($save != 'rien')
@@ -105,6 +114,8 @@ class glossedit
 
 	$str_colon = $this->user->lang['COLON'];
 
+	// var_dump ($action);
+	
 	switch ($action) {
 		case "edit" :
 			if ($num < 0) {	// Création d'une fiche
@@ -201,40 +212,20 @@ class glossedit
 			$abc_links = $form;
 			break;
 		case "save" :	
-			$term_id     = $this->db->sql_escape (request_var ('term_id', 0));
-			$term        = $this->db->sql_escape (request_var ('term', "", true));
-			$variants    = $this->db->sql_escape (request_var ('vari', "", true));
-			$description = $this->db->sql_escape (request_var ('desc', "", true));
-			$lang        = $this->db->sql_escape (request_var ('lang', "fr", true));
-			/*
-			$picture     = $this->db->sql_escape (request_var ('pict', "", true));
-			if (!strlen ($picture))
-				$picture = "nopict";
-			*/
-			$errors = array ();
-			include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
-			// Set upload directory
-			$upload_dir = $this->ext_path_web . 'glossaire';
-			$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
-			// Upload file
-			$upload = new \fileupload();
-			$upload->set_allowed_extensions(array('jpg', 'jpeg'));
-			$upload->set_allowed_dimensions(false, false, 800, 800);
-			$file = $upload->form_upload('upload_file');
-			$file->move_file($upload_dir, true);
-			if (sizeof($file->error))
+			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));
+			$term        = $this->db->sql_escape ($request->variable ('term', "", true));
+			$variants    = $this->db->sql_escape ($request->variable ('vari', "", true));
+			$description = $this->db->sql_escape ($request->variable ('desc', "", true));
+			$lang        = $this->db->sql_escape ($request->variable ('lang', "fr", true));
+			// Which version are we using?
+			if (version_compare ( '3.2.0', $this->config['version'], '>='))
 			{
-				$file->remove();
-				$file_error = $file->error;
-				$errors = array_merge($errors, $file_error);
+				$picture = $this->upload_32x ();
 			}
-			if (!sizeof($errors))
+			else 
 			{
-				// phpbb_chmod doesn't work well here on some servers so be explicit
-				@chmod($this->ext_path_web . 'glossaire/' . $file->uploadname, 0644);
+				$picture = $this->upload_31x ();
 			}
-			// Name to include in the table
-			$picture = $file->uploadname;
 			$picture = substr($picture, 0, strpos($picture, "."));
 			$picture = $this->db->sql_escape ($picture);
 			if ($term_id == 0) 
@@ -262,13 +253,15 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
+			/*
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$term_id";	// Anchor target term_id
 			redirect ($url);
+			*/
 			break;
 		case "delete" :
-			$term_id     = $this->db->sql_escape (request_var ('term_id', 0));
+			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));
 			$sql  = "DELETE ";
 			$sql .= "FROM $table ";
 			$sql .= "WHERE term_id = \"$term_id\" ";
@@ -278,7 +271,7 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
-			$cap = substr (request_var ('term', "", true), 0, 1);
+			$cap = substr ($request->variable ('term', "", true), 0, 1);
 			$params = "mode=glossedit";
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$cap";		// Anchor target = initial cap 
@@ -358,7 +351,6 @@ class glossedit
 				$this->db->sql_freeresult ($result2);
 				}	// Fin du while sur les initiales
 			$this->db->sql_freeresult ($result);
-			// Fermeture de la table
 			$corps .= "</table>";
 			$abc_links .= "</p>\n";
 
@@ -389,6 +381,60 @@ class glossedit
 	make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"));
 	page_footer();
 	}		
+	
+	// Uploading function for phpBB 3.1.x
+	function upload_31x () 
+	{
+		global $phpbb_root_path, $phpEx;
+		$errors = array ();
+		include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+		// Set upload directory
+		$upload_dir = $this->ext_path_web . 'glossaire';
+		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
+		// Upload file
+		$upload = new \fileupload();
+		$upload->set_allowed_extensions(array('jpg'));
+		$upload->set_allowed_dimensions(false, false, 800, 800);
+		$file = $upload->form_upload('upload_file');
+		$file->move_file($upload_dir, true);
+		if (sizeof($file->error))
+		{
+			$file->remove();
+			$file_error = $file->error;
+			$errors = array_merge($errors, $file_error);
+		}
+		if (!sizeof($errors))
+		{
+			// phpbb_chmod doesn't work well here on some servers so be explicit
+			@chmod($this->ext_path_web . 'glossaire/' . $file->uploadname, 0644);
+		}
+		return ($file->uploadname);
+	}
 
+	// Uploading function for phpBB 3.2.x
+	function upload_32x () 
+	{
+		global $phpbb_root_path, $phpEx;
+		$errors = array ();
+		// Set upload directory
+		$upload_dir = $this->ext_path_web . 'glossaire';
+		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
+		/** @var \phpbb\files\upload $upload */
+		$upload = $this->files_factory->get('upload')
+			->set_error_prefix('LMDI_GLOSS_')
+			->set_allowed_extensions(array('jpg'))
+			->set_allowed_dimensions(false, false, 800, 800);
+		// Upload from a form, form name
+		$file = $upload->handle_upload ('files.types.form', 'upload_file');
+		$filename = $file->get('realname');
+		if (sizeof($file->error))
+		{
+			$file->remove();
+			$errors = array_merge($errors, $file->error);
+			return false;
+		}
+		$file->move_file($upload_dir, true);
+		return ($filename);
+	}
 }
 ?>

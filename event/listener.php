@@ -234,7 +234,7 @@ class listener implements EventSubscriberInterface
 					$desc = trim ($row['description']);
 					if (strlen ($desc) > 50)
 					{
-						$desc = substr ($desc, 0, 50);
+						$desc = mb_substr ($desc, 0, 50);
 					}
 					// $desc = addslashes ($desc);
 				}

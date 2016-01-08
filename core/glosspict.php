@@ -76,13 +76,13 @@ class glosspict
 
 	function main()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path, $phpEx, $request;
 	
 		$click = $this->user->lang['GLOSS_CLICK'];
 		$view = $this->user->lang['GLOSS_VIEW'];
-		$pict = request_var ('pict', '');
+		$pict = $request->variable ('pict', '');
 		$pict = $this->ext_path_web . "glossaire/" . $pict . ".jpg";
-		$term = request_var ('term', '', true);
+		$term = $request->variable ('term', '', true);
 		$terme = "<p class=\"copyright\"><b>$term</b></p>";
 		$corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=$pict></a></p>";
 		$retour = "<p class=\"copyright\">$click</p>";
