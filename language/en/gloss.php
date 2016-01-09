@@ -57,10 +57,10 @@ $lang = array_merge ($lang, array(
 	'GLOSS_LANG'		=> 'Language',
 	'UPLOAD_FILE'		=> 'Picture to upload from your computer',
 	// Installation
-	'ROLE_A_LMDI_GLOSSARY'	=> 'Glossary Administrators',
-	'ROLE_U_LMDI_GLOSSARY'	=> 'Glossary Editors',
-	'ROLE_U_LMDI_DESC'		=> 'User role to be assigned for editing the glossary',
-	'ROLE_A_LMDI_DESC'		=> 'Administration role to manage the glossary and its editors',
+	'ROLE_GLOSS_ADMIN'	=> 'Glossary Administrators',
+	'ROLE_GLOSS_EDITOR'	=> 'Glossary Editors',
+	'ROLE_DESCRIPTION_GLOSS_ADMIN'		=> 'Administration role to manage the glossary and its editors','ROLE_DESCRIPTION_GLOSS_EDITOR'		=> 'User role to be assigned for editing the glossary',
+	
 // ACP
 	'ACP_GLOSS_TITLE'	=> 'Glossary',
      'GLOSS_PAGE'		=> 'Glossary',

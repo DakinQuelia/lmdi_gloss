@@ -219,7 +219,7 @@ class glossedit
 			$lang        = $this->db->sql_escape ($request->variable ('lang', "fr", true));
 			/*
 			// Which version are we using?
-			if (version_compare ( '3.2.0', $this->config['version'], '>='))
+			if (version_compare ($this->config['version'], '3.2.*', '>='))
 			{
 				$picture = $this->upload_32x ();
 			}

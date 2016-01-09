@@ -58,10 +58,11 @@ $lang = array_merge ($lang, array(
 	'UPLOAD_FILE'		=> 'Image à charger depuis votre ordinateur',
 	
 // Installation
-	'ROLE_A_LMDI_GLOSSARY'	=> 'Administrateurs du glossaire',
-	'ROLE_U_LMDI_GLOSSARY'	=> 'Éditeurs du glossaire',
-	'ROLE_U_LMDI_DESC'		=> 'Modèle des utilisateurs chargés de l\'édition du glossaire',
-	'ROLE_A_LMDI_DESC'		=> 'Modèle des administrateurs chargés de gérer le glossaire et ses éditeurs',
+	'ROLE_GLOSS_ADMIN'	=> 'Administrateurs du glossaire',
+	'ROLE_GLOSS_EDITOR'	=> 'Éditeurs du glossaire',
+	'ROLE_DESCRIPTION_GLOSS_ADMIN'		=> 'Modèle des administrateurs chargés de gérer le glossaire et ses éditeurs',
+	'ROLE_DESCRIPTION_GLOSS_EDITOR'		=> 'Modèle des utilisateurs chargés de l\'édition du glossaire',
+	
 // ACP
 	'ACP_GLOSS_TITLE'	=> 'Glossaire',
 	'GLOSS_PAGE'		=> 'Glossaire',

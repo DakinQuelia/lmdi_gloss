@@ -17,9 +17,6 @@ include ($phpbb_root_path . 'includes/functions_user.php');
 class release_1 extends container_aware_migration
 {
 	
-	var 	$str_desc = "Glossary Editor Group";
-
-
 	public function effectively_installed()
 	{
 		return isset($this->config['lmdi_glossary']);
@@ -56,15 +53,6 @@ class release_1 extends container_aware_migration
 	
 	public function update_data()
 	{
-		// To get the $user array
-		$user = $this->container->get('user');
-		// Load the lang file
-		$user->add_lang_ext('lmdi/gloss', 'gloss');
-		$titre_role_a = $user->lang('ROLE_A_LMDI_GLOSSARY');
-		$titre_role_u = $user->lang('ROLE_U_LMDI_GLOSSARY');
-		$descr_role_a = $user->lang('ROLE_A_LMDI_DESC');
-		$descr_role_u = $user->lang('ROLE_U_LMDI_DESC');
-		
 		return array(
 			// ACP modules
 			array('module.add', array(
@@ -119,31 +107,22 @@ class release_1 extends container_aware_migration
 			
 			
 			// Add roles
-			array('permission.role_add', array($titre_role_a, 'a_', $descr_role_a)),
-			array('permission.role_add', array($titre_role_u, 'u_', $descr_role_u)),
+			array('permission.role_add', array('ROLE_GLOSS_ADMIN', 'a_', 'ROLE_DESCRIPTION_GLOSS_ADMIN')),
+			array('permission.role_add', array('ROLE_GLOSS_EDITOR', 'u_', 'ROLE_DESCRIPTION_GLOSS_EDITOR')),
 
 			// Add permissions (global = true, local = false)
 			array('permission.add', array('a_lmdi_glossary', true)),
 			array('permission.add', array('u_lmdi_glossary', true)),
 
 			// Assign permissions to the roles
-			array('permission.permission_set', array($titre_role_a, 'a_lmdi_glossary', 'role')),
-			array('permission.permission_set', array($titre_role_u, 'u_lmdi_glossary', 'role')),
+			array('permission.permission_set', array('ROLE_GLOSS_ADMIN', 'a_lmdi_glossary', 'role')),
+			array('permission.permission_set', array('ROLE_GLOSS_EDITOR', 'u_lmdi_glossary', 'role')),
 				
 		);
 	}
 	
 	public function revert_data()
 	{
-		// To get the $user array
-		$user = $this->container->get('user');
-		// Load the lang file
-		$user->add_lang_ext('lmdi/gloss', 'gloss');
-		$titre_role_a = $user->lang('ROLE_A_LMDI_GLOSSARY');
-		$titre_role_u = $user->lang('ROLE_U_LMDI_GLOSSARY');
-		// $descr_role_a = $user->lang('ROLE_A_LMDI_DESC');
-		// $descr_role_u = $user->lang('ROLE_U_LMDI_DESC');
-		
 		return array(
 			array('config.remove', array('lmdi_glossary')),
 			array('config.remove', array('lmdi_glossary_ucp')),
@@ -172,12 +151,12 @@ class release_1 extends container_aware_migration
 			array('custom', array(array(&$this, 'group_deletion'))),
 			
 			// Unset permissions
-			array('permission.permission_unset', array($titre_role_a, 'a_lmdi_glossary')),
-			array('permission.permission_unset', array($titre_role_u, 'u_lmdi_glossary')),
+			array('permission.permission_unset', array('ROLE_GLOSS_ADMIN', 'a_lmdi_glossary')),
+			array('permission.permission_unset', array('ROLE_GLOSS_EDITOR', 'u_lmdi_glossary')),
 			
 			// Role suppression
-			array('permission.role_remove', array($titre_role_a)),
-			array('permission.role_remove', array($titre_role_u)),
+			array('permission.role_remove', array('ROLE_GLOSS_ADMIN')),
+			array('permission.role_remove', array('ROLE_GLOSS_EDITOR')),
 			
 			// Remove permissions
 			array('permission.remove', array('a_lmdi_glossary')),
