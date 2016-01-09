@@ -80,6 +80,7 @@ class gloss_module {
 	{
 		global $table_prefix, $db;
 		$sql = "SELECT role_id from ${table_prefix}acl_roles where role_name = '$role_name'";
+		// var_dump ($sql);
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow ($result);
 		$role_id = $row['role_id'];
@@ -150,14 +151,14 @@ class gloss_module {
 		$action = $request->variable ('action', '');
 		$action_config = $this->u_action . "&action=config";
 	
-		    
+		// var_dump ($action);
 		switch ($action) {
 			case 'config':
 				// Update configuration
 				$title = $request->variable('lmdi_gloss_title', '0');
-				set_config ('lmdi_glossary_title', $title);
+				$config->set ('lmdi_glossary_title', $title);
 				$ucp = $request->variable('lmdi_gloss_ucp', '0');
-				set_config ('lmdi_glossary_ucp', $ucp);
+				$config->set ('lmdi_glossary_ucp', $ucp);
 				$ucp = (int) $ucp;
 				// Update UCP module display toggle
 				$sql  = "UPDATE " . MODULES_TABLE;
@@ -180,7 +181,7 @@ class gloss_module {
 				$ug = $request->variable('lmdi_gloss_ugroup', '0');
 				if ($config['lmdi_glossary_usergroup'] != $ug)
 				{
-					set_config ('lmdi_glossary_usergroup', $ug);
+					$config->set ('lmdi_glossary_usergroup', $ug);
 					$usergroup = $user->lang['GLOSSARY_EDITORS'];
 					$userrole  = $user->lang['ROLE_U_LMDI_GLOSSARY'];
 					$groupdesc   = $user->lang['ROLE_U_LMDI_DESC'];
@@ -205,7 +206,7 @@ class gloss_module {
 				$ag = $request->variable('lmdi_gloss_agroup', '0');
 				if ($config['lmdi_glossary_admingroup'] != $ag)
 				{
-					set_config ('lmdi_glossary_admingroup', $ag);
+					$config->set ('lmdi_glossary_admingroup', $ag);
 					$admingroup = $user->lang['GLOSSARY_ADMINISTRATORS'];
 					$adminrole  = $user->lang['ROLE_A_LMDI_GLOSSARY'];
 					$groupdesc   = $user->lang['ROLE_A_LMDI_DESC'];

@@ -252,7 +252,7 @@ class release_1 extends container_aware_migration
 		$this->db->sql_multi_insert($this->table_prefix . 'glossary', $sample_data);
 	}
 
-	// group_creation in acp/gloss_module
+	// see also group_creation in acp/gloss_module
 	public function group_deletion()
 	{
 		global $table_prefix;

@@ -33,7 +33,7 @@ class glossedit
 	/** @var \phpbb\config\config */
 	protected $config;
 	/** @var \phpbb\files\factory */
-	protected $files_factory;
+	// protected $files_factory;
 	// Strings
 	protected $ext_path;
 	protected $ext_path_web;
@@ -53,7 +53,7 @@ class glossedit
 		\phpbb\path_helper $path_helper,
 		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
-		\phpbb\files\factory $files_factory,
+		// \phpbb\files\factory $files_factory,
 		$phpEx, 
 		$phpbb_root_path, 
 		$glossary_table)
@@ -67,7 +67,7 @@ class glossedit
 		$this->path_helper	 	= $path_helper;
 		$this->cache             = $cache;
 		$this->config            = $config;
-		$this->files_factory 	= $files_factory;
+		// $this->files_factory 	= $files_factory;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
@@ -217,6 +217,7 @@ class glossedit
 			$variants    = $this->db->sql_escape ($request->variable ('vari', "", true));
 			$description = $this->db->sql_escape ($request->variable ('desc', "", true));
 			$lang        = $this->db->sql_escape ($request->variable ('lang', "fr", true));
+			/*
 			// Which version are we using?
 			if (version_compare ( '3.2.0', $this->config['version'], '>='))
 			{
@@ -226,6 +227,8 @@ class glossedit
 			{
 				$picture = $this->upload_31x ();
 			}
+			*/
+			$picture = $this->upload_31x ();
 			$picture = substr($picture, 0, strpos($picture, "."));
 			$picture = $this->db->sql_escape ($picture);
 			if ($term_id == 0) 
@@ -253,12 +256,10 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
-			/*
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$term_id";	// Anchor target term_id
 			redirect ($url);
-			*/
 			break;
 		case "delete" :
 			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));

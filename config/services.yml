@@ -5,73 +5,72 @@ services:
      lmdi.gloss.listener:
         class: lmdi\gloss\event\listener
         arguments:
-            - @dbal.conn
-            - @config
-            - @controller.helper
-            - @template
-            - @cache
-            - @user
-            - %lmdi.gloss.tables.glossary%
+            - '@dbal.conn'
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@cache'
+            - '@user'
+            - '%lmdi.gloss.tables.glossary%'
         tags:
             - { name: event.listener }
 
      lmdi.gloss.controller:
         class: lmdi\gloss\controller\main
         arguments:
-            - @lmdi.gloss.core.glossaire
-            - @lmdi.gloss.core.glossedit
-            - @lmdi.gloss.core.glosspict
-            - @template
-            - @user
-            - @auth
-            - @dbal.conn
-            - @request
-            - @config
-            - @controller.helper
-            - %core.root_path%
-            - %core.php_ext%
+            - '@lmdi.gloss.core.glossaire'
+            - '@lmdi.gloss.core.glossedit'
+            - '@lmdi.gloss.core.glosspict'
+            - '@template'
+            - '@user'
+            - '@auth'
+            - '@dbal.conn'
+            - '@request'
+            - '@config'
+            - '@controller.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
 
      lmdi.gloss.core.glossaire:
         class: lmdi\gloss\core\glossaire
         arguments:
-            - @template
-            - @user
-            - @dbal.conn
-            - @controller.helper
-            - @auth
-            - @ext.manager
-            - @path_helper
-            - %core.php_ext%
-            - %core.root_path%
-            - %lmdi.gloss.tables.glossary%
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@auth'
+            - '@ext.manager'
+            - '@path_helper'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%lmdi.gloss.tables.glossary%'
 
      lmdi.gloss.core.glossedit:
         class: lmdi\gloss\core\glossedit
         arguments:
-            - @template
-            - @user
-            - @dbal.conn
-            - @controller.helper
-            - @auth
-            - @ext.manager
-            - @path_helper
-            - @cache
-            - @config
-            - @files.factory
-            - %core.php_ext%
-            - %core.root_path%
-            - %lmdi.gloss.tables.glossary%
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@auth'
+            - '@ext.manager'
+            - '@path_helper'
+            - '@cache'
+            - '@config'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%lmdi.gloss.tables.glossary%'
 
      lmdi.gloss.core.glosspict:
         class: lmdi\gloss\core\glosspict
         arguments:
-            - @template
-            - @user
-            - @dbal.conn
-            - @controller.helper
-            - @auth
-            - @ext.manager
-            - @path_helper
-            - %core.php_ext%
-            - %core.root_path%
-            - %lmdi.gloss.tables.glossary%
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@controller.helper'
+            - '@auth'
+            - '@ext.manager'
+            - '@path_helper'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%lmdi.gloss.tables.glossary%'

@@ -152,8 +152,6 @@ class listener implements EventSubscriberInterface
 			// Breaking the input string on delimiters (tags).
 			preg_match_all ('#[][><][^][><]*|[^][><]+#', $texte, $parts);
 			$parts = &$parts[0];
-			// echo '<br><br>Sectionnement :';
-			// var_dump($parts);
 			if (empty($parts))
 				return '';
 			// Code to identify strings which we should not change.
