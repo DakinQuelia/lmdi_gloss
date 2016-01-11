@@ -1,6 +1,6 @@
 <?php
 // glossedit.php
-// (c) Pierre Duhem - LMDI - 2015
+// (c) 2015-2016 - LMDI Pierre Duhem
 // Version de glossaire.php utilisée pour les administrateurs
 // Edition page for administrators
 
@@ -33,7 +33,7 @@ class glossedit
 	/** @var \phpbb\config\config */
 	protected $config;
 	/** @var \phpbb\files\factory */
-	// protected $files_factory;
+	protected $files_factory;
 	// Strings
 	protected $ext_path;
 	protected $ext_path_web;
@@ -53,10 +53,11 @@ class glossedit
 		\phpbb\path_helper $path_helper,
 		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
-		// \phpbb\files\factory $files_factory,
 		$phpEx, 
 		$phpbb_root_path, 
-		$glossary_table)
+		$glossary_table,
+		\phpbb\files\factory $files_factory = null
+		)
 	{
 		$this->template 		= $template;
 		$this->user 			= $user;
@@ -67,11 +68,15 @@ class glossedit
 		$this->path_helper	 	= $path_helper;
 		$this->cache             = $cache;
 		$this->config            = $config;
-		// $this->files_factory 	= $files_factory;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
-
+		
+		if ($files_factory)
+		{
+			$this->files_factory = $files_factory;
+		}
+		
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
@@ -160,6 +165,7 @@ class glossedit
 			$form .= "<div class=\"panel\"><div class=\"inner\"><div class=\"content\">";
 			$form .= "<h2 class=\"login-title\">$str_action</h2>";
 			// Deux lignes cachées pour le numéro et la langue
+			// Hidden items for id and language
 			$form .= "<input type=\"hidden\" name=\"term_id\" id=\"term_id\" value=\"$code\">";
 			$form .= "<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"$lang\">";
 			$form .= "<fieldset class=\"fields1\">";
@@ -217,20 +223,29 @@ class glossedit
 			$variants    = $this->db->sql_escape ($request->variable ('vari', "", true));
 			$description = $this->db->sql_escape ($request->variable ('desc', "", true));
 			$lang        = $this->db->sql_escape ($request->variable ('lang', "fr", true));
-			/*
-			// Which version are we using?
-			if (version_compare ($this->config['version'], '3.2.*', '>='))
+			$picture     = $this->db->sql_escape ($request->variable ('pict', "nopict", true));
+			if ($picture != "nopict") 
 			{
-				$picture = $this->upload_32x ();
-			}
-			else 
-			{
-				$picture = $this->upload_31x ();
-			}
-			*/
-			$picture = $this->upload_31x ();
+				$errors = array ();
+				// Which version are we using?
+				if (version_compare ($this->config['version'], '3.2.*', '>='))
+				{
+					$picture = $this->upload_32x ($errors);
+				}
+				else 
+				{
+					$picture = $this->upload_31x ($errors);
+				}
+				if (!$picture) 
+				{
+					$message = $errors[0];
+					$message .= "<br>";
+					$message .= $this->user->lang['LMDI_CLICK_BACK'];
+					trigger_error($message, E_USER_WARNING);
+				}
 			$picture = substr($picture, 0, strpos($picture, "."));
 			$picture = $this->db->sql_escape ($picture);
+			}
 			if ($term_id == 0) 
 			{
 				$sql  = "INSERT INTO $table ";
@@ -256,10 +271,12 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
+			/*
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
-			$url .= "#$term_id";	// Anchor target term_id
+			$url .= "#$term_id";	// Anchor target = term_id
 			redirect ($url);
+			*/
 			break;
 		case "delete" :
 			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));
@@ -384,57 +401,66 @@ class glossedit
 	}		
 	
 	// Uploading function for phpBB 3.1.x
-	function upload_31x () 
+	function upload_31x (&$errors) 
 	{
 		global $phpbb_root_path, $phpEx;
-		$errors = array ();
 		include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
 		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
 		// Upload file
 		$upload = new \fileupload();
+		$upload->set_error_prefix('LMDI_GLOSS_');
 		$upload->set_allowed_extensions(array('jpg'));
-		$upload->set_allowed_dimensions(false, false, 800, 800);
+		$pixels = $this->config['lmdi_glossary_pixels'];
+		$upload->set_allowed_dimensions(false, false, $pixels, $pixels);
+		$poids = $this->config['lmdi_glossary_poids'];
+		$poids *= 1024;
+		$upload->set_max_filesize($poids);
 		$file = $upload->form_upload('upload_file');
-		$file->move_file($upload_dir, true);
 		if (sizeof($file->error))
 		{
 			$file->remove();
 			$file_error = $file->error;
-			$errors = array_merge($errors, $file_error);
+			$errors = array_merge ($errors, $file_error);
+			return (false);
 		}
-		if (!sizeof($errors))
+		$file->move_file($upload_dir, true);
+		/* if (!sizeof($errors))
 		{
 			// phpbb_chmod doesn't work well here on some servers so be explicit
 			@chmod($this->ext_path_web . 'glossaire/' . $file->uploadname, 0644);
 		}
+		*/
 		return ($file->uploadname);
 	}
 
 	// Uploading function for phpBB 3.2.x
-	function upload_32x () 
+	function upload_32x (&$errors) 
 	{
 		global $phpbb_root_path, $phpEx;
-		$errors = array ();
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
 		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
 		/** @var \phpbb\files\upload $upload */
-		$upload = $this->files_factory->get('upload')
-			->set_error_prefix('LMDI_GLOSS_')
-			->set_allowed_extensions(array('jpg'))
-			->set_allowed_dimensions(false, false, 800, 800);
-		// Upload from a form, form name
+		$upload = $this->files_factory->get('upload');
+		$upload->set_error_prefix('LMDI_GLOSS_');
+		$upload->set_allowed_extensions(array('jpg'));
+		$pixels = $this->config['lmdi_glossary_pixels'];
+		$upload->set_allowed_dimensions(false, false, $pixels, $pixels);
+		$poids = $this->config['lmdi_glossary_poids'];
+		$poids *= 1024;
+		$upload->set_max_filesize($poids);
+		// Uploading from a form, form name
 		$file = $upload->handle_upload ('files.types.form', 'upload_file');
-		$filename = $file->get('realname');
 		if (sizeof($file->error))
 		{
 			$file->remove();
 			$errors = array_merge($errors, $file->error);
-			return false;
+			return (false);
 		}
 		$file->move_file($upload_dir, true);
+		$filename = $file->get('realname');
 		return ($filename);
 	}
 }

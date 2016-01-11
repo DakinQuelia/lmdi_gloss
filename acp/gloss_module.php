@@ -1,7 +1,7 @@
 <?php
 /**
 * @package phpBB Extension - LMDI Glossary
-* @copyright (c) 2015 Pierre Duhem - LMDI
+* @copyright (c) 2015-2016 Pierre Duhem - LMDI
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -38,7 +38,6 @@ class gloss_module {
 		$sql = "INSERT into ${table_prefix}acl_groups 
 			(group_id, forum_id, auth_option_id, auth_role_id, auth_setting)
 			VALUES ($group_id, 0, 0, $role_id, 0)";
-		// INSERT into phpbb3_acl_groups (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES (4416, 0, 0, 52, 0)
 		// var_dump ($sql);
 		$db->sql_query($sql);
 	}
@@ -80,7 +79,6 @@ class gloss_module {
 	{
 		global $table_prefix, $db;
 		$sql = "SELECT role_id from ${table_prefix}acl_roles where role_name = '$role_name'";
-		// var_dump ($sql);
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow ($result);
 		$role_id = $row['role_id'];
@@ -177,19 +175,20 @@ class gloss_module {
 					$sql = "ALTER TABLE ${table_prefix}glossary ALTER COLUMN lang SET DEFAULT '$lang'";
 					$db->sql_query($sql);
 				}
+				// Pixel limit
+				$px = $request->variable('pixels', '400');
+				$config->set ('lmdi_glossary_pixels', $px);
+				// Picture weight
+				$ko = $request->variable('poids', '200');
+				$config->set ('lmdi_glossary_poids', $ko);
 				// Usergroup creation/deletion
 				$ug = $request->variable('lmdi_gloss_ugroup', '0');
 				if ($config['lmdi_glossary_usergroup'] != $ug)
 				{
 					$config->set ('lmdi_glossary_usergroup', $ug);
-					$usergroup = $user->lang['GLOSSARY_EDITORS'];
-					$userrole  = $user->lang['ROLE_U_LMDI_GLOSSARY'];
-					$groupdesc   = $user->lang['ROLE_U_LMDI_DESC'];
-					/*
-					var_dump ($usergroup);
-					var_dump ($userrole);
-					var_dump ($groupdesc);
-					*/
+					$usergroup = 'GROUP_GLOSS_EDITOR';
+					$userrole  = 'ROLE_GLOSS_EDITOR';
+					$groupdesc = 'GROUP_DESCRIPTION_GLOSS_EDITOR';
 					if ($ug) 
 					{
 						$this->group_creation ($usergroup, $groupdesc);
@@ -207,14 +206,9 @@ class gloss_module {
 				if ($config['lmdi_glossary_admingroup'] != $ag)
 				{
 					$config->set ('lmdi_glossary_admingroup', $ag);
-					$admingroup = $user->lang['GLOSSARY_ADMINISTRATORS'];
-					$adminrole  = $user->lang['ROLE_A_LMDI_GLOSSARY'];
-					$groupdesc   = $user->lang['ROLE_A_LMDI_DESC'];
-					/*
-					var_dump ($admingroup);
-					var_dump ($adminrole);
-					var_dump ($groupdesc);
-					*/
+					$admingroup = 'GROUP_GLOSS_ADMIN';
+					$adminrole  = 'ROLE_GLOSS_ADMIN';
+					$groupdesc  = 'GROUP_DESCRIPTION_GLOSS_ADMIN';
 					if ($ag) 
 					{
 						$this->group_creation ($admingroup, $groupdesc);
@@ -233,6 +227,16 @@ class gloss_module {
 			}	
 
 		$select = $this->build_lang_select ();
+		$pixels = $config['lmdi_glossary_pixels'];
+		if (!$pixels)
+		{
+			$pixels = 500;
+		}
+		$poids  = $config['lmdi_glossary_poids'];
+		if (!$poids)
+		{
+			$poids = 200;
+		}
 		$template->assign_vars (array(
 			'C_ACTION'      	=> $action_config,
 			'ALLOW_FEATURE_NO' 	=> $config['lmdi_glossary_ucp'] == 0 ? 'checked="checked"' : '',
@@ -243,6 +247,8 @@ class gloss_module {
 			'CREATE_UGROUP_YES'	=> $config['lmdi_glossary_usergroup'] == 1 ? 'checked="checked"' : '',
 			'CREATE_AGROUP_NO' 	=> $config['lmdi_glossary_admingroup'] == 0 ? 'checked="checked"' : '',
 			'CREATE_AGROUP_YES'	=> $config['lmdi_glossary_admingroup'] == 1 ? 'checked="checked"' : '',
+			'S_PIXELS'		=> $pixels,
+			'S_POIDS'			=> $poids,
 			'S_LANG_OPTIONS'    => $select,
 			));
 

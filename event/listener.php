@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - LMDI Glossary extension
-* @copyright (c) 2015 LMDI - Pierre Duhem
+* @copyright (c) 2015-2016 LMDI - Pierre Duhem
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -106,7 +106,6 @@ class listener implements EventSubscriberInterface
 	*/
 	public function add_permissions($event)
 	{
-		
 		$permissions = $event['permissions'];
 		$permissions['u_lmdi_glossary'] = array('lang' => 'ACL_U_LMDI_GLOSSARY', 'cat' => 'misc');
 		$permissions['a_lmdi_glossary'] = array('lang' => 'ACL_A_LMDI_GLOSSARY', 'cat' => 'misc');
@@ -128,7 +127,7 @@ class listener implements EventSubscriberInterface
 			$rowset_data['post_text'] = $post_text;
 			$event['rowset_data'] = $rowset_data;
 		}
-	}	
+	}	// insertion_glossaire	
 
 	/*
 	*	Code replacing words found in the glossary table.
@@ -196,13 +195,13 @@ class listener implements EventSubscriberInterface
 			unset ($part);
 			return implode ("", $parts);
 			}
-	}	// Fin de glossary_pass
+	}	// glossary_pass
 
 
 	/*	Production of the term list and the replacement list, in an array named glossterms.
 		The replacement string follows this model:
 		<acronym class='id302' title=''>word</acronym>
-		The title element can contain the 50 first characters of description (see ACP).
+		The title element can contain the first 50 characters of description (see ACP).
 		Production de la liste des termes et calcul d'une chaîne de remplacement.
 		Les éléments sont placés dans le tableau glossterms. Ce tableau contient pour
 		chaque rubrique un élément rech qui est la chaîne à rechercher et un
@@ -245,16 +244,20 @@ class listener implements EventSubscriberInterface
 				for ($i = 0 ; $i < $cnt ; $i++) 
 				{
 					$variant = trim ($variants[$i]);
-					$remp  = "<acronym class=\"id$row[term_id]\" title=\"$desc\">";
-					$remp .= $variant;
-					$remp .= "</acronym>";
-					$firstspace = '/\b(';
-					$lastspace = ')\b/ui';	// PCRE - u for UTF-8 - i case insensitive
-					$rech = $firstspace . $variant . $lastspace;
-					// var_dump ($rech); echo ("<br>\n");
-					$glossterms['rech'][] = $rech;
-					// var_dump ($remp); echo ("<br>\n");
-					$glossterms['remp'][] = $remp;
+					// comma at end => empty string
+					if (strlen ($variant))
+					{
+						$remp  = "<acronym class=\"id$row[term_id]\" title=\"$desc\">";
+						$remp .= $variant;
+						$remp .= "</acronym>";
+						$firstspace = '/\b(';
+						$lastspace = ')\b/ui';	// PCRE - u for UTF-8 - i case insensitive
+						$rech = $firstspace . $variant . $lastspace;
+						// var_dump ($rech); echo ("<br>\n");
+						$glossterms['rech'][] = $rech;
+						// var_dump ($remp); echo ("<br>\n");
+						$glossterms['remp'][] = $remp;
+					}
 				}
 			}
 			$this->db->sql_freeresult($result);
@@ -262,7 +265,7 @@ class listener implements EventSubscriberInterface
 			
 		}
 		return $glossterms;
-	}	// Fin de compute_acronym_list
+	}	// compute_glossary_list
 
 }	
 

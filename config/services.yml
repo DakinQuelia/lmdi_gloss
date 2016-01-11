@@ -60,6 +60,7 @@ services:
             - '%core.php_ext%'
             - '%core.root_path%'
             - '%lmdi.gloss.tables.glossary%'
+            - '@?files.factory'
 
      lmdi.gloss.core.glosspict:
         class: lmdi\gloss\core\glosspict
