@@ -271,12 +271,12 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
-			/*
+			// /*
 			$params = "mode=glossedit&code=$term_id";	
 			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
 			$url .= "#$term_id";	// Anchor target = term_id
 			redirect ($url);
-			*/
+			// */
 			break;
 		case "delete" :
 			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));
@@ -441,6 +441,7 @@ class glossedit
 		global $phpbb_root_path, $phpEx;
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
+		// var_dump ($upload_directory);
 		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
 		/** @var \phpbb\files\upload $upload */
 		$upload = $this->files_factory->get('upload');
