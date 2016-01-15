@@ -140,11 +140,10 @@ class gloss_module {
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 		global $table_prefix, $phpbb_container;
 
-
 		$user->add_lang_ext ('lmdi/gloss', 'gloss');
 
 		$this->tpl_name = 'acp_gloss_body';
-		$this->page_title = 'ACP_LEXICON';
+		$this->page_title = $user->lang('ACP_GLOSS_TITLE');
 
 		$action = $request->variable ('action', '');
 		$action_config = $this->u_action . "&action=config";
@@ -186,9 +185,12 @@ class gloss_module {
 				if ($config['lmdi_glossary_usergroup'] != $ug)
 				{
 					$config->set ('lmdi_glossary_usergroup', $ug);
-					$usergroup = 'GROUP_GLOSS_EDITOR';
+					$usergroup = $user->lang('GROUP_GLOSS_EDITOR');
+					// $userrole  = $user->lang('ROLE_GLOSS_EDITOR');
+					$groupdesc = $user->lang('GROUP_DESCRIPTION_GLOSS_EDITOR');
+					// $usergroup = 'GROUP_GLOSS_EDITOR';
 					$userrole  = 'ROLE_GLOSS_EDITOR';
-					$groupdesc = 'GROUP_DESCRIPTION_GLOSS_EDITOR';
+					// $groupdesc = 'GROUP_DESCRIPTION_GLOSS_EDITOR';
 					if ($ug) 
 					{
 						$this->group_creation ($usergroup, $groupdesc);
@@ -206,9 +208,12 @@ class gloss_module {
 				if ($config['lmdi_glossary_admingroup'] != $ag)
 				{
 					$config->set ('lmdi_glossary_admingroup', $ag);
-					$admingroup = 'GROUP_GLOSS_ADMIN';
+					$admingroup = $user->lang('GROUP_GLOSS_ADMIN');
+					// $adminrole  = $user->lang('ROLE_GLOSS_ADMIN');
+					$groupdesc  = $user->lang('GROUP_DESCRIPTION_GLOSS_ADMIN');
+					// $admingroup = 'GROUP_GLOSS_ADMIN';
 					$adminrole  = 'ROLE_GLOSS_ADMIN';
-					$groupdesc  = 'GROUP_DESCRIPTION_GLOSS_ADMIN';
+					// $groupdesc  = 'GROUP_DESCRIPTION_GLOSS_ADMIN';
 					if ($ag) 
 					{
 						$this->group_creation ($admingroup, $groupdesc);
@@ -235,7 +240,7 @@ class gloss_module {
 		$poids  = $config['lmdi_glossary_poids'];
 		if (!$poids)
 		{
-			$poids = 200;
+			$poids = 150;
 		}
 		$template->assign_vars (array(
 			'C_ACTION'      	=> $action_config,

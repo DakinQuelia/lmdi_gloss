@@ -41,9 +41,10 @@ class ucp_gloss_module
 
 		$this->user = $user;
 		$this->db = $db;
+		$this->user->add_lang_ext('lmdi/gloss', 'gloss');
 
 		$this->tpl_name = 'ucp_gloss';
-		$this->page_title = $user->lang('UCP_GLOSS_MANAGE');
+		$this->page_title = $user->lang('UCP_GLOSS_TITLE');
 		$uid = $this->user->data['user_id'];
 
 		// Submission

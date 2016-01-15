@@ -93,7 +93,7 @@ class main
 		// var_dump ($action);
 		
 		// String loading
-		$this->user->add_lang_ext('lmdi/gloss', 'gloss');
+		$this->user->add_lang_ext('lmdi/gloss', 'edit_gloss');
 
 		// Add the base entry into the Nav Bar at top
 		$this->template->assign_block_vars('navlinks', array(

@@ -100,7 +100,7 @@ class glossedit
 	{
 	global $table_prefix, $phpbb_root_path, $phpEx, $request;
 	
-	$this->user->add_lang_ext('lmdi/gloss', 'gloss');
+	$this->user->add_lang_ext('lmdi/gloss', 'edit_gloss');
 	
 	$abc_links = "";
 	$illustration = "";
@@ -159,6 +159,8 @@ class glossedit
 			$str_lang  = $this->user->lang['GLOSS_LANG'] . $str_colon;
 			$str_regis = $this->user->lang['GLOSS_REGIS'];
 			$str_suppr = $this->user->lang['GLOSS_SUPPR'];
+			$str_coche = $this->user->lang['GLOSS_COCHE'] . $str_colon;
+			$str_coex  = $this->user->lang['GLOSS_COEX'];
 			$form  = "<form action=\"";
 			$form .= append_sid ($phpbb_root_path."app.php/gloss?mode=glossedit");
 			$form .= "\" method=\"post\" id=\"glossedit\" enctype=\"multipart/form-data\">";
@@ -196,7 +198,7 @@ class glossedit
 				$form .= "<dl>";
 				$form .= "<dt><label for=\"upload_file\">$str_pict</label><br />";
 				$form .= "<span>$str_upload</span></dt>";
-				$form .= "<input type=\"file\" name=\"upload_file\" id=\"upload_file\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "<input type=\"file\" name=\"upload_file\" tabindex=\"6\" id=\"upload_file\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dl>";
 			}
 			else
@@ -208,6 +210,12 @@ class glossedit
 				$form .= "id=\"pict\" size=\"25\" value=\"$pict\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dl>";
 			}
+			$form .= "<dl>";
+			$form .= "<dt><label for=\"pict\">$str_coche</label><br />";
+			$form .= "<span>$str_coex</span></dt>";
+			$form .= "<dd><input type=\"checkbox\" tabindex=\"7\" name=\"coche\" id=\"coche\" ";
+			$form .= "size=\"25\" value=\"coche\" class=\"inputbox autowidth\" /></dd>";
+			$form .= "</dl>";
 			$form .= "<dl>";
 			$form .= "<dt>&nbsp;</dt>";
 			$form .= "<dd><input type=\"submit\" name=\"save\" id=\"save\" tabindex=\"5\" value=\"$str_regis\" class=\"button1\" />&nbsp;&nbsp;";
@@ -223,8 +231,12 @@ class glossedit
 			$variants    = $this->db->sql_escape ($request->variable ('vari', "", true));
 			$description = $this->db->sql_escape ($request->variable ('desc', "", true));
 			$lang        = $this->db->sql_escape ($request->variable ('lang', "fr", true));
-			$picture     = $this->db->sql_escape ($request->variable ('pict', "nopict", true));
-			if ($picture != "nopict") 
+			$coche       = $request->variable ('coche', "", true);
+			if ($coche) 
+			{
+				$picture = "nopict";
+			}
+			else 
 			{
 				$errors = array ();
 				// Which version are we using?
@@ -238,13 +250,21 @@ class glossedit
 				}
 				if (!$picture) 
 				{
-					$message = $errors[0];
-					$message .= "<br>";
+					$nb = count ($errors);
+					$message = "";
+					for ($i = 0; $i < $nb ; $i++) 
+					{
+						$message .= $errors[$i];
+						$message .= "<br>";
+					}
 					$message .= $this->user->lang['LMDI_CLICK_BACK'];
 					trigger_error($message, E_USER_WARNING);
 				}
-			$picture = substr($picture, 0, strpos($picture, "."));
-			$picture = $this->db->sql_escape ($picture);
+				else
+				{
+					$picture = substr($picture, 0, strpos($picture, "."));
+					$picture = $this->db->sql_escape ($picture);
+				}
 			}
 			if ($term_id == 0) 
 			{
@@ -407,7 +427,6 @@ class glossedit
 		include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
-		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
 		// Upload file
 		$upload = new \fileupload();
 		$upload->set_error_prefix('LMDI_GLOSS_');
@@ -441,8 +460,6 @@ class glossedit
 		global $phpbb_root_path, $phpEx;
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
-		// var_dump ($upload_directory);
-		$upload_dir = str_replace(array('../', '..\\', './', '.\\'), '', $upload_dir);
 		/** @var \phpbb\files\upload $upload */
 		$upload = $this->files_factory->get('upload');
 		$upload->set_error_prefix('LMDI_GLOSS_');

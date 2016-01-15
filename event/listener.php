@@ -81,7 +81,7 @@ class listener implements EventSubscriberInterface
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = array(
 			'ext_name' => 'lmdi/gloss',
-			'lang_set' => 'gloss',
+			'lang_set' => 'edit_gloss',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
