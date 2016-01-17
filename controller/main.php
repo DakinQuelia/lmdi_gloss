@@ -85,9 +85,9 @@ class main
 		}
 		
 		// Variables
-		$mode = $this->request->variable('mode', '');
+		$mode   = $this->request->variable('mode', '');
 		$action = $this->request->variable('action', '');
-		$code = $this->request->variable('code', '-1');
+		$code   = $this->request->variable('code', '-1');
 		// var_dump ($mode);
 		// var_dump ($code);
 		// var_dump ($action);

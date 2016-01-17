@@ -24,33 +24,9 @@ class release_1 extends container_aware_migration
 
 	static public function depends_on()
 	{
-		return array('\phpbb\db\migration\data\v310\alpha2');
+		return array('\lmdi\gloss\migrations\release_0');
 	}
 
-	public function update_schema()
-	{
-		return array(
-			'add_columns'	=> array(
-				$this->table_prefix . 'users'			=> array(
-					'lmdi_gloss' => array('BOOL', 1),
-				),
-			),
-			'add_tables'   => array(
-				$this->table_prefix . 'glossary'   => array(
-					'COLUMNS'   => array(
-						'term_id'	=> array ('UINT', null, 'auto_increment'),
-						'variants'	=> array ('VCHAR:80', ''),
-						'term'	=> array ('VCHAR:80', ''),
-						'description'	=> array ('VCHAR:512', ''),
-						'picture'	=> array ('VCHAR:80', ''),
-						'lang'	=> array ('VCHAR:2', 'en'),
-					),
-				'PRIMARY_KEY'   => 'term_id',
-				),
-			),
-		);
-	}
-	
 	public function update_data()
 	{
 		return array(
@@ -95,7 +71,7 @@ class release_1 extends container_aware_migration
 			array('config.add', array('lmdi_glossary_usergroup', 0)),
 			array('config.add', array('lmdi_glossary_admingroup', 0)),
 			array('config.add', array('lmdi_glossary_pixels', 500)),
-			array('config.add', array('lmdi_glossary_poids', 200)),
+			array('config.add', array('lmdi_glossary_poids', 150)),
 			
 			
 			// Modify collation setting of the glossary table
@@ -185,20 +161,6 @@ class release_1 extends container_aware_migration
 		);
 	}
 	
-    	public function revert_schema()
-	{
-		return array(
-			'drop_columns'	=> array(
-				$this->table_prefix . 'users'			=> array(
-					'lmdi_gloss',
-				),
-			),
-			'drop_tables'   => array(
-				$this->table_prefix . 'glossary',
-			),
-		);
-	}
-
 	public function utf8_unicode_ci()
 	{
 		global $table_prefix;
