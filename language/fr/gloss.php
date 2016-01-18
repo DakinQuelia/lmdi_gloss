@@ -33,7 +33,7 @@ $lang = array_merge ($lang, array(
 	
 // ACP
 	'ACP_GLOSS_TITLE'	=> 'Glossaire',
-	'ACP_GLOSS'	=> 'Paramétrage',
+	'ACP_GLOSS'	=> 'Paramétrage de l\'extension',
      'ALLOW_FEATURE'        => 'Validation de la fonction de glossaire',
      'ALLOW_FEATURE_EXPLAIN'        => 'Vous pouvez valider ou inhiber la fonction au niveau du forum. Si vous validez, l\'utilisateur pourra s\'il le souhaite inhiber l\'affichage des termes du glossaire dans les messages du forum (à partir du panneau de l\'utilisateur).',
 	'ALLOW_TITLE'        => 'Validation des infobulles',

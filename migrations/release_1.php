@@ -9,12 +9,12 @@
 
 namespace lmdi\gloss\migrations;
 
-use \phpbb\db\migration\container_aware_migration;
+// use \phpbb\db\migration\container_aware_migration;
 
 global $phpbb_root_path;
 include ($phpbb_root_path . 'includes/functions_user.php');
 
-class release_1 extends container_aware_migration
+class release_1 extends \phpbb\db\migration\migration
 {
 	
 	public function effectively_installed()
@@ -24,7 +24,31 @@ class release_1 extends container_aware_migration
 
 	static public function depends_on()
 	{
-		return array('\lmdi\gloss\migrations\release_0');
+		return array('\phpbb\db\migration\data\v310\alpha2');
+	}
+	
+	public function update_schema()
+	{
+		return array(
+			'add_tables'   => array(
+				$this->table_prefix . 'glossary'   => array(
+					'COLUMNS'   => array(
+						'term_id'	=> array ('UINT', null, 'auto_increment'),
+						'variants'	=> array ('VCHAR:80', ''),
+						'term'	=> array ('VCHAR:80', ''),
+						'description'	=> array ('VCHAR:512', ''),
+						'picture'	=> array ('VCHAR:80', ''),
+						'lang'	=> array ('VCHAR:2', 'en'),
+					),
+					'PRIMARY_KEY'   => 'term_id',
+				),
+			),
+			'add_columns'	=> array(
+				$this->table_prefix . 'users'			=> array(
+					'lmdi_gloss' => array('BOOL', 1),
+				),
+			),
+		);
 	}
 
 	public function update_data()
@@ -171,7 +195,6 @@ class release_1 extends container_aware_migration
 	
 	public function insert_sample_data()
 	{
-		global $user;
 		// Define sample data
 		$sample_data = array(
 				array (
@@ -212,6 +235,53 @@ class release_1 extends container_aware_migration
 		{
 			group_delete($group_id, '$string');
 		}
+	}
+	
+	public function get_nbrows ($table)
+	{
+		$sql = "SELECT COUNT(*) as nb FROM $table WHERE 1";
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow($result);
+		$nb = $row['nb'];
+		return ((int)$nb);
+	}
+	
+	public function rename_table($table)
+	{
+		switch ($this->db->get_sql_layer())
+		{
+			// SQL Server dbms support this syntax
+			case 'mssql':
+			case 'mssql_odbc':
+			case 'mssqlnative':
+				$sql = "EXEC sp_rename '$table', '{$table}_backup'";
+			break;
+			// All other dbms support this syntax
+			default:
+				$sql = "ALTER TABLE $table RENAME TO {$table}_backup";
+			break;
+		}
+		$this->db->sql_query($sql);
+	}
+	
+    	public function revert_schema()
+	{
+		$table = $this->table_prefix . 'glossary';
+		$nbrows = $this->get_nbrows($table);
+		if ($nbrows > 5)
+		{
+			$this->rename_table ($table);
+		}
+		return array(
+		'drop_columns'	=> array(
+			$this->table_prefix . 'users'	=> array(
+				'lmdi_gloss',
+			),
+		),
+		'drop_tables'   => array(
+			$table,
+		),
+		);
 	}
 	
 }
