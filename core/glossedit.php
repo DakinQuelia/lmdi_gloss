@@ -203,6 +203,7 @@ class glossedit
 			}
 			else
 			{
+				$checked = 1;
 				$form .= "<dl>";
 				$form .= "<dt><label for=\"pict\">$str_pict</label><br />";
 				$form .= "<span>$str_pictex</span></dt>";
@@ -211,10 +212,15 @@ class glossedit
 				$form .= "</dl>";
 			}
 			$form .= "<dl>";
-			$form .= "<dt><label for=\"pict\">$str_coche</label><br />";
+			$form .= "<dt><label for=\"coche\">$str_coche</label><br />";
 			$form .= "<span>$str_coex</span></dt>";
 			$form .= "<dd><input type=\"checkbox\" tabindex=\"7\" name=\"coche\" id=\"coche\" ";
-			$form .= "size=\"25\" value=\"coche\" class=\"inputbox autowidth\" /></dd>";
+			$form .= "size=\"25\" value=\"coche\" class=\"inputbox autowidth\" ";
+			if ($checked)
+			{
+				$form .= "checked ";
+			}
+			$form .= "/></dd>";
 			$form .= "</dl>";
 			$form .= "<dl>";
 			$form .= "<dt>&nbsp;</dt>";
@@ -234,7 +240,12 @@ class glossedit
 			$coche       = $request->variable ('coche', "", true);
 			if ($coche) 
 			{
-				$picture = "nopict";
+				$picture = $request->variable ('pict', "", true);
+				// var_dump ($picture);
+				if (!strlen ($picture))
+				{
+					$picture = "nopict";
+				}
 			}
 			else 
 			{
