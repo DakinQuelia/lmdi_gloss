@@ -21,22 +21,16 @@ class listener implements EventSubscriberInterface
 {
 	/** @var \phpbb\cache\service */
 	protected $cache;
-
 	/* @var \phpbb\user */
 	protected $user;
-
 	/* @var \phpbb\db\driver\driver_interface */
 	protected $db;
-	
 	/* @var \phpbb\template\template */				
 	protected $template;
-
 	/* @var \phpbb\config\config */
 	protected $config;
-
 	/* @var \phpbb\controller\helper */
 	protected $helper;
-
 	protected $glossary_table;
 
 	public function __construct(
@@ -130,7 +124,7 @@ class listener implements EventSubscriberInterface
 	}	// insertion_glossaire	
 
 	/*
-	*	Code replacing words found in the glossary table.
+	*	Code replacing in post words found in the glossary table.
 	*	Code de remplacement des éléments figurant dans la table de termes
 	*/
 	function glossary_pass ($texte)
@@ -153,7 +147,7 @@ class listener implements EventSubscriberInterface
 			$parts = &$parts[0];
 			if (empty($parts))
 				return '';
-			// Code to identify strings which we should not change.
+			// Code to identify strings which we should not change anything.
 			// Each time, a line to set and a line to reset the flag.
 			// Code qui identifie les chaînes dans lesquelles il ne faut rien faire
 			// À chaque fois, une ligne pour armer, une ligne pour désarmer
@@ -247,9 +241,10 @@ class listener implements EventSubscriberInterface
 					// comma at end => empty string
 					if (strlen ($variant))
 					{
-						$remp  = "<acronym class=\"id$row[term_id]\" title=\"$desc\">";
-						$remp .= $variant;
-						$remp .= "</acronym>";
+						$remp  = "<acronym class=\"id$row[term_id]\" title=\"$desc\">$1</acronym>";
+						// $remp  = "<acronym class=\"id$row[term_id]\" title=\"$desc\">$1";
+						// $remp .= $variant;
+						// $remp .= "</acronym>";
 						$firstspace = '/\b(';
 						$lastspace = ')\b/ui';	// PCRE - u for UTF-8 - i case insensitive
 						$rech = $firstspace . $variant . $lastspace;
