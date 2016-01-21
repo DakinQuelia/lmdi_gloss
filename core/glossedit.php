@@ -53,6 +53,8 @@ class glossedit
 		\phpbb\path_helper $path_helper,
 		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
+		\phpbb\request\request $request,
+		$table_prefix,
 		$phpEx, 
 		$phpbb_root_path, 
 		$glossary_table,
@@ -68,6 +70,8 @@ class glossedit
 		$this->path_helper	 	= $path_helper;
 		$this->cache             = $cache;
 		$this->config            = $config;
+		$this->request 		= $request;
+		$this->table_prefix		= $table_prefix;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
@@ -85,20 +89,18 @@ class glossedit
 
 	function get_def_language ($table, $colonne)
 	{
-		global $db;
 		$sql = "SELECT DEFAULT($colonne) lg 
 			FROM (SELECT 1) AS dummy
 			LEFT JOIN $table ON True LIMIT 1";	
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow ($result);
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow ($result);
 		$default = $row['lg'];
-		$db->sql_freeresult ($result);
+		$this->db->sql_freeresult ($result);
 		return ($default);
 	}
 
 	function main()
 	{
-	global $table_prefix, $phpbb_root_path, $phpEx, $request;
 	
 	$this->user->add_lang_ext('lmdi/gloss', 'edit_gloss');
 	
@@ -108,10 +110,10 @@ class glossedit
 	$biblio = "";
 	$table = $table_prefix . "glossary";
 
-	$num    = $request->variable ('code', 0);
-	$action = $request->variable ('action', "rien");
-	$delete = $request->variable ('delete', "rien");
-	$save   = $request->variable ('save', "rien");
+	$num    = $this->request->variable ('code', 0);
+	$action = $this->request->variable ('action', "rien");
+	$delete = $this->request->variable ('delete', "rien");
+	$save   = $this->request->variable ('save', "rien");
 	if ($delete != 'rien')
 		$action = 'delete';
 	if ($save != 'rien')
@@ -162,7 +164,7 @@ class glossedit
 			$str_coche = $this->user->lang['GLOSS_COCHE'] . $str_colon;
 			$str_coex  = $this->user->lang['GLOSS_COEX'];
 			$form  = "<form action=\"";
-			$form .= append_sid ($phpbb_root_path."app.php/gloss?mode=glossedit");
+			$form .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss?mode=glossedit');
 			$form .= "\" method=\"post\" id=\"glossedit\" enctype=\"multipart/form-data\">";
 			$form .= "<div class=\"panel\"><div class=\"inner\"><div class=\"content\">";
 			$form .= "<h2 class=\"login-title\">$str_action</h2>";
@@ -195,6 +197,7 @@ class glossedit
 			$form .= "</dl>";
 			if ($pict == "" || $pict == "nopict")
 			{
+				$checked = 0;
 				$form .= "<dl>";
 				$form .= "<dt><label for=\"upload_file\">$str_pict</label><br />";
 				$form .= "<span>$str_upload</span></dt>";
@@ -232,15 +235,19 @@ class glossedit
 			$abc_links = $form;
 			break;
 		case "save" :	
-			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));
-			$term        = $this->db->sql_escape ($request->variable ('term', "", true));
-			$variants    = $this->db->sql_escape ($request->variable ('vari', "", true));
-			$description = $this->db->sql_escape ($request->variable ('desc', "", true));
-			$lang        = $this->db->sql_escape ($request->variable ('lang', "fr", true));
-			$coche       = $request->variable ('coche', "", true);
+			$term_id     = $this->db->sql_escape (trim($this->request->variable ('term_id', 0)));
+			$term        = $this->db->sql_escape (trim($this->request->variable ('term', "", true)));
+			$variants    = $this->db->sql_escape (trim($this->request->variable ('vari', "", true)));
+			$description = $this->db->sql_escape (trim($this->request->variable ('desc', "", true)));
+			if (strlen ($description) > 500)
+			{
+				$description = substr ($description, 0, 500);
+			}	
+			$lang        = $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
+			$coche       = $this->request->variable ('coche', "", true);
 			if ($coche) 
 			{
-				$picture = $request->variable ('pict', "", true);
+				$picture = $this->request->variable ('pict', "", true);
 				// var_dump ($picture);
 				if (!strlen ($picture))
 				{
@@ -304,7 +311,7 @@ class glossedit
 			// Redirection
 			// /*
 			$params = "mode=glossedit&code=$term_id";	
-			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
+			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 			$url .= "#$term_id";	// Anchor target = term_id
 			redirect ($url);
 			// */
@@ -322,7 +329,7 @@ class glossedit
 			// Redirection
 			$cap = substr ($request->variable ('term', "", true), 0, 1);
 			$params = "mode=glossedit";
-			$url  = append_sid ($phpbb_root_path."app.php/gloss", $params);
+			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 			$url .= "#$cap";		// Anchor target = initial cap 
 			redirect ($url);
 			// header("Location:$url");
@@ -384,7 +391,7 @@ class glossedit
 					// Clickable link if picture != nopict
 					if ($pict != "nopict") {
 						$params  = "mode=glosspict&pict=$pict&terme=$term";
-						$url = append_sid ($phpbb_root_path."app.php/gloss", $params);
+						$url = append_sid ($this->phpbb_root_path.'app.'.$this->phpEx .'/gloss', $params);
 						$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
 						}
 					else {
@@ -393,7 +400,7 @@ class glossedit
 					$corps .= "<td class=\"deg1\">";
 					$corps .= "<a href=\"";
 					$params = "mode=glossedit&code=$code&action=edit";
-					$corps .= append_sid ($phpbb_root_path."app.php/gloss", $params);
+					$corps .= append_sid ($this->phpbb_root_path . 'app.' . $this-phpEx . '/gloss', $params);
 					$corps .= "\">$str_edit</a></td>";
 					$corps .= "</tr>";
 					}	// Fin du while sur le contenu
@@ -407,7 +414,7 @@ class glossedit
 			$str_ici = $this->user->lang['GLOSS_ED_ICI'];
 			$illustration  = $this->user->lang['GLOSS_ED_EXPL'];
 			$illustration .= "<a href=\"";
-			$illustration .= append_sid ($phpbb_root_path."app.php/gloss", "mode=glossedit&code=-1&action=edit");
+			$illustration .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', 'mode=glossedit&code=-1&action=edit');
 			$illustration .= "\"><b>$str_ici</b></a>.";		
 			break;
 		}	// Fin du switch sur action
@@ -427,15 +434,14 @@ class glossedit
 		'U_BIBLIO'		=> $biblio,
 		));
 
-	make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"));
+	make_jumpbox(append_sid($this->phpbb_root_path . 'viewforum.' . $this->phpEx));
 	page_footer();
 	}		
 	
 	// Uploading function for phpBB 3.1.x
 	function upload_31x (&$errors) 
 	{
-		global $phpbb_root_path, $phpEx;
-		include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+		include_once($this->phpbb_root_path . 'includes/functions_upload.' . $this->phpEx);
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
 		// Upload file
@@ -468,7 +474,6 @@ class glossedit
 	// Uploading function for phpBB 3.2.x
 	function upload_32x (&$errors) 
 	{
-		global $phpbb_root_path, $phpEx;
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';
 		/** @var \phpbb\files\upload $upload */

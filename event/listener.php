@@ -76,18 +76,20 @@ class listener implements EventSubscriberInterface
 		$lang_set_ext[] = array(
 			'ext_name' => 'lmdi/gloss',
 			'lang_set' => 'edit_gloss',
-		);
+			);
+		$lang_set_ext[] = array(
+			'ext_name' => 'lmdi/gloss',
+			'lang_set' => 'gloss',
+			);
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
 	public function build_url ($event)
 	{
-		global $phpbb_root_path;
-		global $phpEx;
 		$this->template->assign_vars(array(
-			'U_GLOSSAIRE'		=> $this->helper->route('lmdi_gloss_controller', array('mode' => 'glossaire')),
-			'L_GLOSSAIRE'		=> $this->user->lang['LGLOSSAIRE'],
-			'T_GLOSSAIRE'		=> $this->user->lang['TGLOSSAIRE'],
+			'U_GLOSSAIRE'	=> $this->helper->route('lmdi_gloss_controller', array('mode' => 'glossaire')),
+			'L_GLOSSAIRE'	=> $this->user->lang['LGLOSSAIRE'],
+			'T_GLOSSAIRE'	=> $this->user->lang['TGLOSSAIRE'],
 		));
 	}
 	
@@ -206,7 +208,6 @@ class listener implements EventSubscriberInterface
 		*/
 	function compute_glossary_list() 
 	{
-		global $config;
 		$glossterms = $this->cache->get('_glossterms');
 		if ($glossterms === false) 
 		{
@@ -215,7 +216,7 @@ class listener implements EventSubscriberInterface
 			$sql .= "ORDER BY LENGTH(TRIM(variants)) DESC";
 			$result = $this->db->sql_query($sql);
 			$glossterms = array();
-			$title = $config['lmdi_glossary_title'];
+			$title = $this->config['lmdi_glossary_title'];
 			while ($row = $this->db->sql_fetchrow($result)) 
 			{
 				$variants = explode (",", $row['variants']);

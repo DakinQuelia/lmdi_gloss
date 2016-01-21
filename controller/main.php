@@ -81,7 +81,7 @@ class main
 		// Exclude Bots
 		if ($this->user->data['is_bot'])
 		{
-			redirect(append_sid("{$this->phpbb_root_path}index.{$this->phpEx}"));
+			redirect(append_sid($this->phpbb_root_path . 'index.' . $this->phpEx));
 		}
 		
 		// Variables

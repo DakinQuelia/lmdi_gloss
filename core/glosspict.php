@@ -18,6 +18,8 @@ class glosspict
 	protected $helper;
 	/** @var \phpbb\auth\auth */
 	protected $auth;
+	/** @var \phpbb\request\request */
+	protected $request;
 	/** @var string */
 	protected $phpEx;
 	/** @var string phpBB root path */
@@ -35,14 +37,6 @@ class glosspict
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\controller\helper		 	$helper
-	* @param \phpbb\config\config				$config
-	* @param									$phpEx
-	* @param									$phpbb_root_path
-	* @param string 							$glossary_table
 	*
 	*/
 	public function __construct(
@@ -53,6 +47,7 @@ class glosspict
 		\phpbb\auth\auth $auth, 
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
+		\phpbb\request\request $request,
 		$phpEx, 
 		$phpbb_root_path, 
 		$glossary_table)
@@ -62,12 +57,13 @@ class glosspict
 		$this->db 			= $db;
 		$this->helper 			= $helper;
 		$this->auth			= $auth;
+		$this->ext_manager	 	= $ext_manager;
+		$this->path_helper	 	= $path_helper;
+		$this->request 		= $request;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
-		$this->ext_manager	 	= $ext_manager;
-		$this->path_helper	 	= $path_helper;
-
+		
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
@@ -76,13 +72,12 @@ class glosspict
 
 	function main()
 	{
-		global $phpbb_root_path, $phpEx, $request;
-	
+		
 		$click = $this->user->lang['GLOSS_CLICK'];
 		$view = $this->user->lang['GLOSS_VIEW'];
-		$pict = $request->variable ('pict', '');
+		$pict = $this->request->variable ('pict', '');
 		$pict = $this->ext_path_web . "glossaire/" . $pict . ".jpg";
-		$term = $request->variable ('term', '', true);
+		$term = $this->request->variable ('term', '', true);
 		$terme = "<p class=\"copyright\"><b>$term</b></p>";
 		$corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=$pict></a></p>";
 		$retour = "<p class=\"copyright\">$click</p>";
@@ -102,7 +97,7 @@ class glosspict
 		));
 
 
-		make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"));
+		make_jumpbox(append_sid("{$this->phpbb_root_path}viewforum.$this->phpEx"));
 		page_footer();
 	}
 }
