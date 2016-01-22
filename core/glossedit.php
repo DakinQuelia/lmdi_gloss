@@ -1,8 +1,8 @@
 <?php
 // glossedit.php
 // (c) 2015-2016 - LMDI Pierre Duhem
-// Version de glossaire.php utilisée pour les administrateurs
-// Edition page for administrators
+// Page d'édition du glossaire pour les administrateurs
+// Glossary edition page for administrators
 
 namespace lmdi\gloss\core;
 
@@ -18,12 +18,6 @@ class glossedit
 	protected $helper;
 	/** @var \phpbb\auth\auth */
 	protected $auth;
-	/** @var string */
-	protected $phpEx;
-	/** @var string phpBB root path */
-	protected $phpbb_root_path;
-	/** @var string */
-	protected $glossary_table;
 	/** @var \phpbb\extension\manager "Extension Manager" */
 	protected $ext_manager;
 	/** @var \phpbb\path_helper */
@@ -35,6 +29,9 @@ class glossedit
 	/** @var \phpbb\files\factory */
 	protected $files_factory;
 	// Strings
+	protected $phpEx;
+	protected $phpbb_root_path;
+	protected $glossary_table;
 	protected $ext_path;
 	protected $ext_path_web;
 
@@ -101,14 +98,11 @@ class glossedit
 
 	function main()
 	{
-	
-	$this->user->add_lang_ext('lmdi/gloss', 'edit_gloss');
-	
 	$abc_links = "";
 	$illustration = "";
 	$corps = "";
 	$biblio = "";
-	$table = $table_prefix . "glossary";
+	$table = $this->glossary_table;
 
 	$num    = $this->request->variable ('code', 0);
 	$action = $this->request->variable ('action', "rien");
@@ -118,14 +112,13 @@ class glossedit
 		$action = 'delete';
 	if ($save != 'rien')
 		$action = 'save';
-
-	$str_colon = $this->user->lang['COLON'];
-
 	// var_dump ($action);
+	
+	$str_colon = $this->user->lang['COLON'];
 	
 	switch ($action) {
 		case "edit" :
-			if ($num < 0) {	// Création d'une fiche
+			if ($num < 0) {	// Item creation - Création d'une fiche
 				$code = "";
 				$vari = "";
 				$term = "";
@@ -134,11 +127,10 @@ class glossedit
 				$lang = $this->get_def_language ($table, 'lang');
 				$str_action = $this->user->lang['GLOSS_CREAT'];
 				}
-			else {			// Édition d'une fiche
+			else {			// Item edition - Édition d'une fiche
 				$sql  = "SELECT * ";
 				$sql .= "FROM $table ";
 				$sql .= "WHERE term_id = \"$num\" ";
-				// echo ("Valeur de la requête : $sql.<br>\n");
 				$result = $this->db->sql_query ($sql);
 				$row = $this->db->sql_fetchrow ($result);
 				$code = $row['term_id'];
@@ -169,7 +161,7 @@ class glossedit
 			$form .= "<div class=\"panel\"><div class=\"inner\"><div class=\"content\">";
 			$form .= "<h2 class=\"login-title\">$str_action</h2>";
 			// Deux lignes cachées pour le numéro et la langue
-			// Hidden items for id and language
+			// Hidden items for term_id and language
 			$form .= "<input type=\"hidden\" name=\"term_id\" id=\"term_id\" value=\"$code\">";
 			$form .= "<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"$lang\">";
 			$form .= "<fieldset class=\"fields1\">";
@@ -317,7 +309,7 @@ class glossedit
 			// */
 			break;
 		case "delete" :
-			$term_id     = $this->db->sql_escape ($request->variable ('term_id', 0));
+			$term_id     = $this->db->sql_escape ($this->request->variable ('term_id', 0));
 			$sql  = "DELETE ";
 			$sql .= "FROM $table ";
 			$sql .= "WHERE term_id = \"$term_id\" ";
@@ -327,7 +319,7 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
-			$cap = substr ($request->variable ('term', "", true), 0, 1);
+			$cap = substr ($this->request->variable ('term', "", true), 0, 1);
 			$params = "mode=glossedit";
 			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 			$url .= "#$cap";		// Anchor target = initial cap 
@@ -391,7 +383,7 @@ class glossedit
 					// Clickable link if picture != nopict
 					if ($pict != "nopict") {
 						$params  = "mode=glosspict&pict=$pict&terme=$term";
-						$url = append_sid ($this->phpbb_root_path.'app.'.$this->phpEx .'/gloss', $params);
+						$url = append_sid ($this->phpbb_root_path .'app.'.$this->phpEx .'/gloss', $params);
 						$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
 						}
 					else {
@@ -400,7 +392,7 @@ class glossedit
 					$corps .= "<td class=\"deg1\">";
 					$corps .= "<a href=\"";
 					$params = "mode=glossedit&code=$code&action=edit";
-					$corps .= append_sid ($this->phpbb_root_path . 'app.' . $this-phpEx . '/gloss', $params);
+					$corps .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 					$corps .= "\">$str_edit</a></td>";
 					$corps .= "</tr>";
 					}	// Fin du while sur le contenu

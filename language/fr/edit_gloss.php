@@ -19,8 +19,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge ($lang, array(
 // Static Glossary page
-    	'LGLOSSAIRE'			=> 'Glossaire',
-	'TGLOSSAIRE'			=> 'Glossaire',
 	'ILLUSTRATION'	=>  "Certains termes sont illustrés.<br>Il existe dans ce cas un lien cliquable au bout de la ligne, cliquez dessus pour afficher l'illustration.<br>Sur la page de visualisation, cliquez sur l'image pour revenir.",
 	'GLOSS_DISPLAY'	=> 'Afficher',
 	'GLOSS_CLICK'		=> 'Cliquez sur l\'image pour revenir à la page précédente.',

@@ -18,7 +18,9 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge ($lang, array(
-// UCP
+	'LGLOSSAIRE'	=> 'Glossary',
+	'TGLOSSAIRE'	=> 'Glossary',
+	// UCP
 	'UCP_GLOSS_TITLE'	=> 'Glossary',
 	'UCP_GLOSS'		=> 'Main page',
      'UCP_CONFIG_SAVED'	=> 'User configuration updated successfully<br /><br />%sClick here to return to the previous page.%s',

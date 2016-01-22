@@ -22,7 +22,3 @@ to disable it individually in the UCP.
 ## License
 [GNU General Public License v2](http://opensource.org/licenses/GPL-2.0)
 
-## Collation scheme of data table
-If you have accented initials, they are not sorted correctly with the default utf8_bin collation option used by phpBB when creating a table. The correct collation should be 'utf8_unicode_ci'.
-This command, to be used in phpMyAdmin or Adminer, will change the collation scheme:
-alter table phpbb3_glossary convert to character set utf8 collate utf8_unicode_ci;

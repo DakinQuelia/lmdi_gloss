@@ -95,7 +95,7 @@ class main
 		// String loading
 		$this->user->add_lang_ext('lmdi/gloss', 'edit_gloss');
 
-		// Add the base entry into the Nav Bar at top
+		// Add the base entry into the breadcrump at top
 		$this->template->assign_block_vars('navlinks', array(
 			'U_VIEW_FORUM'	=> $this->helper->route('lmdi_gloss_controller'),
 			'FORUM_NAME'	=> $this->user->lang['LGLOSSAIRE'],

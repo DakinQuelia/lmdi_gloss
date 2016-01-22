@@ -18,6 +18,8 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge ($lang, array(
+    	'LGLOSSAIRE'			=> 'Glossaire',
+	'TGLOSSAIRE'			=> 'Glossaire',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Glossaire',
 	'UCP_GLOSS'		=> 'Page principale',
