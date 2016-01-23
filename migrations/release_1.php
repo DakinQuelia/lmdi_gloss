@@ -106,7 +106,7 @@ class release_1 extends \phpbb\db\migration\migration
 			// Add roles
 			array('permission.role_add', array('ROLE_GLOSS_ADMIN', 'a_', 'ROLE_DESCRIPTION_GLOSS_ADMIN')),
 			array('permission.role_add', array('ROLE_GLOSS_EDITOR', 'u_', 'ROLE_DESCRIPTION_GLOSS_EDITOR')),
-			
+
 			// Add permissions (global = true, local = false)
 			array('permission.add', array('a_lmdi_glossary', true)),
 			array('permission.add', array('u_lmdi_glossary', true)),
@@ -128,7 +128,7 @@ class release_1 extends \phpbb\db\migration\migration
 			array('config.remove', array('lmdi_glossary_admingroup')),
 			array('config.remove', array('lmdi_glossary_pixels')),
 			array('config.remove', array('lmdi_glossary_poids')),
-			
+
 			/*
 			array('module.remove', array(
 				'acp',
@@ -229,7 +229,7 @@ class release_1 extends \phpbb\db\migration\migration
 		$row = $this->db->sql_fetchrow ($result);
 		$group_id = $row['group_id'];
 		$this->db->sql_freeresult ($result);
-		if ($group_id) 
+		if ($group_id)
 		{
 			group_delete($group_id, '$string');
 		}

@@ -40,16 +40,16 @@ class glosspict
 	*
 	*/
 	public function __construct(
-		\phpbb\template\template $template, 
-		\phpbb\user $user, 
-		\phpbb\db\driver\driver_interface $db, 
-		\phpbb\controller\helper $helper, 
-		\phpbb\auth\auth $auth, 
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\controller\helper $helper,
+		\phpbb\auth\auth $auth,
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
 		\phpbb\request\request $request,
-		$phpEx, 
-		$phpbb_root_path, 
+		$phpEx,
+		$phpbb_root_path,
 		$glossary_table)
 	{
 		$this->template 		= $template;
@@ -63,7 +63,7 @@ class glosspict
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
-		
+
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}

@@ -23,7 +23,7 @@ $lang = array_merge ($lang, array(
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Glossary',
 	'UCP_GLOSS'		=> 'Main page',
-     'UCP_CONFIG_SAVED'	=> 'User configuration updated successfully<br /><br />%sClick here to return to the previous page.%s',
+	'UCP_CONFIG_SAVED'	=> 'User configuration updated successfully<br /><br />%sClick here to return to the previous page.%s',
 	'UCP_ENABLE'		=> 'Enable the glossary feature',
 	'UCP_ENABLE_EXPLAIN' => 'The glossary displays an explanation and optionally a picture when you click on technical terms in the posts.',
 

@@ -21,7 +21,7 @@ class gloss_module {
 		global $db;
 		$sql = "SELECT DEFAULT($colonne) lg 
 			FROM (SELECT 1) AS dummy
-			LEFT JOIN $table ON True LIMIT 1";	
+			LEFT JOIN $table ON True LIMIT 1";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow ($result);
 		$default = $row['lg'];
@@ -60,7 +60,7 @@ class gloss_module {
 		$group_type = 0;
 		$group_name = $group;
 		$group_desc = $desc;
-		
+
 		$group_attributes = array(
 			'group_colour' => '00FFFF',
 			'group_rank' => 0,
@@ -85,7 +85,7 @@ class gloss_module {
 		$db->sql_freeresult ($result);
 		return ($role_id);
 	}
-	
+
 	function get_group_id ($group_name)
 	{
 		global $table_prefix, $db;
@@ -100,7 +100,7 @@ class gloss_module {
 	function group_deletion ($group)
 	{
 		$group_id = $this->get_group_id ($group);
-		if ($group_id) 
+		if ($group_id)
 		{
 			group_delete($group_id, $group);
 		}
@@ -109,11 +109,11 @@ class gloss_module {
 	function build_lang_select ()
 	{
 		global $table_prefix, $db, $user;
-		
+
 		$table = $table_prefix . 'glossary';
-		$lg = $this->get_def_language ($table, 'lang');		
+		$lg = $this->get_def_language ($table, 'lang');
 		$select  = "";
-		
+
 		$sql = 'SELECT lang_iso
 			FROM ' . LANG_TABLE . '
 			ORDER BY lang_iso';
@@ -134,7 +134,7 @@ class gloss_module {
 		return ($select);
 	}
 
-	function main ($id, $mode) 
+	function main ($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache, $request;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -192,12 +192,12 @@ class gloss_module {
 					// $usergroup = 'GROUP_GLOSS_EDITOR';
 					$userrole  = 'ROLE_GLOSS_EDITOR';
 					// $groupdesc = 'GROUP_DESCRIPTION_GLOSS_EDITOR';
-					if ($ug) 
+					if ($ug)
 					{
 						$this->group_creation ($usergroup, $groupdesc);
 						$this->role_addition ($usergroup, $userrole);
 					}
-					else 
+					else
 					{
 						$this->role_deletion ($usergroup, $userrole);
 						$this->group_deletion ($usergroup);
@@ -215,12 +215,12 @@ class gloss_module {
 					// $admingroup = 'GROUP_GLOSS_ADMIN';
 					$adminrole  = 'ROLE_GLOSS_ADMIN';
 					// $groupdesc  = 'GROUP_DESCRIPTION_GLOSS_ADMIN';
-					if ($ag) 
+					if ($ag)
 					{
 						$this->group_creation ($admingroup, $groupdesc);
 						$this->role_addition ($admingroup, $adminrole);
 					}
-					else 
+					else
 					{
 						$this->role_deletion ($admingroup, $adminrole);
 						$this->group_deletion ($admingroup);
@@ -258,6 +258,6 @@ class gloss_module {
 			'S_LANG_OPTIONS'    => $select,
 			));
 
-	}	
+	}
 
 }

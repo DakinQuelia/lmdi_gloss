@@ -112,7 +112,7 @@ class glossaire
 			$cpt++;
 			$corps .= "<tr class=\"deg\"><td class=\"glossi\" colspan=\"2\" id=$l>&nbsp;$l</td>";
 			$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"$top\"></a></td></tr>";
-			while ($arow = $this->db->sql_fetchrow($result2)) 
+			while ($arow = $this->db->sql_fetchrow($result2))
 			{
 				$code = $arow['term_id'];
 				$vari = $arow['variants'];
@@ -126,12 +126,12 @@ class glossaire
 				/*	Nous ne mettons un lien cliquable que si l'image est différente de nopict.
 					Link only if the picture is not nopict.
 					*/
-				if ($pict != "nopict") 
+				if ($pict != "nopict")
 				{
 					$url = $this->helper->route('lmdi_gloss_controller', array('mode' => 'glosspict', 'code' => $code, 'term' =>$term, 'pict' => $pict));
 					$corps .= '<a href="' . $url . '">' . $str_action . '</a></td>';
 				}
-				else 
+				else
 				{
 					$corps .= "&nbsp;</td>";
 				}
@@ -152,9 +152,9 @@ class glossaire
 		}
 		$abc_links .= "</p><br />";
 
-		// Bibliographie 
+		// Bibliographie - Bibliography part
 		$biblio = $this->user->lang['GLOSS_BIBLIO'];
-		
+
 		// Information sur l'existence d'une illustration
 		// Comment string about the presence of a picture
 		$illustration = $this->user->lang['ILLUSTRATION'];

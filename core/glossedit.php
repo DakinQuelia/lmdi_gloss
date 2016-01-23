@@ -77,7 +77,7 @@ class glossedit
 		{
 			$this->files_factory = $files_factory;
 		}
-		
+
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
@@ -88,7 +88,7 @@ class glossedit
 	{
 		$sql = "SELECT DEFAULT($colonne) lg 
 			FROM (SELECT 1) AS dummy
-			LEFT JOIN $table ON True LIMIT 1";	
+			LEFT JOIN $table ON True LIMIT 1";
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow ($result);
 		$default = $row['lg'];
@@ -120,7 +120,8 @@ class glossedit
 
 	$str_colon = $this->user->lang['COLON'];
 
-	switch ($action) {
+	switch ($action)
+	{
 		case "edit" :
 			if ($num < 0)	// Item creation - Création d'une fiche
 			{
@@ -232,17 +233,17 @@ class glossedit
 			$form .= "</div></div></div>";
 			$abc_links = $form;
 			break;
-		case "save" :	
-			$term_id     = $this->db->sql_escape (trim($this->request->variable ('term_id', 0)));
-			$term        = $this->db->sql_escape (trim($this->request->variable ('term', "", true)));
-			$variants    = $this->db->sql_escape (trim($this->request->variable ('vari', "", true)));
-			$description = $this->db->sql_escape (trim($this->request->variable ('desc', "", true)));
+		case "save" :
+			$term_id		= $this->db->sql_escape (trim($this->request->variable ('term_id', 0)));
+			$term		= $this->db->sql_escape (trim($this->request->variable ('term', "", true)));
+			$variants		= $this->db->sql_escape (trim($this->request->variable ('vari', "", true)));
+			$description	= $this->db->sql_escape (trim($this->request->variable ('desc', "", true)));
 			if (strlen ($description) > 500)
 			{
 				$description = substr ($description, 0, 500);
 			}
-			$lang        = $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
-			$coche       = $this->request->variable ('coche', "", true);
+			$lang		= $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
+			$coche		= $this->request->variable ('coche', "", true);
 			if ($coche) 
 			{
 				$picture = $this->request->variable ('pict', "", true);
@@ -260,15 +261,15 @@ class glossedit
 				{
 					$picture = $this->upload_32x ($errors);
 				}
-				else 
+				else
 				{
 					$picture = $this->upload_31x ($errors);
 				}
-				if (!$picture) 
+				if (!$picture)
 				{
 					$nb = count ($errors);
 					$message = "";
-					for ($i = 0; $i < $nb ; $i++) 
+					for ($i = 0;$i < $nb ;$i++) 
 					{
 						$message .= $errors[$i];
 						$message .= "<br>";
@@ -282,13 +283,13 @@ class glossedit
 					$picture = $this->db->sql_escape ($picture);
 				}
 			}
-			if ($term_id == 0) 
+			if ($term_id == 0)
 			{
 				$sql  = "INSERT INTO $table ";
 				$sql .= "(variants, term, description, picture, lang) ";
 				$sql .= " VALUES ";
 				$sql .= "(\"$variants\", \"$term\", \"$description\", \"$picture\", \"$lang\")";
-				$this->db->sql_query ($sql);	
+				$this->db->sql_query ($sql);
 				$term_id = $this->db->sql_nextid();
 			}
 			else 
@@ -302,13 +303,13 @@ class glossedit
 				$sql .= "lang          = \"$lang\" ";
 				$sql .= "WHERE term_id = \"$term_id\" ";
 				$sql .= "LIMIT 1";
-				$this->db->sql_query ($sql);	
+				$this->db->sql_query ($sql);
 			}
 			// Purge the cache
-			$this->cache->destroy('_glossterms');	
+			$this->cache->destroy('_glossterms');
 			// Redirection
 			// /*
-			$params = "mode=glossedit&code=$term_id";	
+			$params = "mode=glossedit&code=$term_id";
 			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 			$url .= "#$term_id";	// Anchor target = term_id
 			redirect ($url);
@@ -321,16 +322,15 @@ class glossedit
 			$sql .= "WHERE term_id = \"$term_id\" ";
 			$sql .= "LIMIT 1";
 			// echo ("Valeur de la requête : $sql.<br>\n");
-			$this->db->sql_query ($sql);	
+			$this->db->sql_query ($sql);
 			// Purge the cache
-			$this->cache->destroy('_glossterms');	
+			$this->cache->destroy('_glossterms');
 			// Redirection
 			$cap = substr ($this->request->variable ('term', "", true), 0, 1);
 			$params = "mode=glossedit";
 			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 			$url .= "#$cap";		// Anchor target = initial cap 
 			redirect ($url);
-			// header("Location:$url");
 			break;
 		case "rien" :
 			$sql  = "SELECT DISTINCT UPPER(LEFT(TRIM(term),1)) AS a ";
@@ -358,7 +358,8 @@ class glossedit
 			$cpt  = 0;
 			$str_edit  = $this->user->lang['GLOSS_ED_EDIT'];
 			$top = $this->ext_path_web . "/styles/top.gif";
-			while ($row = $this->db->sql_fetchrow ($result)) {
+			while ($row = $this->db->sql_fetchrow ($result)) 
+			{
 				// print_r ($row);
 				$l = $row['a'];
 				$abc_links .= "<a href =\"#$l\">$l</a> " ;
@@ -388,23 +389,25 @@ class glossedit
 					$corps .= "<td class=\"deg0\">$desc</td>";
 					// Lien cliquable si l'image est différente de nopict.
 					// Clickable link if picture != nopict
-					if ($pict != "nopict") {
+					if ($pict != "nopict") 
+					{
 						$params  = "mode=glosspict&pict=$pict&terme=$term";
 						$url = append_sid ($this->phpbb_root_path .'app.'.$this->phpEx .'/gloss', $params);
 						$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
-						}
-					else {
+					}
+					else 
+					{
 						$corps .= "<td class=\"deg1\">$pict</td>";
-						}
+					}
 					$corps .= "<td class=\"deg1\">";
 					$corps .= "<a href=\"";
 					$params = "mode=glossedit&code=$code&action=edit";
 					$corps .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 					$corps .= "\">$str_edit</a></td>";
 					$corps .= "</tr>";
-				}	// Fin du while sur le contenu
+				}	// Fin du while sur le contenu - End of while on contents
 				$this->db->sql_freeresult ($result2);
-			}	// Fin du while sur les initiales
+			}	// Fin du while sur les initiales - End of while on initial caps
 			$this->db->sql_freeresult ($result);
 			$corps .= "</table>";
 			$abc_links .= "</p>\n";
@@ -414,7 +417,7 @@ class glossedit
 			$illustration  = $this->user->lang['GLOSS_ED_EXPL'];
 			$illustration .= "<a href=\"";
 			$illustration .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', 'mode=glossedit&code=-1&action=edit');
-			$illustration .= "\"><b>$str_ici</b></a>.";		
+			$illustration .= "\"><b>$str_ici</b></a>.";
 			break;
 		}	// Fin du switch sur action
 

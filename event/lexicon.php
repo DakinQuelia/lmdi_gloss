@@ -27,7 +27,7 @@ if (!defined('GLOSSARY_TABLE'))
 }
 
 $id = $request->variable ('id', '0');
-if ($id) 
+if ($id)
 {
 	// Search lexicon entry in DB
 	$sql = "SELECT * FROM " . GLOSSARY_TABLE .

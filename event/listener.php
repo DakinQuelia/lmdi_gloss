@@ -55,10 +55,10 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents ()
 	{
 	return array(
-		'core.user_setup'					=> 'load_language_on_setup',
-		'core.page_header'					=> 'build_url',
-		'core.permissions'					=> 'add_permissions',
-		'core.viewtopic_post_rowset_data'		=> 'insertion_glossaire',
+		'core.user_setup'				=> 'load_language_on_setup',
+		'core.page_header'				=> 'build_url',
+		'core.permissions'				=> 'add_permissions',
+		'core.viewtopic_post_rowset_data'	=> 'insertion_glossaire',
 		);
 	}
 
@@ -109,7 +109,7 @@ class listener implements EventSubscriberInterface
 	// event.rowset_data.post_text = text of the post
 	public function insertion_glossaire($event)
 	{
-		if ($this->user->data['lmdi_gloss']) 
+		if ($this->user->data['lmdi_gloss'])
 		{
 			$rowset_data = $event['rowset_data'];
 			$post_text = $rowset_data['post_text'];
@@ -133,7 +133,7 @@ class listener implements EventSubscriberInterface
 		{
 			$glossterms = $this->compute_glossary_list();
 		}
-		if (sizeof($glossterms)) 
+		if (sizeof($glossterms))
 		{
 			$rech = $glossterms['rech'];
 			$remp = $glossterms['remp'];
@@ -155,42 +155,62 @@ class listener implements EventSubscriberInterface
 			// Each time, a line to set and a line to reset the flag.
 			// Code qui identifie les chaînes dans lesquelles il ne faut rien faire
 			// À chaque fois, une ligne pour armer, une ligne pour désarmer
-			foreach ($parts as $index => $part) 
+			foreach ($parts as $index => $part)
 			{
 				// Code
 				if (strstr($part, '[code'))
+				{
 					$code = true;
+				}
 				if (!empty($code) && strstr($part, '[/code'))
+				{
 					$code = false;
-				// Images
+				}
+				// Images - Pictures
 				if (strstr($part, '[img'))
+				{
 					$img = true;
+				}
 				if (!empty($img) && strstr($part, '[/img'))
+				{
 					$img = false;
-				// Liens <a>
+				}
+				// Liens <a> - <a> links
 				if (strstr($part, '<a '))
+				{
 					$link = true;
+				}
 				if (!empty($link) && strstr($part, '</a'))
+				{
 					$link = false;
-				// Liens [url]
+				}
+				// Liens [url] - [url] links
 				if (strstr($part, '[url'))
+				{
 					$link = true;
+				}
 				if (!empty($link) && strstr($part, '[/url'))
+				{
 					$link = false;
+				}
 				// Script
 				if (strstr($part, '<script '))
+				{
 					$script = true;
+				}
 				if (!empty($script) && strstr($part, '</script'))
+				{
 					$script = false;
+				}
 				if (!($part{0} == '<' && $parts[$index + 1]{0} == '>') &&
 					!($part{0} == '[' && $parts[$index + 1]{0} == ']') &&
 					empty($img) && empty($code) && empty($link) && empty($script) ) 
-					{
-						// var_dump ($part);
-						$part = preg_replace ($rech, $remp, $part);
-						// var_dump ($part);
-						$parts[$index] = $part;
-					}
+				{
+					// var_dump ($part);
+					$part = preg_replace ($rech, $remp, $part);
+					// var_dump ($part);
+					$parts[$index] = $part;
+				}
 			}
 			unset ($part);
 			return implode ("", $parts);
