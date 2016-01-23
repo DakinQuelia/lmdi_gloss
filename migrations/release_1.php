@@ -16,7 +16,7 @@ include ($phpbb_root_path . 'includes/functions_user.php');
 
 class release_1 extends \phpbb\db\migration\migration
 {
-	
+
 	public function effectively_installed()
 	{
 		return isset($this->config['lmdi_glossary']);
@@ -26,7 +26,7 @@ class release_1 extends \phpbb\db\migration\migration
 	{
 		return array('\phpbb\db\migration\data\v310\alpha2');
 	}
-	
+
 	public function update_schema()
 	{
 		return array(
@@ -68,7 +68,7 @@ class release_1 extends \phpbb\db\migration\migration
 					'modes'			=> array('settings'),
 				),
 			)),
-			
+
 			// UCP modules
 			array('module.add', array(
 				'ucp',
@@ -96,18 +96,17 @@ class release_1 extends \phpbb\db\migration\migration
 			array('config.add', array('lmdi_glossary_admingroup', 0)),
 			array('config.add', array('lmdi_glossary_pixels', 500)),
 			array('config.add', array('lmdi_glossary_poids', 150)),
-			
-			
+
 			// Modify collation setting of the glossary table
 			array('custom', array(array(&$this, 'utf8_unicode_ci'))),
-			
+
 			// Insertion of dummy entries in the glossary table
 			array('custom', array(array(&$this, 'insert_sample_data'))),
-			
+
 			// Add roles
 			array('permission.role_add', array('ROLE_GLOSS_ADMIN', 'a_', 'ROLE_DESCRIPTION_GLOSS_ADMIN')),
 			array('permission.role_add', array('ROLE_GLOSS_EDITOR', 'u_', 'ROLE_DESCRIPTION_GLOSS_EDITOR')),
-
+			
 			// Add permissions (global = true, local = false)
 			array('permission.add', array('a_lmdi_glossary', true)),
 			array('permission.add', array('u_lmdi_glossary', true)),
@@ -115,10 +114,10 @@ class release_1 extends \phpbb\db\migration\migration
 			// Assign permissions to the roles
 			array('permission.permission_set', array('ROLE_GLOSS_ADMIN', 'a_lmdi_glossary', 'role')),
 			array('permission.permission_set', array('ROLE_GLOSS_EDITOR', 'u_lmdi_glossary', 'role')),
-				
+
 		);
 	}
-	
+
 	public function revert_data()
 	{
 		return array(
@@ -140,28 +139,28 @@ class release_1 extends \phpbb\db\migration\migration
 				),
 			)),
 			*/
-			
+
 			array('module.remove', array(
 				'acp',
 				'ACP_CAT_DOT_MODS',
 				'ACP_GLOSS_TITLE'
 			)),
-						
+
 			// Deletion of the group for the editors of the glossary
 			array('custom', array(array(&$this, 'group_deletion'))),
-			
+
 			// Unset permissions
 			array('permission.permission_unset', array('ROLE_GLOSS_ADMIN', 'a_lmdi_glossary')),
 			array('permission.permission_unset', array('ROLE_GLOSS_EDITOR', 'u_lmdi_glossary')),
-			
+
 			// Role suppression
 			array('permission.role_remove', array('ROLE_GLOSS_ADMIN')),
 			array('permission.role_remove', array('ROLE_GLOSS_EDITOR')),
-			
+
 			// Remove permissions
 			array('permission.remove', array('a_lmdi_glossary')),
 			array('permission.remove', array('u_lmdi_glossary')),
-			
+
 			/*
 			array('module.remove', array(
 				'ucp',
@@ -175,7 +174,7 @@ class release_1 extends \phpbb\db\migration\migration
 					'module_class'		=> 'ucp',
 				),
 			)),
-			
+
 			array('module.remove', array(
 				'ucp',
 				'0',
@@ -184,15 +183,14 @@ class release_1 extends \phpbb\db\migration\migration
 			*/
 		);
 	}
-	
+
 	public function utf8_unicode_ci()
 	{
 		global $table_prefix;
 		$sql = "alter table ${table_prefix}glossary convert to character set utf8 collate utf8_unicode_ci";
 		$this->db->sql_query($sql);
 	}
-	
-	
+
 	public function insert_sample_data()
 	{
 		// Define sample data
@@ -222,7 +220,7 @@ class release_1 extends \phpbb\db\migration\migration
 		$this->group_del ('GROUP_GLOSS_ADMIN');
 		$this->group_del ('GROUP_GLOSS_EDITOR');
 	}
-	
+
 	public function group_del($string)
 	{
 		global $table_prefix;
@@ -236,7 +234,7 @@ class release_1 extends \phpbb\db\migration\migration
 			group_delete($group_id, '$string');
 		}
 	}
-	
+
 	public function get_nbrows ($table)
 	{
 		$sql = "SELECT COUNT(*) as nb FROM $table WHERE 1";
@@ -245,7 +243,7 @@ class release_1 extends \phpbb\db\migration\migration
 		$nb = $row['nb'];
 		return ((int)$nb);
 	}
-	
+
 	public function rename_table($table)
 	{
 		switch ($this->db->get_sql_layer())
@@ -263,8 +261,8 @@ class release_1 extends \phpbb\db\migration\migration
 		}
 		$this->db->sql_query($sql);
 	}
-	
-    	public function revert_schema()
+
+	public function revert_schema()
 	{
 		$table = $this->table_prefix . 'glossary';
 		$nbrows = $this->get_nbrows($table);
@@ -283,5 +281,5 @@ class release_1 extends \phpbb\db\migration\migration
 		),
 		);
 	}
-	
+
 }

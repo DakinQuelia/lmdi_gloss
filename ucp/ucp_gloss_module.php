@@ -54,7 +54,7 @@ class ucp_gloss_module
 			{
 				trigger_error('FORM_INVALID');
 			}
-			else 
+			else
 			{
 				$ucp = $request->variable ('gloss', '0');
 				// Update the lmdi_gloss column in table users
@@ -73,7 +73,7 @@ class ucp_gloss_module
 		{
 			$ucp = $this->user->data['lmdi_gloss'];
 		}
-		
+
 		// Form and page display
 		$form_key = 'ucp_gloss';
 		add_form_key($form_key);
@@ -85,4 +85,3 @@ class ucp_gloss_module
 		));
 	}
 }
-

@@ -56,7 +56,7 @@ $lang = array_merge ($lang, array(
 	'GLOSS_COCHE'		=> 'Pas de téléchargement',
 	'GLOSS_COEX'		=> 'Cochez la case pour ne pas télécharger de fichier.',
 	'UPLOAD_FILE'		=> 'Image à charger depuis votre ordinateur',
-	
+
 	'LMDI_GLOSS_DISALLOWED_CONTENT'	=> 'Le téléchargement a été refusé parce que son contenu n\'est pas autorisé.',
 	'LMDI_GLOSS_DISALLOWED_EXTENSION'	=> 'Le téléchargement a été refusé parce que l\'extension <strong>%s</strong> n’est pas autorisée.',
 	'LMDI_GLOSS_EMPTY_FILEUPLOAD'		=> 'Le fichier téléchargé est vide.',
@@ -72,5 +72,5 @@ $lang = array_merge ($lang, array(
 	'LMDI_GLOSS_WRONG_FILESIZE'		=> 'La taille du fichier doit être inférieure à %1d ko.',
 	'LMDI_GLOSS_WRONG_SIZE'			=> 'Le fichier téléchargé a une largeur de %3$d pixels et une hauteur de %4$d pixels. Les fichiers doivent faire au plus %1$d pixels de large et %2$d pixels de haut.',
 	'LMDI_CLICK_BACK'				=> 'Cliquez <a href="javascript:history.go(-1);"><b>ici</b></a> pour revenir au formulaire d\'édition.',
-	
-     ));
+
+	));

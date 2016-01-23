@@ -22,23 +22,24 @@ $user->session_begin();
 $user->setup();
 
 if (!defined('GLOSSARY_TABLE'))
+{
 	define('GLOSSARY_TABLE', $table_prefix . 'glossary');
+}
 
 $id = $request->variable ('id', '0');
-if ($id) {
-     // Search lexicon entry in DB
-     $sql = "SELECT * FROM " . GLOSSARY_TABLE .
-          " WHERE term_id = '$id' LIMIT 1; ";
-     $result = $db->sql_query($sql);
-     $row = $db->sql_fetchrow($result);
+if ($id) 
+{
+	// Search lexicon entry in DB
+	$sql = "SELECT * FROM " . GLOSSARY_TABLE .
+		" WHERE term_id = '$id' LIMIT 1; ";
+	$result = $db->sql_query($sql);
+	$row = $db->sql_fetchrow($result);
 	$entry = '<h3><a title="'. $user->lang['CLOSE_WINDOW']. '" id="lexiconClose" href="#">x</a></h3>
-          <h3>'.$row['term'].'</h3>'.'
-          <p><b>'.$row['description'].'</b></p>
-          <p><img src="ext/lmdi/gloss/glossaire/'.$row['picture'].'.jpg"></p>';
+		<h3>'.$row['term'].'</h3>'.'
+		<p><b>'.$row['description'].'</b></p>
+		<p><img src="ext/lmdi/gloss/glossaire/'.$row['picture'].'.jpg"></p>';
 	$db->sql_freeresult($result);
-     }
+}
 
 header('Content-type: text/html; charset=UTF-8');
 echo $entry;
-
-?>

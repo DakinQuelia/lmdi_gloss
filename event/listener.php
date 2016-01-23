@@ -25,7 +25,7 @@ class listener implements EventSubscriberInterface
 	protected $user;
 	/* @var \phpbb\db\driver\driver_interface */
 	protected $db;
-	/* @var \phpbb\template\template */				
+	/* @var \phpbb\template\template */
 	protected $template;
 	/* @var \phpbb\config\config */
 	protected $config;
@@ -73,12 +73,6 @@ class listener implements EventSubscriberInterface
 			$this->db->sql_query($sql);
 		}
 		$lang_set_ext = $event['lang_set_ext'];
-		/*
-		$lang_set_ext[] = array(
-			'ext_name' => 'lmdi/gloss',
-			'lang_set' => 'edit_gloss',
-			);
-		*/
 		$lang_set_ext[] = array(
 			'ext_name' => 'lmdi/gloss',
 			'lang_set' => 'gloss',
@@ -94,7 +88,7 @@ class listener implements EventSubscriberInterface
 			'T_GLOSSAIRE'	=> $this->user->lang['TGLOSSAIRE'],
 		));
 	}
-	
+
 	/**
 	* Add custom permissions language variables
 	*
@@ -109,23 +103,24 @@ class listener implements EventSubscriberInterface
 		$permissions['a_lmdi_glossary'] = array('lang' => 'ACL_A_LMDI_GLOSSARY', 'cat' => 'misc');
 		$event['permissions'] = $permissions;
 	}
-	
+
 	// Event: core.viewtopic_post_rowset_data
 	// Called for each post in the topic
 	// event.rowset_data.post_text = text of the post
 	public function insertion_glossaire($event)
 	{
-		if ($this->user->data['lmdi_gloss']) {
+		if ($this->user->data['lmdi_gloss']) 
+		{
 			$rowset_data = $event['rowset_data'];
 			$post_text = $rowset_data['post_text'];
 			$row = $event['row'];
-			
+
 			$post_text = $this->glossary_pass ($post_text);
-			
+
 			$rowset_data['post_text'] = $post_text;
 			$event['rowset_data'] = $rowset_data;
 		}
-	}	// insertion_glossaire	
+	}	// insertion_glossaire
 
 	/*
 	*	Code replacing in post words found in the glossary table.
@@ -135,8 +130,11 @@ class listener implements EventSubscriberInterface
 	{
 		static $glossterms;
 		if (!isset ($glossterms) || !is_array ($glossterms))
+		{
 			$glossterms = $this->compute_glossary_list();
-		if (sizeof($glossterms)) {
+		}
+		if (sizeof($glossterms)) 
+		{
 			$rech = $glossterms['rech'];
 			$remp = $glossterms['remp'];
 			/*
@@ -150,12 +148,15 @@ class listener implements EventSubscriberInterface
 			preg_match_all ('#[][><][^][><]*|[^][><]+#', $texte, $parts);
 			$parts = &$parts[0];
 			if (empty($parts))
+			{
 				return '';
+			}
 			// Code to identify strings which we should not change anything.
 			// Each time, a line to set and a line to reset the flag.
 			// Code qui identifie les chaînes dans lesquelles il ne faut rien faire
 			// À chaque fois, une ligne pour armer, une ligne pour désarmer
-			foreach ($parts as $index => $part) {
+			foreach ($parts as $index => $part) 
+			{
 				// Code
 				if (strstr($part, '[code'))
 					$code = true;
@@ -183,16 +184,17 @@ class listener implements EventSubscriberInterface
 					$script = false;
 				if (!($part{0} == '<' && $parts[$index + 1]{0} == '>') &&
 					!($part{0} == '[' && $parts[$index + 1]{0} == ']') &&
-					empty($img) && empty($code) && empty($link) && empty($script) ) {
-					// var_dump ($part);
-					$part = preg_replace ($rech, $remp, $part);
-					// var_dump ($part);
-					$parts[$index] = $part;
+					empty($img) && empty($code) && empty($link) && empty($script) ) 
+					{
+						// var_dump ($part);
+						$part = preg_replace ($rech, $remp, $part);
+						// var_dump ($part);
+						$parts[$index] = $part;
 					}
-				}
+			}
 			unset ($part);
 			return implode ("", $parts);
-			}
+		}
 	}	// glossary_pass
 
 
@@ -265,5 +267,5 @@ class listener implements EventSubscriberInterface
 		return $glossterms;
 	}	// compute_glossary_list
 
-}	
+}
 

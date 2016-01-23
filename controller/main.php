@@ -83,7 +83,7 @@ class main
 		{
 			redirect(append_sid($this->phpbb_root_path . 'index.' . $this->phpEx));
 		}
-		
+
 		// Variables
 		$mode   = $this->request->variable('mode', '');
 		$action = $this->request->variable('action', '');
@@ -91,7 +91,7 @@ class main
 		// var_dump ($mode);
 		// var_dump ($code);
 		// var_dump ($action);
-		
+
 		// String loading
 		$this->user->add_lang_ext('lmdi/gloss', 'edit_gloss');
 
@@ -102,7 +102,7 @@ class main
 			'code'		=> $code,
 		));
 
-		switch($mode)
+		switch ($mode)
 		{
 			case 'glosspict':
 				$this->glosspict->main();

@@ -41,19 +41,19 @@ class glossedit
 	*
 	*/
 	public function __construct(
-		\phpbb\template\template $template, 
-		\phpbb\user $user, 
-		\phpbb\db\driver\driver_interface $db, 
-		\phpbb\controller\helper $helper, 
-		\phpbb\auth\auth $auth, 
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\controller\helper $helper,
+		\phpbb\auth\auth $auth,
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
 		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
 		\phpbb\request\request $request,
 		$table_prefix,
-		$phpEx, 
-		$phpbb_root_path, 
+		$phpEx,
+		$phpbb_root_path,
 		$glossary_table,
 		\phpbb\files\factory $files_factory = null
 		)
@@ -72,7 +72,7 @@ class glossedit
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
-		
+
 		if ($files_factory)
 		{
 			$this->files_factory = $files_factory;
@@ -81,7 +81,7 @@ class glossedit
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
-	
+
 	var $u_action;
 
 	function get_def_language ($table, $colonne)
@@ -109,16 +109,21 @@ class glossedit
 	$delete = $this->request->variable ('delete', "rien");
 	$save   = $this->request->variable ('save', "rien");
 	if ($delete != 'rien')
+	{
 		$action = 'delete';
+	}
 	if ($save != 'rien')
+	{
 		$action = 'save';
+	}
 	// var_dump ($action);
-	
+
 	$str_colon = $this->user->lang['COLON'];
-	
+
 	switch ($action) {
 		case "edit" :
-			if ($num < 0) {	// Item creation - Création d'une fiche
+			if ($num < 0)	// Item creation - Création d'une fiche
+			{
 				$code = "";
 				$vari = "";
 				$term = "";
@@ -126,8 +131,9 @@ class glossedit
 				$pict = "";
 				$lang = $this->get_def_language ($table, 'lang');
 				$str_action = $this->user->lang['GLOSS_CREAT'];
-				}
-			else {			// Item edition - Édition d'une fiche
+			}
+			else			// Item edition - Édition d'une fiche
+			{
 				$sql  = "SELECT * ";
 				$sql .= "FROM $table ";
 				$sql .= "WHERE term_id = \"$num\" ";
@@ -141,7 +147,7 @@ class glossedit
 				$lang = $row['lang'];
 				$this->db->sql_freeresult ($result);
 				$str_action = $this->user->lang['GLOSS_EDIT'];
-				}
+			}
 			$str_variants = $this->user->lang['GLOSS_VARIANTS'] . $str_colon;
 			$str_terme = $this->user->lang['GLOSS_TERM'] . $str_colon;
 			$str_varex = $this->user->lang['GLOSS_VARIANTS_EX'];
@@ -234,7 +240,7 @@ class glossedit
 			if (strlen ($description) > 500)
 			{
 				$description = substr ($description, 0, 500);
-			}	
+			}
 			$lang        = $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
 			$coche       = $this->request->variable ('coche', "", true);
 			if ($coche) 
@@ -297,7 +303,7 @@ class glossedit
 				$sql .= "WHERE term_id = \"$term_id\" ";
 				$sql .= "LIMIT 1";
 				$this->db->sql_query ($sql);	
-			}	
+			}
 			// Purge the cache
 			$this->cache->destroy('_glossterms');	
 			// Redirection
@@ -342,13 +348,13 @@ class glossedit
 			$abc_links = "<span id=\"haut\"></span>\n";
 			$abc_links .= "<h2 class=\"login-title\">$str_titre</h2>";
 			$abc_links .= "<p class=\"glossa\">";
-			
+
 			$corps  = "<table class=\"deg\"><tr class=\"deg\">";
 			$corps .= "<th class=\"deg0\">$str_terme</th>";
 			$corps .= "<th class=\"deg0\">$str_defin</th>";
 			$corps .= "<th class=\"deg1\">$str_illus</th>";
 			$corps .= "<th class=\"deg1\">$str_action</th></tr>";
-			
+
 			$cpt  = 0;
 			$str_edit  = $this->user->lang['GLOSS_ED_EDIT'];
 			$top = $this->ext_path_web . "/styles/top.gif";
@@ -368,7 +374,8 @@ class glossedit
 				$cpt++;
 				$corps .= "\n<tr class=\"deg\"><td class=\"glossi\" colspan=\"3\" id=\"$l\">&nbsp;$l</td>";
 				$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"$top\"></a></td></tr>";
-				while ($arow = $this->db->sql_fetchrow ($result2)) {
+				while ($arow = $this->db->sql_fetchrow ($result2))
+				{
 					// print_r ($arow);
 					// echo ("<br>");
 					$code = $arow['term_id'];
@@ -395,9 +402,9 @@ class glossedit
 					$corps .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 					$corps .= "\">$str_edit</a></td>";
 					$corps .= "</tr>";
-					}	// Fin du while sur le contenu
+				}	// Fin du while sur le contenu
 				$this->db->sql_freeresult ($result2);
-				}	// Fin du while sur les initiales
+			}	// Fin du while sur les initiales
 			$this->db->sql_freeresult ($result);
 			$corps .= "</table>";
 			$abc_links .= "</p>\n";
@@ -410,11 +417,11 @@ class glossedit
 			$illustration .= "\"><b>$str_ici</b></a>.";		
 			break;
 		}	// Fin du switch sur action
-		
+
 	// Appel de l'en-tête en spécifiant un titre et l'onglet du navigateur
 	$titre = $this->user->lang['TGLOSSAIRE'];
 	page_header($titre);
-	
+
 	$this->template->set_filenames (array(
 		'body' => 'gloss/glossaire.html',
 	));
@@ -428,8 +435,8 @@ class glossedit
 
 	make_jumpbox(append_sid($this->phpbb_root_path . 'viewforum.' . $this->phpEx));
 	page_footer();
-	}		
-	
+	}
+
 	// Uploading function for phpBB 3.1.x
 	function upload_31x (&$errors) 
 	{
@@ -490,4 +497,3 @@ class glossedit
 		return ($filename);
 	}
 }
-?>

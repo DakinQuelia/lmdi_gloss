@@ -15,7 +15,7 @@ class gloss_module {
 	var $u_action;
 	var $action;
 	/** @var string */
-	
+
 	function get_def_language ($table, $colonne)
 	{
 		global $db;
@@ -28,7 +28,7 @@ class gloss_module {
 		$db->sql_freeresult ($result);
 		return ($default);
 	}
-	
+
 	function role_addition ($group, $role)
 	{
 		global $table_prefix, $db;
@@ -41,7 +41,7 @@ class gloss_module {
 		// var_dump ($sql);
 		$db->sql_query($sql);
 	}
-	
+
 	function role_deletion ($group, $role)
 	{
 		global $table_prefix, $db;
@@ -53,7 +53,7 @@ class gloss_module {
 		// DELETE from phpbb3_acl_groups WHERE group_id = '4415' AND auth_role_id = '52'
 		$db->sql_query($sql);
 	}
-	
+
 	function group_creation($group, $desc)
 	{
 		$group_id = '';
@@ -62,19 +62,19 @@ class gloss_module {
 		$group_desc = $desc;
 		
 		$group_attributes = array(
-		    'group_colour' => '00FFFF',
-		    'group_rank' => 0,
-		    'group_avatar' => 0,
-		    'group_avatar_type' => 0,
-		    'group_avatar_width' => 0,
-		    'group_avatar_height' => 0,
-		    'group_legend' => 0,
-		    'group_receive_pm' => 1,
-			);    
+			'group_colour' => '00FFFF',
+			'group_rank' => 0,
+			'group_avatar' => 0,
+			'group_avatar_type' => 0,
+			'group_avatar_width' => 0,
+			'group_avatar_height' => 0,
+			'group_legend' => 0,
+			'group_receive_pm' => 1,
+			);
 		// File includes/functions_user.php
 		$group = group_create($group_id, $group_type, $group_name, $group_desc, $group_attributes);
 	}
-	
+
 	function get_role_id ($role_name)
 	{
 		global $table_prefix, $db;
@@ -96,7 +96,7 @@ class gloss_module {
 		$db->sql_freeresult ($result);
 		return ($group_id);
 	}
-	
+
 	function group_deletion ($group)
 	{
 		$group_id = $this->get_group_id ($group);
@@ -105,7 +105,7 @@ class gloss_module {
 			group_delete($group_id, $group);
 		}
 	}
-	   
+
 	function build_lang_select ()
 	{
 		global $table_prefix, $db, $user;
@@ -133,7 +133,7 @@ class gloss_module {
 		$db->sql_freeresult($result);
 		return ($select);
 	}
-	
+
 	function main ($id, $mode) 
 	{
 		global $db, $user, $auth, $template, $cache, $request;
@@ -147,9 +147,10 @@ class gloss_module {
 
 		$action = $request->variable ('action', '');
 		$action_config = $this->u_action . "&action=config";
-	
+
 		// var_dump ($action);
-		switch ($action) {
+		switch ($action)
+		{
 			case 'config':
 				// Update configuration
 				$title = $request->variable('lmdi_gloss_title', '0');
@@ -201,7 +202,7 @@ class gloss_module {
 						$this->role_deletion ($usergroup, $userrole);
 						$this->group_deletion ($usergroup);
 					}
-						
+
 				}
 				// Admin group creation/deletion
 				$ag = $request->variable('lmdi_gloss_agroup', '0');
@@ -229,7 +230,7 @@ class gloss_module {
 				$message = $user->lang['CONFIG_UPDATED'];
 				trigger_error($message . adm_back_link ($this->u_action));
 				break;
-			}	
+		}
 
 		$select = $this->build_lang_select ();
 		$pixels = $config['lmdi_glossary_pixels'];
@@ -243,14 +244,14 @@ class gloss_module {
 			$poids = 150;
 		}
 		$template->assign_vars (array(
-			'C_ACTION'      	=> $action_config,
-			'ALLOW_FEATURE_NO' 	=> $config['lmdi_glossary_ucp'] == 0 ? 'checked="checked"' : '',
-			'ALLOW_FEATURE_YES' => $config['lmdi_glossary_ucp'] == 1 ? 'checked="checked"' : '',
-			'ALLOW_TITLE_NO' 	=> $config['lmdi_glossary_title'] == 0 ? 'checked="checked"' : '',
+			'C_ACTION'		=> $action_config,
+			'ALLOW_FEATURE_NO'	=> $config['lmdi_glossary_ucp'] == 0 ? 'checked="checked"' : '',
+			'ALLOW_FEATURE_YES'	=> $config['lmdi_glossary_ucp'] == 1 ? 'checked="checked"' : '',
+			'ALLOW_TITLE_NO'	=> $config['lmdi_glossary_title'] == 0 ? 'checked="checked"' : '',
 			'ALLOW_TITLE_YES'	=> $config['lmdi_glossary_title'] == 1 ? 'checked="checked"' : '',
-			'CREATE_UGROUP_NO' 	=> $config['lmdi_glossary_usergroup'] == 0 ? 'checked="checked"' : '',
+			'CREATE_UGROUP_NO'	=> $config['lmdi_glossary_usergroup'] == 0 ? 'checked="checked"' : '',
 			'CREATE_UGROUP_YES'	=> $config['lmdi_glossary_usergroup'] == 1 ? 'checked="checked"' : '',
-			'CREATE_AGROUP_NO' 	=> $config['lmdi_glossary_admingroup'] == 0 ? 'checked="checked"' : '',
+			'CREATE_AGROUP_NO'	=> $config['lmdi_glossary_admingroup'] == 0 ? 'checked="checked"' : '',
 			'CREATE_AGROUP_YES'	=> $config['lmdi_glossary_admingroup'] == 1 ? 'checked="checked"' : '',
 			'S_PIXELS'		=> $pixels,
 			'S_POIDS'			=> $poids,
@@ -258,5 +259,5 @@ class gloss_module {
 			));
 
 	}	
-	
-} 	
+
+}

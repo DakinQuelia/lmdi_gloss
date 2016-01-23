@@ -48,15 +48,15 @@ class glossaire
 	*
 	*/
 	public function __construct(
-		\phpbb\template\template $template, 
-		\phpbb\user $user, 
-		\phpbb\db\driver\driver_interface $db, 
-		\phpbb\controller\helper $helper, 
-		\phpbb\auth\auth $auth, 
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\controller\helper $helper,
+		\phpbb\auth\auth $auth,
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
-		$phpEx, 
-		$phpbb_root_path, 
+		$phpEx,
+		$phpbb_root_path,
 		$glossary_table)
 	{
 		$this->template 		= $template;
@@ -73,7 +73,7 @@ class glossaire
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
-	
+
 	var $u_action;
 
 	function main()
@@ -112,7 +112,8 @@ class glossaire
 			$cpt++;
 			$corps .= "<tr class=\"deg\"><td class=\"glossi\" colspan=\"2\" id=$l>&nbsp;$l</td>";
 			$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"$top\"></a></td></tr>";
-			while ($arow = $this->db->sql_fetchrow($result2)) {
+			while ($arow = $this->db->sql_fetchrow($result2)) 
+			{
 				$code = $arow['term_id'];
 				$vari = $arow['variants'];
 				$term = $arow['term'];
@@ -125,27 +126,30 @@ class glossaire
 				/*	Nous ne mettons un lien cliquable que si l'image est différente de nopict.
 					Link only if the picture is not nopict.
 					*/
-				  if ($pict != "nopict") {
+				if ($pict != "nopict") 
+				{
 					$url = $this->helper->route('lmdi_gloss_controller', array('mode' => 'glosspict', 'code' => $code, 'term' =>$term, 'pict' => $pict));
-					   $corps .= '<a href="' . $url . '">' . $str_action . '</a></td>';
-					   }
-				  else {
-					   $corps .= "&nbsp;</td>";
-					   }
+					$corps .= '<a href="' . $url . '">' . $str_action . '</a></td>';
+				}
+				else 
+				{
+					$corps .= "&nbsp;</td>";
+				}
 				$corps .= "</tr>";
-				}	// Fin du while sur le contenu - end of while on contents
+			}	// Fin du while sur le contenu - end of while on contents
 			$this->db->sql_freeresult ($result2);
-			}	// Fin du while sur les initiales - End of while on initial caps
+		}	// Fin du while sur les initiales - End of while on initial caps
 		$this->db->sql_freeresult ($result);
 		$corps .= "</table>";
 		// End of the ABC links with a link to the Edition page for administrators/editors
 		// Fermeture de la ligne de liens avec un lien vers la page d'édition
 		$str_admin = $this->user->lang['GLOSS_EDITION'];
-		if ($this->auth->acl_get('u_lmdi_glossary') || $this->auth->acl_get('a_lmdi_glossary')) {	
+		if ($this->auth->acl_get('u_lmdi_glossary') || $this->auth->acl_get('a_lmdi_glossary'))
+		{
 			$abc_links .= ' -- <a href="';
 			$abc_links .= append_sid("{$this->phpbb_root_path}app.php/gloss?mode=glossedit");
 			$abc_links .= '">' . $str_admin . '</a>';
-			}
+		}
 		$abc_links .= "</p><br />";
 
 		// Bibliographie 
@@ -171,5 +175,3 @@ class glossaire
 		page_footer();
 	}
 }
-
-	

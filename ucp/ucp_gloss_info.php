@@ -19,12 +19,11 @@ class ucp_gloss_info
 			'title'     	=> 'UCP_GLOSS_TITLE',
 			'version'   	=> '1.0.0',
 			'modes'		=> array(
-				'glossary' => array('title' => 'UCP_GLOSS', 
-							'auth' => 'ext_lmdi/gloss', 
+				'glossary' => array('title' => 'UCP_GLOSS',
+							'auth' => 'ext_lmdi/gloss',
 							'cat' => array('UCP_GLOSS_TITLE')),
 			),
 		);
 	}
 
 }
-

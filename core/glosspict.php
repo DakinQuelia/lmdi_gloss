@@ -67,12 +67,12 @@ class glosspict
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
-	
+
 	var $u_action;
 
 	function main()
 	{
-		
+
 		$click = $this->user->lang['GLOSS_CLICK'];
 		$view = $this->user->lang['GLOSS_VIEW'];
 		$pict = $this->request->variable ('pict', '');
@@ -81,10 +81,10 @@ class glosspict
 		$terme = "<p class=\"copyright\"><b>$term</b></p>";
 		$corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=$pict></a></p>";
 		$retour = "<p class=\"copyright\">$click</p>";
-			
+
 		page_header($view);
 		$this->template->set_filenames (array (
-		    'body' => 'glossaire.html',
+			'body' => 'glossaire.html',
 		));
 
 		// Passage des chaînes à afficher
@@ -96,9 +96,7 @@ class glosspict
 			'U_BIBLIO'		=> $retour,
 		));
 
-
 		make_jumpbox(append_sid("{$this->phpbb_root_path}viewforum.$this->phpEx"));
 		page_footer();
 	}
 }
-?>

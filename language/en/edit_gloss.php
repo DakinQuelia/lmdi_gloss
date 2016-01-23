@@ -19,7 +19,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge ($lang, array(
 // Static Glossary page
-   	'ILLUSTRATION'	=>  "Some terms have an explicative illustration.<br />In such a case, there is a link at the end of the row.<br />Click on it to display the picture.<br />Click on the picture again to come back.",
+	'ILLUSTRATION'	=>  "Some terms have an explicative illustration.<br />In such a case, there is a link at the end of the row.<br />Click on it to display the picture.<br />Click on the picture again to come back.",
 	'GLOSS_DISPLAY'	=> 'Display',
 	'GLOSS_CLICK'		=> 'Click on the picture to come back to previous page.',
 	'GLOSS_VIEW'		=> 'Glossary Viewer',
@@ -71,5 +71,5 @@ $lang = array_merge ($lang, array(
 	'LMDI_GLOSS_WRONG_FILESIZE'		=> 'The file size must be below %1d kB.',
 	'LMDI_GLOSS_WRONG_SIZE'			=> 'The specified file has a width of %3$d pixels and a height of %4$d pixels. The file cannot be over %1$d pixels width and %2$d height.',
 	'LMDI_CLICK_BACK'				=> 'Click <a href="javascript:history.go(-1);"><b>here</b></a> to come back to the edition form.',
-	
- ));
+
+));

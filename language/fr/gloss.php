@@ -18,7 +18,7 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge ($lang, array(
-    	'LGLOSSAIRE'			=> 'Glossaire',
+	'LGLOSSAIRE'			=> 'Glossaire',
 	'TGLOSSAIRE'			=> 'Glossaire',
 // UCP
 	'UCP_GLOSS_TITLE'	=> 'Glossaire',
@@ -26,20 +26,20 @@ $lang = array_merge ($lang, array(
 	'UCP_CONFIG_SAVED'	=> 'La configuration a bien été enregistrée.<br /><br />%sCliquez ici pour revenir à la page précédente.%s',
 	'UCP_ENABLE'		=> 'Validation de la fonction de glossaire',
 	'UCP_ENABLE_EXPLAIN' => 'Le glossaire affiche une explication (et éventuellement une illustration) lorsque vous cliquez sur les termes techniques dans les sujets du forum.',
-	
+
 // Installation
 	'ROLE_GLOSS_ADMIN'	=> 'Administrateurs du glossaire',
 	'ROLE_GLOSS_EDITOR'	=> 'Éditeurs du glossaire',
 	'ROLE_DESCRIPTION_GLOSS_ADMIN' => 'Modèle des administrateurs chargés de gérer le glossaire et ses éditeurs',
 	'ROLE_DESCRIPTION_GLOSS_EDITOR' => 'Modèle des utilisateurs chargés de l\'édition du glossaire',
-	
+
 // ACP
 	'ACP_GLOSS_TITLE'	=> 'Glossaire',
 	'ACP_GLOSS'	=> 'Paramétrage de l\'extension',
-     'ALLOW_FEATURE'        => 'Validation de la fonction de glossaire',
-     'ALLOW_FEATURE_EXPLAIN'        => 'Vous pouvez valider ou inhiber la fonction au niveau du forum. Si vous validez, l\'utilisateur pourra s\'il le souhaite inhiber l\'affichage des termes du glossaire dans les messages du forum (à partir du panneau de l\'utilisateur).',
+	'ALLOW_FEATURE'        => 'Validation de la fonction de glossaire',
+	'ALLOW_FEATURE_EXPLAIN'        => 'Vous pouvez valider ou inhiber la fonction au niveau du forum. Si vous validez, l\'utilisateur pourra s\'il le souhaite inhiber l\'affichage des termes du glossaire dans les messages du forum (à partir du panneau de l\'utilisateur).',
 	'ALLOW_TITLE'        => 'Validation des infobulles',
-     'ALLOW_TITLE_EXPLAIN'        => 'Vous pouvez valider ou inhiber l\'affichage d\'une infobulle lorsque le curseur passe au-dessus du terme dans les messages du forum. Si la description est très longue, elle est tronquée à 50 caractères.',
+	'ALLOW_TITLE_EXPLAIN'        => 'Vous pouvez valider ou inhiber l\'affichage d\'une infobulle lorsque le curseur passe au-dessus du terme dans les messages du forum. Si la description est très longue, elle est tronquée à 50 caractères.',
 	'CREATE_UGROUP'		=> 'Création d\'un groupe d\'utilisateurs',
 	'CREATE_UGROUP_EXPLAIN'	=> 'Vous pouvez créer un groupe d\'utilisateurs auquel vous attribuerez le rôle d\'éditeur des rubriques du glossaire qui a été créé lors de l\'installation de l\'extension. Vous pouvez ensuite placer dans ce groupe les utilisateurs chargés de cette tâche.',
 	'CREATE_AGROUP'		=> 'Création d\'un groupe d\'administrateurs',
@@ -50,5 +50,5 @@ $lang = array_merge ($lang, array(
 	'PIXELS_EXPLAIN'	=> 'Indiquez ici la taille maximale de l\'image en pixels (sur le plus grand côté).',
 	'POIDS'			=> 'Poids de l\'image',
 	'POIDS_EXPLAIN'	=> 'Indiquez ici le poids maximal de l\'image téléchargée (en ko).',
-	
- ));
+
+));
