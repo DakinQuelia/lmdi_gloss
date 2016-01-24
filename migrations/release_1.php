@@ -241,7 +241,7 @@ class release_1 extends \phpbb\db\migration\migration
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$nb = $row['nb'];
-		return ((int)$nb);
+		return ((int) $nb);
 	}
 
 	public function rename_table($table)

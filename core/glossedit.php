@@ -244,7 +244,7 @@ class glossedit
 			}
 			$lang		= $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
 			$coche		= $this->request->variable ('coche', "", true);
-			if ($coche) 
+			if ($coche)
 			{
 				$picture = $this->request->variable ('pict', "", true);
 				// var_dump ($picture);
@@ -253,7 +253,7 @@ class glossedit
 					$picture = "nopict";
 				}
 			}
-			else 
+			else
 			{
 				$errors = array ();
 				// Which version are we using?
@@ -269,7 +269,7 @@ class glossedit
 				{
 					$nb = count ($errors);
 					$message = "";
-					for ($i = 0;$i < $nb ;$i++) 
+					for ($i = 0; $i < $nb; $i++)
 					{
 						$message .= $errors[$i];
 						$message .= "<br>";
@@ -292,7 +292,7 @@ class glossedit
 				$this->db->sql_query ($sql);
 				$term_id = $this->db->sql_nextid();
 			}
-			else 
+			else
 			{
 				$sql  = "UPDATE $table SET ";
 				$sql .= "term_id       = \"$term_id\", ";
@@ -329,7 +329,7 @@ class glossedit
 			$cap = substr ($this->request->variable ('term', "", true), 0, 1);
 			$params = "mode=glossedit";
 			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
-			$url .= "#$cap";		// Anchor target = initial cap 
+			$url .= "#$cap";		// Anchor target = initial cap
 			redirect ($url);
 			break;
 		case "rien" :
@@ -358,7 +358,7 @@ class glossedit
 			$cpt  = 0;
 			$str_edit  = $this->user->lang['GLOSS_ED_EDIT'];
 			$top = $this->ext_path_web . "/styles/top.gif";
-			while ($row = $this->db->sql_fetchrow ($result)) 
+			while ($row = $this->db->sql_fetchrow ($result))
 			{
 				// print_r ($row);
 				$l = $row['a'];
@@ -389,13 +389,13 @@ class glossedit
 					$corps .= "<td class=\"deg0\">$desc</td>";
 					// Lien cliquable si l'image est différente de nopict.
 					// Clickable link if picture != nopict
-					if ($pict != "nopict") 
+					if ($pict != "nopict")
 					{
 						$params  = "mode=glosspict&pict=$pict&terme=$term";
 						$url = append_sid ($this->phpbb_root_path .'app.'.$this->phpEx .'/gloss', $params);
 						$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
 					}
-					else 
+					else
 					{
 						$corps .= "<td class=\"deg1\">$pict</td>";
 					}
@@ -441,7 +441,7 @@ class glossedit
 	}
 
 	// Uploading function for phpBB 3.1.x
-	function upload_31x (&$errors) 
+	function upload_31x (&$errors)
 	{
 		include_once($this->phpbb_root_path . 'includes/functions_upload.' . $this->phpEx);
 		// Set upload directory
@@ -474,7 +474,7 @@ class glossedit
 	}
 
 	// Uploading function for phpBB 3.2.x
-	function upload_32x (&$errors) 
+	function upload_32x (&$errors)
 	{
 		// Set upload directory
 		$upload_dir = $this->ext_path_web . 'glossaire';

@@ -204,7 +204,7 @@ class listener implements EventSubscriberInterface
 				}
 				if (!($part{0} == '<' && $parts[$index + 1]{0} == '>') &&
 					!($part{0} == '[' && $parts[$index + 1]{0} == ']') &&
-					empty($img) && empty($code) && empty($link) && empty($script) ) 
+					empty($img) && empty($code) && empty($link) && empty($script))
 				{
 					// var_dump ($part);
 					$part = preg_replace ($rech, $remp, $part);
@@ -227,13 +227,13 @@ class listener implements EventSubscriberInterface
 		chaque rubrique un élément rech qui est la chaîne à rechercher et un
 		élément remp qui est la chaîne de remplacement :
 		<acronym class='id302' title=''>rostre</acronym>
-		L'élément 'title' peut contenir les 50 premiers caractères de la chaîne de 
+		L'élément 'title' peut contenir les 50 premiers caractères de la chaîne de
 		description (voir dans le panneau d'administration).
 		*/
-	function compute_glossary_list() 
+	function compute_glossary_list()
 	{
 		$glossterms = $this->cache->get('_glossterms');
-		if ($glossterms === false) 
+		if ($glossterms === false)
 		{
 			$sql  = "SELECT * FROM $this->glossary_table ";
 			// WHERE lang = '" . $user->data['user_lang'] . "'
@@ -241,7 +241,7 @@ class listener implements EventSubscriberInterface
 			$result = $this->db->sql_query($sql);
 			$glossterms = array();
 			$title = $this->config['lmdi_glossary_title'];
-			while ($row = $this->db->sql_fetchrow($result)) 
+			while ($row = $this->db->sql_fetchrow($result))
 			{
 				$variants = explode (",", $row['variants']);
 				// var_dump ($variants);
@@ -260,7 +260,7 @@ class listener implements EventSubscriberInterface
 				}
 				// var_dump ($desc);
 				$cnt = count ($variants);
-				for ($i = 0 ; $i < $cnt ; $i++) 
+				for ($i = 0; $i < $cnt; $i++)
 				{
 					$variant = trim ($variants[$i]);
 					// comma at end => empty string
@@ -282,10 +282,9 @@ class listener implements EventSubscriberInterface
 			}
 			$this->db->sql_freeresult($result);
 			$this->cache->put('_glossterms', $glossterms, 86400);		// 24 h
-			
+
 		}
 		return $glossterms;
 	}	// compute_glossary_list
 
 }
-

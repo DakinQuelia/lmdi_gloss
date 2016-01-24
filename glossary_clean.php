@@ -2,8 +2,8 @@
 // glossary_clean.php
 // (c) 2016 - LMID - Pierre Duhem
 // PHP script deleting all entries created by the extension in the database
-// To be used if the normal desactivation/data deletion doesn't work. 
-// Don't forget to empty the cache afterwards. 
+// To be used if the normal desactivation/data deletion doesn't work.
+// Don't forget to empty the cache afterwards.
 
 define('IN_PHPBB', true);
 $phpbb_root_path = '../../../';
@@ -37,5 +37,3 @@ $db->sql_query($sql4);
 $db->sql_query($sql5);
 $db->sql_query($sql6);
 $cache->purge ();
-
-?>
