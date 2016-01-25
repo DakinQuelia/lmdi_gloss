@@ -40,7 +40,8 @@ class release_1 extends \phpbb\db\migration\migration
 						'picture'	=> array ('VCHAR:80', ''),
 						'lang'	=> array ('VCHAR:2', 'en'),
 					),
-					'PRIMARY_KEY'   => 'term_id',
+					'PRIMARY_KEY'	=> 'term_id',
+					'KEYS'		=> 'term',
 				),
 			),
 			'add_columns'	=> array(
