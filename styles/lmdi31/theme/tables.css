@@ -86,10 +86,16 @@ td.deg2 {
 	text-align: center;
 	vertical-align: bottom;
 	}
-.glossa {
+.glossa  {
 	padding: 25px 0 5px 0;
 	color: #576357;
 	font-size: 300%;
+	font-weight: bold;
+	}
+.cap  {
+	padding: 5px 5px 5px 5x;
+	color: #576357;
+	font-size: 200%;
 	font-weight: bold;
 	}
 

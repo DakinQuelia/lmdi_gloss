@@ -14,16 +14,10 @@ class glossedit
 	protected $user;
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
-	/** @var \phpbb\controller\helper */
-	protected $helper;
-	/** @var \phpbb\auth\auth */
-	protected $auth;
 	/** @var \phpbb\extension\manager "Extension Manager" */
 	protected $ext_manager;
 	/** @var \phpbb\path_helper */
 	protected $path_helper;
-	/** @var \phpbb\cache\service */
-	protected $cache;
 	/** @var \phpbb\config\config */
 	protected $config;
 	/** @var \phpbb\files\factory */
@@ -38,22 +32,17 @@ class glossedit
 	/**
 	* Constructor
 	*
-	*
 	*/
 	public function __construct(
 		\phpbb\template\template $template,
 		\phpbb\user $user,
 		\phpbb\db\driver\driver_interface $db,
-		\phpbb\controller\helper $helper,
-		\phpbb\auth\auth $auth,
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
-		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
 		\phpbb\request\request $request,
-		$table_prefix,
-		$phpEx,
 		$phpbb_root_path,
+		$phpEx,
 		$glossary_table,
 		\phpbb\files\factory $files_factory = null
 		)
@@ -61,14 +50,10 @@ class glossedit
 		$this->template 		= $template;
 		$this->user 			= $user;
 		$this->db 			= $db;
-		$this->helper 			= $helper;
-		$this->auth			= $auth;
 		$this->ext_manager	 	= $ext_manager;
 		$this->path_helper	 	= $path_helper;
-		$this->cache             = $cache;
 		$this->config            = $config;
 		$this->request 		= $request;
-		$this->table_prefix		= $table_prefix;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
@@ -360,16 +345,15 @@ class glossedit
 			$top = $this->ext_path_web . "/styles/top.gif";
 			while ($row = $this->db->sql_fetchrow ($result))
 			{
-				// print_r ($row);
 				$l = $row['a'];
-				$abc_links .= "<a href =\"#$l\">$l</a> " ;
+				$abc_links .= "&nbsp;<a class=\"cap\" href =\"#$l\">$l</a>&nbsp;" ;
+				// $abc_links .= "<a href =\"#$l\">$l</a> " ;
 
 				$sql  = "SELECT * ";
 				$sql .= "FROM $table ";
 				$sql .= "WHERE LEFT($table.term, 1) = \"$l\" ";
 				// $sql .= "WHERE lang = '" . $this->user->lang['USER_LANG'] . "' ";
 				$sql .= "ORDER BY term";
-				// echo ("Valeur de la requête : $sql.<br>\n");
 				$result2 = $this->db->sql_query ($sql);
 
 				$cpt++;
@@ -377,8 +361,6 @@ class glossedit
 				$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"$top\"></a></td></tr>";
 				while ($arow = $this->db->sql_fetchrow ($result2))
 				{
-					// print_r ($arow);
-					// echo ("<br>");
 					$code = $arow['term_id'];
 					$vari = $arow['variants'];
 					$term = $arow['term'];
@@ -391,7 +373,7 @@ class glossedit
 					// Clickable link if picture != nopict
 					if ($pict != "nopict")
 					{
-						$params  = "mode=glosspict&pict=$pict&terme=$term";
+						$params  = "mode=glosspict&code=-1&pict=$pict&terme=$term";
 						$url = append_sid ($this->phpbb_root_path .'app.'.$this->phpEx .'/gloss', $params);
 						$corps .= "<td class=\"deg1\"><a href=\"$url\">$pict</a></td>";
 					}
@@ -412,7 +394,6 @@ class glossedit
 			$corps .= "</table>";
 			$abc_links .= "</p>\n";
 
-			// Information sur le lien d'édition et de création
 			$str_ici = $this->user->lang['GLOSS_ED_ICI'];
 			$illustration  = $this->user->lang['GLOSS_ED_EXPL'];
 			$illustration .= "<a href=\"";
@@ -421,13 +402,20 @@ class glossedit
 			break;
 		}	// Fin du switch sur action
 
-	// Appel de l'en-tête en spécifiant un titre et l'onglet du navigateur
 	$titre = $this->user->lang['TGLOSSAIRE'];
 	page_header($titre);
 
 	$this->template->set_filenames (array(
 		'body' => 'gloss/glossaire.html',
 	));
+	
+	$params = "mode=glossedit";
+	$str_glossedit = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
+	$this->template->assign_block_vars('navlinks', array(
+			'U_VIEW_FORUM'	=> $str_glossedit,
+			'FORUM_NAME'	=> $this->user->lang['GLOSS_EDITION'],
+		));
+
 	$this->template->assign_vars (array (
 		'U_TITRE'			=> $titre,
 		'U_ABC'			=> $abc_links,

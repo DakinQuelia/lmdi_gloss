@@ -12,18 +12,14 @@ namespace lmdi\gloss\controller;
 class main
 {
 	protected $glossaire;
+	protected $glossedit;
+	protected $glosspict;
 	/** @var \phpbb\template\template */
 	protected $template;
 	/** @var \phpbb\user */
 	protected $user;
-	/** @var \phpbb\auth\auth */
-	protected $auth;
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
 	/** @var \phpbb\request\request */
 	protected $request;
-	/** @var \phpbb\config\config */
-	protected $config;
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 	/** @var string phpBB root path */
@@ -34,16 +30,6 @@ class main
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\auth\auth					$auth
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\controller\helper		 	$helper
-	* @param string 							$phpbb_root_path
-	* @param string 							$phpEx
-	*
 	*/
 	public function __construct(
 		\lmdi\gloss\core\glossaire $glossaire,
@@ -51,10 +37,7 @@ class main
 		\lmdi\gloss\core\glosspict $glosspict,
 		\phpbb\template\template $template,
 		\phpbb\user $user,
-		\phpbb\auth\auth $auth,
-		\phpbb\db\driver\driver_interface $db,
 		\phpbb\request\request $request,
-		\phpbb\config\config $config,
 		\phpbb\controller\helper $helper,
 		$phpbb_root_path,
 		$phpEx)
@@ -64,10 +47,7 @@ class main
 		$this->glosspict		 	= $glosspict;
 		$this->template 			= $template;
 		$this->user 				= $user;
-		$this->auth 				= $auth;
-		$this->db 				= $db;
 		$this->request 			= $request;
-		$this->config 				= $config;
 		$this->helper 				= $helper;
 		$this->phpbb_root_path 		= $phpbb_root_path;
 		$this->phpEx 				= $phpEx;
@@ -99,7 +79,7 @@ class main
 		$this->template->assign_block_vars('navlinks', array(
 			'U_VIEW_FORUM'	=> $this->helper->route('lmdi_gloss_controller'),
 			'FORUM_NAME'	=> $this->user->lang['LGLOSSAIRE'],
-			'code'		=> $code,
+			// 'code'		=> $code,
 		));
 
 		switch ($mode)

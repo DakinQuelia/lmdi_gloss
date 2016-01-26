@@ -37,15 +37,6 @@ class glossaire
 	/**
 	* Constructor
 	*
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\controller\helper		 	$helper
-	* @param \phpbb\config\config				$config
-	* @param									$phpEx
-	* @param									$phpbb_root_path
-	* @param string 							$glossary_table
-	*
 	*/
 	public function __construct(
 		\phpbb\template\template $template,
@@ -101,7 +92,7 @@ class glossaire
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$l = $row['a'];
-			$abc_links .= "&nbsp;<a href =\"#$l\">$l</a>&nbsp;" ;
+			$abc_links .= "&nbsp;<a class=\"cap\" href =\"#$l\">$l</a>&nbsp;" ;
 
 			$sql  = 'SELECT * 
 					FROM ' . $this->glossary_table . "
@@ -146,9 +137,9 @@ class glossaire
 		$str_admin = $this->user->lang['GLOSS_EDITION'];
 		if ($this->auth->acl_get('u_lmdi_glossary') || $this->auth->acl_get('a_lmdi_glossary'))
 		{
-			$abc_links .= ' -- <a href="';
+			$abc_links .= '</p><p><b><a href="';
 			$abc_links .= append_sid("{$this->phpbb_root_path}app.php/gloss?mode=glossedit");
-			$abc_links .= '">' . $str_admin . '</a>';
+			$abc_links .= '">' . $str_admin . '</a></b>';
 		}
 		$abc_links .= "</p><br />";
 
