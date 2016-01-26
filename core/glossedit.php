@@ -408,7 +408,7 @@ class glossedit
 	$this->template->set_filenames (array(
 		'body' => 'gloss/glossaire.html',
 	));
-	
+
 	$params = "mode=glossedit";
 	$str_glossedit = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 	$this->template->assign_block_vars('navlinks', array(

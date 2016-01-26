@@ -50,7 +50,7 @@ class glosspict
 		$this->request 		= $request;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
-		
+
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
 	}
@@ -74,7 +74,7 @@ class glosspict
 		$this->template->set_filenames (array (
 			'body' => 'glossaire.html',
 		));
-		
+
 		if ($code == -1)
 		{
 			$params = "mode=glossedit";
@@ -84,7 +84,7 @@ class glosspict
 				'FORUM_NAME'	=> $this->user->lang['GLOSS_EDITION'],
 			));
 		}
-		
+
 		$params = "mode=glosspict";
 		$str_glosspict = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 		$this->template->assign_block_vars('navlinks', array(
