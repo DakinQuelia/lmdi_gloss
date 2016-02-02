@@ -46,8 +46,8 @@ $lang = array_merge ($lang, array(
 	'CREATE_AGROUP_EXPLAIN'	=> 'Vous pouvez créer un groupe pour gérer les administrateurs du glossaire. Vous pouvez ensuite y ajouter les administrateurs sélectionnés.',
 	'LANGUAGE'		=> 'Langue par défaut',
 	'LANGUAGE_EXPLAIN'	=> 'Code de langue (par défaut langue du forum) qui est enregistré si vous ne spécifiez pas une autre langue dans le formulaire de saisie.',
-	'PIXELS'			=> 'Dimensions des images en pixels',
-	'PIXELS_EXPLAIN'	=> 'Indiquez ici la taille maximale de l\'image en pixels (sur le plus grand côté).',
+	'GLOSS_PIXELS'			=> 'Dimensions des images en pixels',
+	'GLOSS_PIXELS_EXPLAIN'	=> 'Indiquez ici la taille maximale de l\'image en pixels (sur le plus grand côté).',
 	'POIDS'			=> 'Poids de l\'image',
 	'POIDS_EXPLAIN'	=> 'Indiquez ici le poids maximal de l\'image téléchargée (en ko).',
 

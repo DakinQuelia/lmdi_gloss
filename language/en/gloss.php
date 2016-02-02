@@ -45,8 +45,8 @@ $lang = array_merge ($lang, array(
 	'CREATE_AGROUP_EXPLAIN'	=> 'You may create a group to manage the glossary administrators. You may then add administrators to this group.',
 	'LANGUAGE'		=> 'Default language',
 	'LANGUAGE_EXPLAIN'	=> 'Language code (board language by default) which will be registered in the base for the glossary term if you don\'t specify another language in the edition form.',
-	'PIXELS'			=> 'Size of uploaded pictures in pixels',
-	'PIXELS_EXPLAIN'	=> 'Set here the size (in pixels) of the long side of the uploaded pictures.',
+	'GLOSS_PIXELS'			=> 'Size of uploaded pictures in pixels',
+	'GLOSS_PIXELS_EXPLAIN'	=> 'Set here the size (in pixels) of the long side of the uploaded pictures.',
 	'POIDS'			=> 'Size in kB',
 	'POIDS_EXPLAIN'	=> 'Set here the maximum size (in kB) of the uploaded pictures.',
 
