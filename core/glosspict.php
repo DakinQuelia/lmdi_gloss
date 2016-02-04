@@ -67,7 +67,7 @@ class glosspict
 		$term = $this->request->variable ('term', '', true);
 		$code = $this->request->variable ('code', '0', true);
 		$terme = "<p class=\"copyright\"><b>$term</b></p>";
-		$corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=$pict></a></p>";
+		$corps = "<p class=\"copyright\"><a href=\"javascript:history.go(-1);\"><img src=\"$pict\"></a></p>";
 		$retour = "<p class=\"copyright\">$click</p>";
 
 		page_header($view);

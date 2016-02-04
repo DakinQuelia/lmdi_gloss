@@ -267,7 +267,6 @@ class glossedit
 					$picture = $this->db->sql_escape ($picture);
 				}
 			}
-			var_dump ($picture);
 			if ($term_id == 0)
 			{
 				$sql  = "INSERT INTO $table ";
@@ -293,12 +292,12 @@ class glossedit
 			// Purge the cache
 			$this->cache->destroy('_glossterms');
 			// Redirection
-			/*
+			// /*
 			$params = "mode=glossedit&code=$term_id";
 			$url  = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
 			$url .= "#$term_id";	// Anchor target = term_id
 			redirect ($url);
-			*/
+			// */
 			break;
 		case "delete" :
 			$term_id     = $this->db->sql_escape ($this->request->variable ('term_id', 0));
@@ -392,7 +391,7 @@ class glossedit
 			}	// Fin du while sur les initiales - End of while on initial caps
 			$this->db->sql_freeresult ($result);
 			$corps .= "</table>";
-			$abc_links .= "\n";
+			$abc_links .= "</p>\n";
 
 			$str_ici = $this->user->lang['GLOSS_ED_ICI'];
 			$illustration  = $this->user->lang['GLOSS_ED_EXPL'];
@@ -432,12 +431,8 @@ class glossedit
 	function upload_31x (&$errors)
 	{
 		include_once($this->phpbb_root_path . 'includes/functions_upload.' . $this->phpEx);
-		$temp_dir = sys_get_temp_dir ();
-		var_dump ($temp_dir);
-		phpbb_chmod ($temp_dir, CHMOD_READ | CHMOD_WRITE);
 		// Set upload directory
-		$upload_dir = $this->ext_path_web . 'glossaire';
-		// var_dump ($upload_dir);
+		$upload_dir = $this->ext_path . 'glossaire';
 		// Upload file
 		$upload = new \fileupload();
 		$upload->set_error_prefix('LMDI_GLOSS_');
@@ -448,7 +443,12 @@ class glossedit
 		$poids *= 1024;
 		$upload->set_max_filesize($poids);
 		$file = $upload->form_upload('upload_file');
-		// var_dump ($file);
+		$size = $file->filesize;
+		echo ("Taille du fichier : $size octets.<br>\n");
+		if (empty($file->filename))
+		{
+			trigger_error( 'File upload failed.' . adm_back_link($this->u_action), E_USER_WARNING);
+		}
 		if (sizeof($file->error))
 		{
 			$file->remove();
@@ -457,12 +457,6 @@ class glossedit
 			return (false);
 		}
 		$filename = $file->uploadname;
-		$fullname = $upload_dir . '/' . $filename;
-		if (!is_writable($fullname))
-		{
-			echo ("Le fichier ne peut pas être écrit.<br>\n");
-			phpbb_chmod ($fullname, CHMOD_READ | CHMOD_WRITE);
-		}
 		$file->move_file($upload_dir, true);
 		return ($filename);
 	}
@@ -471,8 +465,7 @@ class glossedit
 	function upload_32x (&$errors)
 	{
 		// Set upload directory
-		$upload_dir = $this->ext_path_web . 'glossaire';
-		// var_dump ($upload_dir);
+		$upload_dir = $this->ext_path . 'glossaire';
 		
 		/** @var \phpbb\files\upload $upload */
 		$upload = $this->files_factory->get('upload');
