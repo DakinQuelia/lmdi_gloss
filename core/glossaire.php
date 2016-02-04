@@ -110,14 +110,14 @@ class glossaire
 				$term = $arow['term'];
 				$desc = $arow['description'];
 				$pict = $arow['picture'];
-				$corps .= '<tr class="deg">';
-				$corps .= '<td class="deg0"><b>' . $term . '</b></td>';
-				$corps .= '<td class="deg0">' . $desc . '</td>';
-				$corps .= '<td class="deg1">';
+				$corps .= "\n<tr class='deg'>";
+				$corps .= "<td class='deg0'><b>$term</b></td>";
+				$corps .= "<td class='deg0'>$desc</td>";
+				$corps .= "<td class='deg1'>";
 				/*	Nous ne mettons un lien cliquable que si l'image est différente de nopict.
 					Link only if the picture is not nopict.
 					*/
-				if ($pict != "nopict")
+				if ($pict != "nopict.jpg")
 				{
 					$url = $this->helper->route('lmdi_gloss_controller', array('mode' => 'glosspict', 'code' => $code, 'term' =>$term, 'pict' => $pict));
 					$corps .= '<a href="' . $url . '">' . $str_action . '</a></td>';

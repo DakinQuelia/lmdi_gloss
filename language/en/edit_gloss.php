@@ -24,14 +24,14 @@ $lang = array_merge ($lang, array(
 	'GLOSS_CLICK'		=> 'Click on the picture to come back to previous page.',
 	'GLOSS_VIEW'		=> 'Glossary Viewer',
 	'GLOSS_BIBLIO'		=> "
-		<p class=\"m\">
+		<span class=\"m\">
 		<u>Bibliography</u><br /> 
 		<br /><br /> 
 		<u>Webography</u><br /><br />
 		<br />
 		<u>Illustrations</u><br /><br />
 		<br /> 
-		</p>",
+		</span>",
 // Glossary edition page
 	'GLOSS_EDIT'	=>'Glossary Item Edition',
 	'GLOSS_CREAT'	=>'Glossary Item Creation',
@@ -47,7 +47,7 @@ $lang = array_merge ($lang, array(
 	'GLOSS_ED_TERM'	=> 'Term',
 	'GLOSS_ED_DEF'		=> 'Definition',
 	'GLOSS_ED_PICT'	=> 'Picture',
-	'GLOSS_ED_PIEXPL'	=> 'Name of the picture file, without its extension, which must me *.jpg. The file will be uploaded in the folder ext/lmdi/gloss/glossaire.',
+	'GLOSS_ED_PIEXPL'	=> 'Name of the picture file (jpg, jpeg, gif or png). The file will be uploaded in the folder ext/lmdi/gloss/glossaire.',
 	'GLOSS_ED_ACT'		=> 'Action',
 	'GLOSS_ED_EXPL'	=> 'An edition link exists in the Action column for each entry. To create a new entry, click ',
 	'GLOSS_ED_ICI'		=> '<b>here</b>',
@@ -55,7 +55,6 @@ $lang = array_merge ($lang, array(
 	'GLOSS_LANG'		=> 'Language',
 	'GLOSS_COCHE'		=> 'No picture upload',
 	'GLOSS_COEX'		=> 'Tick the checkbox to avoid uploading a file.',
-	'UPLOAD_FILE'		=> 'Picture to upload from your computer',
 	'LMDI_GLOSS_DISALLOWED_CONTENT'	=> 'Upload has been interrupted because the file had been identified as a potential threat.',
 	'LMDI_GLOSS_DISALLOWED_EXTENSION'	=> 'The file extension <strong>%s</strong> is not allowed.',
 	'LMDI_GLOSS_EMPTY_FILEUPLOAD'		=> 'The file is empty.',

@@ -24,14 +24,14 @@ $lang = array_merge ($lang, array(
 	'GLOSS_CLICK'		=> 'Cliquez sur l\'image pour revenir à la page précédente.',
 	'GLOSS_VIEW'		=> 'Afficheur du glossaire',
 	'GLOSS_BIBLIO'		=> "
-		<p class=\"m\">
+		<span class=\"m\">
 		<u>Bibliographie</u><br /> 
 		<br /><br /> 
 		<u>Webographie</u><br /><br />
 		<br />
 		<u>Illustrations</u><br /><br />
 		<br /> 
-		</p>",
+		</span>",
 // Glossary edition page
 	'GLOSS_EDIT'	=>'Édition d\'une fiche du glossaire',
 	'GLOSS_CREAT'	=>'Création d\'une fiche du glossaire',
@@ -47,7 +47,7 @@ $lang = array_merge ($lang, array(
 	'GLOSS_ED_TERM'	=> 'Terme',
 	'GLOSS_ED_DEF'		=> 'Définition',
 	'GLOSS_ED_PICT'	=> 'Illustration',
-	'GLOSS_ED_PIEXPL'	=> 'Nom du fichier contenant l\'illustration. Ne mentionnez pas l\'extension, qui doit être *.jpg. Le fichier sera téléchargé dans le dossier ext/lmdi/gloss/glossaire.',
+	'GLOSS_ED_PIEXPL'	=> 'Nom du fichier contenant l\'illustration (jpg, jpeg, gif ou png). Le fichier sera téléchargé dans le dossier ext/lmdi/gloss/glossaire.',
 	'GLOSS_ED_ACT'		=> 'Action',
 	'GLOSS_ED_EXPL'	=> 'Un lien d\'édition existe à l\'extrémité de chaque ligne, pour apporter des modifications.<br>Pour créer une nouvelle rubrique, cliquez ',
 	'GLOSS_ED_ICI'		=> '<b>ici</b>',
@@ -55,8 +55,7 @@ $lang = array_merge ($lang, array(
 	'GLOSS_LANG'		=> 'Langue',
 	'GLOSS_COCHE'		=> 'Pas de téléchargement',
 	'GLOSS_COEX'		=> 'Cochez la case pour ne pas télécharger de fichier.',
-	'UPLOAD_FILE'		=> 'Image à charger depuis votre ordinateur',
-
+	
 	'LMDI_GLOSS_DISALLOWED_CONTENT'	=> 'Le téléchargement a été refusé parce que son contenu n\'est pas autorisé.',
 	'LMDI_GLOSS_DISALLOWED_EXTENSION'	=> 'Le téléchargement a été refusé parce que l\'extension <strong>%s</strong> n’est pas autorisée.',
 	'LMDI_GLOSS_EMPTY_FILEUPLOAD'		=> 'Le fichier téléchargé est vide.',

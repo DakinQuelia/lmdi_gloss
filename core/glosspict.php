@@ -63,7 +63,7 @@ class glosspict
 		$click = $this->user->lang['GLOSS_CLICK'];
 		$view = $this->user->lang['GLOSS_VIEW'];
 		$pict = $this->request->variable ('pict', '');
-		$pict = $this->ext_path_web . "glossaire/" . $pict . ".jpg";
+		$pict = $this->ext_path_web . "glossaire/" . $pict;
 		$term = $this->request->variable ('term', '', true);
 		$code = $this->request->variable ('code', '0', true);
 		$terme = "<p class=\"copyright\"><b>$term</b></p>";

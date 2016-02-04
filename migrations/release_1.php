@@ -200,14 +200,14 @@ class release_1 extends \phpbb\db\migration\migration
 					'variants' => 'test, tests, tested',
 					'term' => 'Test',
 					'description' => 'Test definition, etc.',
-					'picture' => 'nopict',
+					'picture' => 'nopict.jpg',
 					'lang' => 'en',
 				),
 				array (
 					'variants' => 'try, demo, trial',
 					'term' => 'Test2',
 					'description' => 'Second test definition, etc.',
-					'picture' => 'nopict',
+					'picture' => 'nopict.jpg',
 					'lang' => 'en',
 				),
 			);
