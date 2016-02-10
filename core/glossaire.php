@@ -20,17 +20,16 @@ class glossaire
 	protected $helper;
 	/** @var \phpbb\auth\auth */
 	protected $auth;
-	/** @var string */
-	protected $phpEx;
-	/** @var string phpBB root path */
-	protected $phpbb_root_path;
-	/** @var string */
-	protected $glossary_table;
 	/** @var \phpbb\extension\manager "Extension Manager" */
 	protected $ext_manager;
 	/** @var \phpbb\path_helper */
 	protected $path_helper;
+	/** @var \lmdi\gloss\core\helper */
+	protected $gloss_helper;
 	// Strings
+	protected $phpEx;
+	protected $phpbb_root_path;
+	protected $glossary_table;
 	protected $ext_path;
 	protected $ext_path_web;
 
@@ -46,6 +45,7 @@ class glossaire
 		\phpbb\auth\auth $auth,
 		\phpbb\extension\manager $ext_manager,
 		\phpbb\path_helper $path_helper,
+		\lmdi\gloss\core\helper $gloss_helper,
 		$phpEx,
 		$phpbb_root_path,
 		$glossary_table)
@@ -55,11 +55,12 @@ class glossaire
 		$this->db 			= $db;
 		$this->helper 			= $helper;
 		$this->auth			= $auth;
+		$this->ext_manager	 	= $ext_manager;
+		$this->path_helper	 	= $path_helper;
+		$this->gloss_helper		= $gloss_helper;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
 		$this->glossary_table 	= $glossary_table;
-		$this->ext_manager	 	= $ext_manager;
-		$this->path_helper	 	= $path_helper;
 
 		$this->ext_path = $this->ext_manager->get_extension_path('lmdi/gloss', true);
 		$this->ext_path_web = $this->path_helper->update_web_root_path($this->ext_path);
@@ -77,11 +78,13 @@ class glossaire
 
 		$abc_links = '<span id="haut"></span><br /><p class="glossa">';
 
-		$str_terme = $this->user->lang['GLOSS_ED_TERM'];
-		$str_defin = $this->user->lang['GLOSS_ED_DEF'];
-		$str_illus = $this->user->lang['GLOSS_ED_PICT'];
+		$str_terme  = $this->user->lang['GLOSS_ED_TERM'];
+		$str_defin  = $this->user->lang['GLOSS_ED_DEF'];
+		$str_illus  = $this->user->lang['GLOSS_ED_PICT'];
 		$str_action = $this->user->lang['GLOSS_DISPLAY'];
-
+		$str_ilinks = $this->user->lang['GLOSS_ILINKS'];
+		$str_elinks = $this->user->lang['GLOSS_ELINKS'];
+		
 		$corps  = '<table class="deg"><tr class="deg">';
 		$corps .= '<th class="deg0">' . $str_terme . '</th>';
 		$corps .= '<th class="deg0">' . $str_defin . '</th>';
@@ -105,14 +108,32 @@ class glossaire
 			$corps .= "<td class=\"haut\"><a href=\"#haut\"><img src=\"$top\"></a></td></tr>";
 			while ($arow = $this->db->sql_fetchrow($result2))
 			{
-				$code = $arow['term_id'];
-				$vari = $arow['variants'];
-				$term = $arow['term'];
-				$desc = $arow['description'];
-				$pict = $arow['picture'];
+				$code   = $arow['term_id'];
+				$vari   = $arow['variants'];
+				$term   = $arow['term'];
+				$desc   = $arow['description'];
+				$cat    = $arow['cat'];
+				$ilinks = $arow['ilinks'];
+				$elinks = $arow['elinks'];
+				$pict   = $arow['picture'];
 				$corps .= "\n<tr class='deg'>";
-				$corps .= "<td class='deg0'><b>$term</b></td>";
-				$corps .= "<td class='deg0'>$desc</td>";
+				$corps .= "<td class='deg0' id=\"$code\"><b>$term</b>";
+				if (strlen ($cat))
+				{
+					$corps .= "<br>$cat";
+				}
+				$corps .= "</td>";
+				$corps .= "<td class='deg0'>$desc";
+				if (strlen ($ilinks))
+				{
+					$ilinks = $this->gloss_helper->calcul_ilinks ($ilinks);
+					$corps .= "<br>$str_ilinks $ilinks";
+				}
+				if (strlen ($elinks))
+				{
+					$corps .= "<br>$str_elinks <a href=\"$elinks\">$elinks</a>";
+				}
+				$corps .= "</td>";
 				$corps .= "<td class='deg1'>";
 				/*	Nous ne mettons un lien cliquable que si l'image est différente de nopict.
 					Link only if the picture is not nopict.

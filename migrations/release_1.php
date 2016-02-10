@@ -11,12 +11,9 @@ namespace lmdi\gloss\migrations;
 
 // use \phpbb\db\migration\container_aware_migration;
 
-global $phpbb_root_path;
-include ($phpbb_root_path . 'includes/functions_user.php');
 
 class release_1 extends \phpbb\db\migration\migration
 {
-
 	public function effectively_installed()
 	{
 		return isset($this->config['lmdi_glossary']);
@@ -37,11 +34,14 @@ class release_1 extends \phpbb\db\migration\migration
 						'variants'	=> array ('VCHAR:80', ''),
 						'term'	=> array ('VCHAR:80', ''),
 						'description'	=> array ('VCHAR:512', ''),
+						'cat'		=> array('VCHAR:32', ''),
+						'ilinks'		=> array('VCHAR:256', ''),
+						'elinks'		=> array('VCHAR:256', ''),
 						'picture'	=> array ('VCHAR:80', ''),
 						'lang'	=> array ('VCHAR:2', 'en'),
 					),
 					'PRIMARY_KEY'	=> 'term_id',
-					'KEYS'		=> 'term',
+					'KEYS'  => array('term'  => array ('INDEX', 'term')),
 				),
 			),
 			'add_columns'	=> array(
@@ -121,6 +121,7 @@ class release_1 extends \phpbb\db\migration\migration
 
 	public function revert_data()
 	{
+
 		return array(
 			array('config.remove', array('lmdi_glossary')),
 			array('config.remove', array('lmdi_glossary_ucp')),
@@ -148,7 +149,7 @@ class release_1 extends \phpbb\db\migration\migration
 			)),
 
 			// Deletion of the group for the editors of the glossary
-			array('custom', array(array(&$this, 'group_deletion'))),
+			array('custom', array(array(&$this, 'gloss_group_deletion'))),
 
 			// Unset permissions
 			array('permission.permission_unset', array('ROLE_GLOSS_ADMIN', 'a_lmdi_glossary')),
@@ -200,13 +201,19 @@ class release_1 extends \phpbb\db\migration\migration
 					'variants' => 'test, tests, tested',
 					'term' => 'Test',
 					'description' => 'Test definition, etc.',
+					'cat' => 'S.',
+					'ilinks' => 'trial',
+					'elinks' =>'',
 					'picture' => 'nopict.jpg',
 					'lang' => 'en',
 				),
 				array (
 					'variants' => 'try, demo, trial',
-					'term' => 'Test2',
+					'term' => 'Trial',
 					'description' => 'Second test definition, etc.',
+					'cat' => 'S.',
+					'ilinks' => 'test',
+					'elinks' =>'',
 					'picture' => 'nopict.jpg',
 					'lang' => 'en',
 				),
@@ -216,7 +223,7 @@ class release_1 extends \phpbb\db\migration\migration
 	}
 
 	// See also group_creation in acp/gloss_module.php
-	public function group_deletion()
+	public function gloss_group_deletion()
 	{
 		$this->group_del ('GROUP_GLOSS_ADMIN');
 		$this->group_del ('GROUP_GLOSS_EDITOR');

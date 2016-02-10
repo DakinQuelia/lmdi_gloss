@@ -12,129 +12,13 @@ global $phpbb_root_path;
 include ($phpbb_root_path . 'includes/functions_user.php');
 
 class gloss_module {
+	
+	protected $gloss_helper;
 	var $u_action;
 	var $action;
-	/** @var string */
+	
 
-	function get_def_language ($table, $colonne)
-	{
-		global $db;
-		$sql = "SELECT DEFAULT($colonne) lg 
-			FROM (SELECT 1) AS dummy
-			LEFT JOIN $table ON True LIMIT 1";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow ($result);
-		$default = $row['lg'];
-		$db->sql_freeresult ($result);
-		return ($default);
-	}
-
-	function role_addition ($group, $role)
-	{
-		global $table_prefix, $db;
-		$group_id = $this->get_group_id ($group);
-		$role_id = $this->get_role_id ($role);
-		// ?? Vérifications préalables
-		$sql = "INSERT into ${table_prefix}acl_groups 
-			(group_id, forum_id, auth_option_id, auth_role_id, auth_setting)
-			VALUES ($group_id, 0, 0, $role_id, 0)";
-		// var_dump ($sql);
-		$db->sql_query($sql);
-	}
-
-	function role_deletion ($group, $role)
-	{
-		global $table_prefix, $db;
-		$group_id = $this->get_group_id ($group);
-		$role_id = $this->get_role_id ($role);
-		// ?? Vérifications préalables
-		$sql = "DELETE from ${table_prefix}acl_groups 
-			WHERE group_id = '$group_id' AND auth_role_id = '$role_id'";
-		// DELETE from phpbb3_acl_groups WHERE group_id = '4415' AND auth_role_id = '52'
-		$db->sql_query($sql);
-	}
-
-	function group_creation($group, $desc)
-	{
-		$group_id = '';
-		$group_type = 0;
-		$group_name = $group;
-		$group_desc = $desc;
-
-		$group_attributes = array(
-			'group_colour' => '00FFFF',
-			'group_rank' => 0,
-			'group_avatar' => 0,
-			'group_avatar_type' => 0,
-			'group_avatar_width' => 0,
-			'group_avatar_height' => 0,
-			'group_legend' => 0,
-			'group_receive_pm' => 1,
-			);
-		// File includes/functions_user.php
-		$group = group_create($group_id, $group_type, $group_name, $group_desc, $group_attributes);
-	}
-
-	function get_role_id ($role_name)
-	{
-		global $table_prefix, $db;
-		$sql = "SELECT role_id from ${table_prefix}acl_roles where role_name = '$role_name'";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow ($result);
-		$role_id = $row['role_id'];
-		$db->sql_freeresult ($result);
-		return ($role_id);
-	}
-
-	function get_group_id ($group_name)
-	{
-		global $table_prefix, $db;
-		$sql = "SELECT group_id from ${table_prefix}groups where group_name = '$group_name'";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow ($result);
-		$group_id = $row['group_id'];
-		$db->sql_freeresult ($result);
-		return ($group_id);
-	}
-
-	function group_deletion ($group)
-	{
-		$group_id = $this->get_group_id ($group);
-		if ($group_id)
-		{
-			group_delete($group_id, $group);
-		}
-	}
-
-	function build_lang_select ()
-	{
-		global $table_prefix, $db, $user;
-
-		$table = $table_prefix . 'glossary';
-		$lg = $this->get_def_language ($table, 'lang');
-		$select  = "";
-
-		$sql = 'SELECT lang_iso
-			FROM ' . LANG_TABLE . '
-			ORDER BY lang_iso';
-		$result = $db->sql_query($sql);
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$lang = $row['lang_iso'];
-			if ($lang == $lg)
-			{
-				$select .= "<option value=\"$lang\" selected>$lang</option>";
-			}
-			else
-			{
-				$select .= "<option value=\"$lang\">$lang</option>";
-			}
-		}
-		$db->sql_freeresult($result);
-		return ($select);
-	}
-
-	function main ($id, $mode)
+	public function main ($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache, $request;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -144,6 +28,8 @@ class gloss_module {
 
 		$this->tpl_name = 'acp_gloss_body';
 		$this->page_title = $user->lang('ACP_GLOSS_TITLE');
+		
+		$this->gloss_helper = $phpbb_container->get('lmdi.gloss.core.helper');
 
 		$action = $request->variable ('action', '');
 		$action_config = $this->u_action . "&action=config";
@@ -169,7 +55,7 @@ class gloss_module {
 				// Language selection
 				$lang = $request->variable('lang', '');
 				$table = $table_prefix . 'glossary';
-				$lg = $this->get_def_language ($table, 'lang');
+				$lg = $this->gloss_helper->get_def_language ($table, 'lang');
 				if ($lang != $lg)
 				{
 					$sql = "ALTER TABLE ${table_prefix}glossary ALTER COLUMN lang SET DEFAULT '$lang'";
@@ -194,13 +80,13 @@ class gloss_module {
 					// $groupdesc = 'GROUP_DESCRIPTION_GLOSS_EDITOR';
 					if ($ug)
 					{
-						$this->group_creation ($usergroup, $groupdesc);
-						$this->role_addition ($usergroup, $userrole);
+						$this->gloss_helper->group_creation ($usergroup, $groupdesc);
+						$this->gloss_helper->role_addition ($usergroup, $userrole);
 					}
 					else
 					{
-						$this->role_deletion ($usergroup, $userrole);
-						$this->group_deletion ($usergroup);
+						$this->gloss_helper->role_deletion ($usergroup, $userrole);
+						$this->gloss_helper->group_deletion ($usergroup);
 					}
 
 				}
@@ -217,13 +103,13 @@ class gloss_module {
 					// $groupdesc  = 'GROUP_DESCRIPTION_GLOSS_ADMIN';
 					if ($ag)
 					{
-						$this->group_creation ($admingroup, $groupdesc);
-						$this->role_addition ($admingroup, $adminrole);
+						$this->gloss_helper->group_creation ($admingroup, $groupdesc);
+						$this->gloss_helper->role_addition ($admingroup, $adminrole);
 					}
 					else
 					{
-						$this->role_deletion ($admingroup, $adminrole);
-						$this->group_deletion ($admingroup);
+						$this->gloss_helper->role_deletion ($admingroup, $adminrole);
+						$this->gloss_helper->group_deletion ($admingroup);
 					}
 				}
 				// Information message
@@ -232,7 +118,7 @@ class gloss_module {
 				break;
 		}
 
-		$select = $this->build_lang_select ();
+		$select = $this->gloss_helper->build_lang_select ();
 		$pixels = $config['lmdi_glossary_pixels'];
 		if (!$pixels)
 		{

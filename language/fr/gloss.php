@@ -32,6 +32,12 @@ $lang = array_merge ($lang, array(
 	'ROLE_GLOSS_EDITOR'	=> 'Éditeurs du glossaire',
 	'ROLE_DESCRIPTION_GLOSS_ADMIN' => 'Modèle des administrateurs chargés de gérer le glossaire et ses éditeurs',
 	'ROLE_DESCRIPTION_GLOSS_EDITOR' => 'Modèle des utilisateurs chargés de l\'édition du glossaire',
+	'GROUP_GLOSS_ADMIN'				=> 'Administrateurs du glossaire',
+	// 'G_GROUP_GLOSS_ADMIN'				=> 'Administrateurs du glossaire',
+	'GROUP_DESCRIPTION_GLOSS_ADMIN'	=> 'Groupe des administrateurs du glossaire',
+	'GROUP_GLOSS_EDITOR'			=> 'Éditeurs du glossaire',
+	// 'G_GROUP_GLOSS_EDITOR'			=> 'Éditeurs du glossaire',
+	'GROUP_DESCRIPTION_GLOSS_EDITOR'	=> 'Groupe des éditeurs du glossaire',
 
 // ACP
 	'ACP_GLOSS_TITLE'	=> 'Glossaire',
