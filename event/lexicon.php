@@ -13,8 +13,9 @@ define('IN_PHPBB', true);
 
 // Inclusion du fichier common.php (dans la racine)
 // Inclusion of common.php (in forum root)
-$php_ext = substr(strrchr(__FILE__, '.'), 1);
-include('../../../../common.' . $php_ext);
+$phpbb_root_path = '../../../../';
+$phpEx = substr(strrchr(__FILE__, '.'), 1);
+include($phpbb_root_path. 'common.' . $phpEx);
 
 // Session management
 $user->session_begin();

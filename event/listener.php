@@ -216,7 +216,7 @@ class listener implements EventSubscriberInterface
 			return implode ("", $parts);
 		}
 	// Totally empty glossary, we must return the raw text.
-	else 
+	else
 	{
 		return ($texte);
 	}

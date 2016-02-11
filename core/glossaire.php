@@ -84,7 +84,7 @@ class glossaire
 		$str_action = $this->user->lang['GLOSS_DISPLAY'];
 		$str_ilinks = $this->user->lang['GLOSS_ILINKS'];
 		$str_elinks = $this->user->lang['GLOSS_ELINKS'];
-		
+
 		$corps  = '<table class="deg"><tr class="deg">';
 		$corps .= '<th class="deg0">' . $str_terme . '</th>';
 		$corps .= '<th class="deg0">' . $str_defin . '</th>';
@@ -115,6 +115,7 @@ class glossaire
 				$cat    = $arow['cat'];
 				$ilinks = $arow['ilinks'];
 				$elinks = $arow['elinks'];
+				$label  = $arow['label'];
 				$pict   = $arow['picture'];
 				$corps .= "\n<tr class='deg'>";
 				$corps .= "<td class='deg0' id=\"$code\"><b>$term</b>";
@@ -131,12 +132,19 @@ class glossaire
 				}
 				if (strlen ($elinks))
 				{
-					$corps .= "<br>$str_elinks <a href=\"$elinks\">$elinks</a>";
+					if (strlen ($label))
+					{
+						$corps .= "<br>$str_elinks <a href=\"$elinks\">$label</a>";
+					}
+					else
+					{
+						$corps .= "<br>$str_elinks <a href=\"$elinks\">$elinks</a>";
+					}
 				}
 				$corps .= "</td>";
 				$corps .= "<td class='deg1'>";
 				/*	Nous ne mettons un lien cliquable que si l'image est différente de nopict.
-					Link only if the picture is not nopict.
+					Link only if the picture is not nopict.jpg.
 					*/
 				if ($pict != "nopict.jpg")
 				{

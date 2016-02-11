@@ -12,11 +12,11 @@ global $phpbb_root_path;
 include ($phpbb_root_path . 'includes/functions_user.php');
 
 class gloss_module {
-	
+
 	protected $gloss_helper;
 	var $u_action;
 	var $action;
-	
+
 
 	public function main ($id, $mode)
 	{
@@ -28,7 +28,7 @@ class gloss_module {
 
 		$this->tpl_name = 'acp_gloss_body';
 		$this->page_title = $user->lang('ACP_GLOSS_TITLE');
-		
+
 		$this->gloss_helper = $phpbb_container->get('lmdi.gloss.core.helper');
 
 		$action = $request->variable ('action', '');
