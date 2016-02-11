@@ -37,6 +37,7 @@ class release_1 extends \phpbb\db\migration\migration
 						'cat'		=> array('VCHAR:32', ''),
 						'ilinks'		=> array('VCHAR:256', ''),
 						'elinks'		=> array('VCHAR:256', ''),
+						'label'		=> array('VCHAR:32', ''),
 						'picture'	=> array ('VCHAR:80', ''),
 						'lang'	=> array ('VCHAR:2', 'en'),
 					),

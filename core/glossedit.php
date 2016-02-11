@@ -144,6 +144,7 @@ class glossedit
 					$cat    = $row['cat'];
 					$ilinks = $row['ilinks'];
 					$elinks = $row['elinks'];
+					$label  = $row['label'];
 					$pict   = $row['picture'];
 					$lang   = $row['lang'];
 					$this->db->sql_freeresult ($result);
@@ -162,6 +163,8 @@ class glossedit
 				$str_ilex  = $this->user->lang['GLOSS_ED_ILEXP'];
 				$str_elinks= $this->user->lang['GLOSS_ED_ELINKS'] . $str_colon;
 				$str_elex  = $this->user->lang['GLOSS_ED_ELEXP'];
+				$str_label = $this->user->lang['GLOSS_ED_LABEL'] . $str_colon;
+				$str_labex = $this->user->lang['GLOSS_ED_LABEX'];
 				$str_lang  = $this->user->lang['GLOSS_LANG'] . $str_colon;
 				$str_regis = $this->user->lang['GLOSS_REGIS'];
 				$str_suppr = $this->user->lang['GLOSS_SUPPR'];
@@ -190,33 +193,40 @@ class glossedit
 				$form .= "</dl>";
 				$form .= "\n<dl>";
 				$form .= "<dt><label for=\"desc\">$str_desc</label></dt>";
-				$form .= "<dd><textarea tabindex=\"3\" rows=\"4\" cols=\"50\" name=\"desc\">$desc</textarea>";
+				$form .= "<dd><textarea tabindex=\"3\" rows=\"3\" cols=\"45\" name=\"desc\">$desc</textarea>";
 				$form .= "</dd>";
 				$form .= "</dl>";
 				$form .= "\n<dl>";
-				$form .= "<dt><label for=\"desc\">$str_cat</label><br />";
+				$form .= "<dt><label for=\"cat\">$str_cat</label><br />";
 				$form .= "<span>$str_catex</span></dt>";
 				$form .= "<dd><input type=\"text\" tabindex=\"4\" name=\"cat\" ";
 				$form .= "id=\"lang\" size=\"25\" value=\"$cat\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dd>";
 				$form .= "</dl>";
 				$form .= "\n<dl>";
-				$form .= "<dt><label for=\"desc\">$str_ilinks</label><br />";
+				$form .= "<dt><label for=\"ilinks\">$str_ilinks</label><br />";
 				$form .= "<span>$str_ilex</span></dt>";
 				$form .= "<dd><input type=\"text\" tabindex=\"5\" name=\"ilinks\" ";
-				$form .= "id=\"lang\" size=\"75\" value=\"$ilinks\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "id=\"lang\" size=\"60\" value=\"$ilinks\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dd>";
 				$form .= "</dl>";
 				$form .= "\n<dl>";
-				$form .= "<dt><label for=\"desc\">$str_elinks</label><br />";
+				$form .= "<dt><label for=\"elinks\">$str_elinks</label><br />";
 				$form .= "<span>$str_elex</span></dt>";
 				$form .= "<dd><input type=\"text\" tabindex=\"6\" name=\"elinks\" ";
-				$form .= "id=\"lang\" size=\"75\" value=\"$elinks\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "id=\"lang\" size=\"60\" value=\"$elinks\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "</dd>";
+				$form .= "</dl>";
+				$form .= "\n<dl>";
+				$form .= "<dt><label for=\"label\">$str_label</label><br />";
+				$form .= "<span>$str_labex</span></dt>";
+				$form .= "<dd><input type=\"text\" tabindex=\"7\" name=\"label\" ";
+				$form .= "id=\"lang\" size=\"25\" value=\"$label\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dd>";
 				$form .= "</dl>";
 				$form .= "\n<dl>";
 				$form .= "<dt><label for=\"lang\">$str_lang</label></dt>";
-				$form .= "<dd><input type=\"text\" tabindex=\"5\" name=\"lang\" ";
+				$form .= "<dd><input type=\"text\" tabindex=\"8\" name=\"lang\" ";
 				$form .= "id=\"lang\" size=\"25\" value=\"$lang\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dl>";
 				if ($pict == "" || $pict == "nopict.jpg")
@@ -270,6 +280,7 @@ class glossedit
 				$cat			= $this->db->sql_escape ($this->request->variable ('cat', "", true));
 				$ilinks		= $this->db->sql_escape ($this->request->variable ('ilinks', "", true));
 				$elinks		= $this->db->sql_escape ($this->request->variable ('elinks', "", true));
+				$label		= $this->db->sql_escape ($this->request->variable ('label', "", true));
 				$lang		= $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
 				$coche		= $this->request->variable ('coche', "", true);
 				if ($coche)
@@ -311,9 +322,9 @@ class glossedit
 				if ($term_id == 0)
 				{
 					$sql  = "INSERT INTO $table ";
-					$sql .= "(variants, term, description, cat, ilinks, elinks, picture, lang) ";
+					$sql .= "(variants, term, description, cat, ilinks, elinks, label, picture, lang) ";
 					$sql .= " VALUES ";
-					$sql .= "(\"$variants\", \"$term\", \"$description\", \"$cat\", \"$ilinks\", '$elinks', \"$picture\", \"$lang\")";
+					$sql .= "(\"$variants\", \"$term\", \"$description\", \"$cat\", \"$ilinks\", '$elinks', \"$label\", \"$picture\", \"$lang\")";
 					$this->db->sql_query ($sql);
 					$term_id = $this->db->sql_nextid();
 				}
@@ -326,10 +337,11 @@ class glossedit
 					$sql .= "description	= \"$description\", ";
 					$sql .= "cat			= \"$cat\", ";
 					$sql .= "ilinks		= \"$ilinks\", ";
-					$sql .= "elinks		= '$elinks', ";
+					$sql .= "elinks		= \"$elinks\", ";
+					$sql .= "label			= \"$label\", ";
 					$sql .= "picture		= \"$picture\", ";
 					$sql .= "lang			= \"$lang\" ";
-					$sql .= "WHERE term_id = \"$term_id\" ";
+					$sql .= "WHERE term_id   = \"$term_id\" ";
 					$sql .= "LIMIT 1";
 					$this->db->sql_query ($sql);
 				}
@@ -414,6 +426,7 @@ class glossedit
 						$cat   = $arow['cat'];
 						$ilinks= $arow['ilinks'];
 						$elinks= $arow['elinks'];
+						$label = $arow['label'];
 						$pict  = $arow['picture'];
 						$corps .= "\n<tr class=\"deg\">";
 						$corps .= "<td class=\"deg0\" id=\"$code\"><b>$term</b>";
@@ -431,7 +444,14 @@ class glossedit
 						}
 						if (strlen ($elinks))
 						{
-							$corps .= "<br>$str_elinks <a href=\"$elinks\">$elinks</a>";
+							if (strlen ($label))
+							{
+								$corps .= "<br>$str_elinks <a href=\"$elinks\">$label</a>";
+							}
+							else
+							{
+								$corps .= "<br>$str_elinks <a href=\"$elinks\">$elinks</a>";
+							}
 						}
 						$corps .= "</td>";
 						// Lien cliquable si l'image est différente de nopict.jpg.

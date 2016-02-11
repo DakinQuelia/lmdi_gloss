@@ -215,6 +215,11 @@ class listener implements EventSubscriberInterface
 			unset ($part);
 			return implode ("", $parts);
 		}
+	// Totally empty glossary, we must return the raw text.
+	else 
+	{
+		return ($texte);
+	}
 	}	// glossary_pass
 
 

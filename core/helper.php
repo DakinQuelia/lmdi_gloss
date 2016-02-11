@@ -16,6 +16,8 @@ class helper
 	/** @var string */
 	protected $glossary_table;
 	
+	
+	
 	/**
 	* Constructor
 	*/
@@ -149,7 +151,7 @@ class helper
 			);
 		// Function in file includes/functions_user.php
 		group_create($group_id, $group_type, $group_name, $group_desc, $group_attributes);
-		// Group hidden
+		// Mark group hidden
 		$sql = "UPDATE {$prefix}groups SET group_type = 2 
 			WHERE group_name = '$group' AND group_desc = '$desc'";
 		$this->db->sql_query($sql);
@@ -158,15 +160,11 @@ class helper
 	
 	public function build_lang_select ()
 	{
-		global $user;
-
 		$table = $this->table_prefix . 'glossary';
 		$lg = $this->get_def_language ($table, 'lang');
 		$select  = "";
 
-		$sql = 'SELECT lang_iso
-			FROM ' . LANG_TABLE . '
-			ORDER BY lang_iso';
+		$sql = 'SELECT lang_iso FROM ' . LANG_TABLE . ' ORDER BY lang_iso';
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
