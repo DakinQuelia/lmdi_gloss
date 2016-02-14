@@ -89,7 +89,7 @@ class glossedit
 		$this->db->sql_freeresult ($result);
 		return ($default);
 	}
-	
+
 	function main()
 	{
 		$abc_links = "";
@@ -97,6 +97,7 @@ class glossedit
 		$corps = "";
 		$biblio = "";
 		$table = $this->glossary_table;
+		$str_nopict = "nopict.jpg";
 
 		$num    = $this->request->variable ('code', 0);
 		$action = $this->request->variable ('action', "rien");
@@ -110,7 +111,6 @@ class glossedit
 		{
 			$action = 'save';
 		}
-		// var_dump ($action);
 
 		$str_colon = $this->user->lang['COLON'];
 
@@ -123,10 +123,11 @@ class glossedit
 					$vari = "";
 					$term = "";
 					$desc = "";
-					$pict = "";
+					$pict = $str_nopict;
 					$cat = "";
 					$ilinks = "";
 					$elinks = "";
+					$label = "";
 					$lang = $this->get_def_language ($table, 'lang');
 					$str_action = $this->user->lang['GLOSS_CREAT'];
 				}
@@ -157,6 +158,10 @@ class glossedit
 				$str_desc  = $this->user->lang['GLOSS_DESC'] . $str_colon;
 				$str_pict  = $this->user->lang['GLOSS_ED_PICT'] . $str_colon;
 				$str_pictex= $this->user->lang['GLOSS_ED_PIEXPL'];
+				$str_upload= $this->user->lang['GLOSS_ED_UPLOAD'];
+				$str_noup  = $this->user->lang['GLOSS_ED_NOUP'];
+				$str_reuse = $this->user->lang['GLOSS_ED_REUSE'] . $str_colon;
+				$str_existe= $this->user->lang['GLOSS_ED_EXISTE'] . $str_colon;
 				$str_cat   = $this->user->lang['GLOSS_ED_CAT'] . $str_colon;
 				$str_catex = $this->user->lang['GLOSS_ED_CATEX'];
 				$str_ilinks= $this->user->lang['GLOSS_ED_ILINKS'] . $str_colon;
@@ -168,22 +173,18 @@ class glossedit
 				$str_lang  = $this->user->lang['GLOSS_LANG'] . $str_colon;
 				$str_regis = $this->user->lang['GLOSS_REGIS'];
 				$str_suppr = $this->user->lang['GLOSS_SUPPR'];
-				$str_coche = $this->user->lang['GLOSS_COCHE'] . $str_colon;
-				$str_coex  = $this->user->lang['GLOSS_COEX'];
 				$form  = "<form action=\"";
 				$form .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss?mode=glossedit');
 				$form .= "\" method=\"post\" id=\"glossedit\" enctype=\"multipart/form-data\">";
 				$form .= "\n<div class=\"panel\">\n<div class=\"inner\">\n<div class=\"content\">";
 				$form .= "<h2 class=\"login-title\">$str_action</h2>";
-				// Ligne cachée pour le numéro de la fiche
-				// Hidden item for term_id
 				$form .= "\n<input type=\"hidden\" name=\"term_id\" id=\"term_id\" value=\"$code\">";
 				$form .= "<fieldset class=\"fields1\">";
 				$form .= "\n<dl>";
 				$form .= "<dt><label for=\"vari\">$str_variants</label><br />";
 				$form .= "<span>$str_varex</span></dt>";
 				$form .= "<dd><input type=\"text\" tabindex=\"1\" name=\"vari\" ";
-				$form .= "id=\"term\" size=\"25\" value=\"$vari\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "id=\"term\" size=\"50\" value=\"$vari\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dl>";
 				$form .= "\n<dl>";
 				$form .= "<dt><label for=\"term\">$str_terme</label><br />";
@@ -227,37 +228,25 @@ class glossedit
 				$form .= "\n<dl>";
 				$form .= "<dt><label for=\"lang\">$str_lang</label></dt>";
 				$form .= "<dd><input type=\"text\" tabindex=\"8\" name=\"lang\" ";
-				$form .= "id=\"lang\" size=\"25\" value=\"$lang\" class=\"inputbox autowidth\" /></dd>";
+				$form .= "id=\"lang\" size=\"10\" value=\"$lang\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dl>";
-				if ($pict == "" || $pict == "nopict.jpg")
+				$form .= "\n<dl>";
+				$form .= "<dt><label for=\"upload_file\">$str_pict</label><br />";
+				$form .= "<span>$str_pictex</span></dt>";
+				$form .= "<dd><input type=\"radio\" name=\"upload\" value=\"noup\" tabindex=\"9\" >$str_noup<br>";
+				if ($pict != $str_nopict)
 				{
-					$checked = 0;
-					$form .= "\n<dl>";
-					$form .= "<dt><label for=\"upload_file\">$str_pict</label><br />";
-					$form .= "<span>$str_pictex</span></dt>";
-					$form .= "<input type=\"file\" name=\"upload_file\" tabindex=\"6\" id=\"upload_file\" class=\"inputbox autowidth\" /></dd>";
-					$form .= "</dl>";
+					$form .= "<input type=\"radio\" name=\"upload\" value=\"existe\" tabindex=\"10\" checked>$str_existe $pict<br>";
+					$form .= "<input type=\"hidden\" name=\"pict\" id=\"pict\" value=\"$pict\">";
 				}
 				else
 				{
-					$checked = 1;
-					$form .= "\n<dl>";
-					$form .= "<dt><label for=\"pict\">$str_pict</label><br />";
-					$form .= "<span>$str_pictex</span></dt>";
-					$form .= "<dd><input type=\"text\" tabindex=\"4\" name=\"pict\" ";
-					$form .= "id=\"pict\" size=\"25\" value=\"$pict\" class=\"inputbox autowidth\" /></dd>";
-					$form .= "</dl>";
+					$form .= "<input type=\"radio\" name=\"upload\" value=\"nouv\" tabindex=\"10\" checked>$str_upload";
+					$form .= "&nbsp;&nbsp;&nbsp;<input type=\"file\" name=\"upload_file\" tabindex=\"11\" id=\"upload_file\" class=\"inputbox autowidth\" /><br>";
 				}
-				$form .= "\n<dl>";
-				$form .= "<dt><label for=\"coche\">$str_coche</label><br />";
-				$form .= "<span>$str_coex</span></dt>";
-				$form .= "<dd><input type=\"checkbox\" tabindex=\"7\" name=\"coche\" id=\"coche\" ";
-				$form .= "size=\"25\" value=\"coche\" class=\"inputbox autowidth\" ";
-				if ($checked)
-				{
-					$form .= "checked ";
-				}
-				$form .= "/></dd>";
+				$form .= "<input type=\"radio\" name=\"upload\" value=\"reuse\" tabindex=\"12\" >$str_reuse";
+				$form .= "&nbsp;&nbsp;&nbsp;<input type=\"text\" tabindex=\"13\" name=\"reuse\" class=\"inputbox autowidth\" />";
+				$form .= "</dd>";
 				$form .= "</dl>";
 				$form .= "\n<dl>";
 				$form .= "<dt>&nbsp;</dt>";
@@ -269,55 +258,58 @@ class glossedit
 				$abc_links = $form;
 				break;
 			case "save" :
-				$term_id		= $this->db->sql_escape (trim($this->request->variable ('term_id', 0)));
-				$term		= $this->db->sql_escape (trim($this->request->variable ('term', "", true)));
-				$variants		= $this->db->sql_escape (trim($this->request->variable ('vari', "", true)));
-				$description	= $this->db->sql_escape (trim($this->request->variable ('desc', "", true)));
+				$term_id	= $this->db->sql_escape(trim($this->request->variable('term_id', 0)));
+				$term	= $this->db->sql_escape(trim($this->request->variable('term',"",true)));
+				$variants	= $this->db->sql_escape(trim($this->request->variable('vari',"",true)));
+				$description	= $this->db->sql_escape(trim($this->request->variable('desc',"",true)));
 				if (strlen ($description) > 500)
 				{
 					$description = substr ($description, 0, 500);
 				}
-				$cat			= $this->db->sql_escape ($this->request->variable ('cat', "", true));
-				$ilinks		= $this->db->sql_escape ($this->request->variable ('ilinks', "", true));
-				$elinks		= $this->db->sql_escape ($this->request->variable ('elinks', "", true));
-				$label		= $this->db->sql_escape ($this->request->variable ('label', "", true));
-				$lang		= $this->db->sql_escape ($this->request->variable ('lang', "fr", true));
-				$coche		= $this->request->variable ('coche', "", true);
-				if ($coche)
+				$cat		= $this->db->sql_escape(trim($this->request->variable ('cat',"",true)));
+				$ilinks	= $this->db->sql_escape(trim($this->request->variable ('ilinks',"",true)));
+				$elinks	= $this->db->sql_escape(trim($this->request->variable ('elinks',"",true)));
+				$label	= $this->db->sql_escape(trim($this->request->variable ('label',"",true)));
+				$lang	= $this->db->sql_escape($this->request->variable ('lang',"fr",true));
+				$coche	= $this->request->variable ('upload', "", true);
+				switch ($coche)
 				{
-					$picture = $this->request->variable ('pict', "", true);
-					if (!strlen ($picture))
-					{
-						$picture = "nopict.jpg";
-					}
-				}
-				else
-				{
-					$errors = array ();
-					if (version_compare ($this->config['version'], '3.2.*', '>='))
-					{
-						$picture = $this->upload_32x ($errors);
-					}
-					else
-					{
-						$picture = $this->upload_31x ($errors);
-					}
-					if (!$picture)
-					{
-						$nb = count ($errors);
-						$message = "";
-						for ($i = 0; $i < $nb; $i++)
+					case "existe":
+						$picture = $this->request->variable ('pict', "", true);
+					break;
+					case "noup":
+						$picture = $str_nopict;
+					break;
+					case "reuse":
+						$picture = $this->request->variable ('reuse', "", true);
+					break;
+					case "nouv":
+						$errors = array ();
+						if (version_compare ($this->config['version'], '3.2.*', '>='))
 						{
-							$message .= $errors[$i];
-							$message .= "<br>";
+							$picture = $this->upload_32x ($errors);
 						}
-						$message .= $this->user->lang['LMDI_CLICK_BACK'];
-						trigger_error($message, E_USER_WARNING);
-					}
-					else
-					{
-						$picture = $this->db->sql_escape ($picture);
-					}
+						else
+						{
+							$picture = $this->upload_31x ($errors);
+						}
+						if (!$picture)
+						{
+							$nb = count ($errors);
+							$message = "";
+							for ($i = 0; $i < $nb; $i++)
+							{
+								$message .= $errors[$i];
+								$message .= "<br>";
+							}
+							$message .= $this->user->lang['LMDI_CLICK_BACK'];
+							trigger_error($message, E_USER_WARNING);
+						}
+						else
+						{
+							$picture = $this->db->sql_escape ($picture);
+						}
+					break;
 				}
 				if ($term_id == 0)
 				{
@@ -361,7 +353,6 @@ class glossedit
 				$sql .= "FROM $table ";
 				$sql .= "WHERE term_id = \"$term_id\" ";
 				$sql .= "LIMIT 1";
-				// echo ("Valeur de la requête : $sql.<br>\n");
 				$this->db->sql_query ($sql);
 				// Purge the cache
 				$this->cache->destroy('_glossterms');
@@ -377,7 +368,6 @@ class glossedit
 				$sql .= "FROM $table ";
 				// $sql .= " WHERE lang = '" . $this->user->lang['USER_LANG'] . "'";
 				$sql .= " ORDER BY a" ;
-				// echo ("Valeur de la requête : $sql.<br>\n");
 				$result = $this->db->sql_query ($sql);
 
 				$str_titre = $this->user->lang['GLOSS_EDITION'];
@@ -387,7 +377,7 @@ class glossedit
 				$str_action = $this->user->lang['GLOSS_ED_ACT'];
 				$str_ilinks = $this->user->lang['GLOSS_ILINKS'];
 				$str_elinks = $this->user->lang['GLOSS_ELINKS'];
-				
+
 				$abc_links = "<span id=\"haut\"></span>\n";
 				$abc_links .= "<h2 class=\"login-title\">$str_titre</h2>";
 				$abc_links .= "<p class=\"glossa\">";
@@ -405,8 +395,7 @@ class glossedit
 				{
 					$l = $row['a'];
 					$abc_links .= "&nbsp;<a class=\"cap\" href =\"#$l\">$l</a>&nbsp;" ;
-					// $abc_links .= "<a href =\"#$l\">$l</a> " ;
-
+				
 					$sql  = "SELECT * ";
 					$sql .= "FROM $table ";
 					$sql .= "WHERE LEFT($table.term, 1) = \"$l\" ";
@@ -454,9 +443,7 @@ class glossedit
 							}
 						}
 						$corps .= "</td>";
-						// Lien cliquable si l'image est différente de nopict.jpg.
-						// Clickable link if picture != nopict.jpg
-						if ($pict != "nopict.jpg")
+						if ($pict != $str_nopict)
 						{
 							$params  = "mode=glosspict&code=-1&pict=$pict&terme=$term";
 							$url = append_sid ($this->phpbb_root_path .'app.'.$this->phpEx .'/gloss', $params);
@@ -485,7 +472,7 @@ class glossedit
 				$illustration .= append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', 'mode=glossedit&code=-1&action=edit');
 				$illustration .= "\"><b>$str_ici</b></a>.";
 				break;
-			}	// Fin du switch sur action
+			}
 
 		$titre = $this->user->lang['TGLOSSAIRE'];
 		page_header($titre);
@@ -552,7 +539,7 @@ class glossedit
 	{
 		// Set upload directory
 		$upload_dir = $this->ext_path . 'glossaire';
-		
+
 		/** @var \phpbb\files\upload $upload */
 		$upload = $this->files_factory->get('upload');
 		$upload->set_error_prefix('LMDI_GLOSS_');
