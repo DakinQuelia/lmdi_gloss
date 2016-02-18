@@ -135,7 +135,7 @@ class glossedit
 				{
 					$sql  = "SELECT * ";
 					$sql .= "FROM $table ";
-					$sql .= "WHERE term_id = \"$num\" ";
+					$sql .= "WHERE term_id = '$num' ";
 					$result = $this->db->sql_query ($sql);
 					$row = $this->db->sql_fetchrow ($result);
 					$code   = $row['term_id'];

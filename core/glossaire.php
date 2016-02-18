@@ -97,8 +97,8 @@ class glossaire
 			$l = $row['a'];
 			$abc_links .= "&nbsp;<a class=\"cap\" href =\"#$l\">$l</a>&nbsp;" ;
 
-			$sql  = 'SELECT * 
-					FROM ' . $this->glossary_table . "
+			$sql  = "SELECT * 
+					FROM " . $this->glossary_table . "
 					WHERE LEFT($this->glossary_table.term, 1) = '$l' 
 					ORDER BY term";
 			$result2 = $this->db->sql_query ($sql);
