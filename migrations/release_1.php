@@ -14,6 +14,7 @@ namespace lmdi\gloss\migrations;
 
 class release_1 extends \phpbb\db\migration\migration
 {
+	
 	public function effectively_installed()
 	{
 		return isset($this->config['lmdi_glossary']);
@@ -149,9 +150,6 @@ class release_1 extends \phpbb\db\migration\migration
 				'ACP_GLOSS_TITLE'
 			)),
 
-			// Deletion of the group for the editors of the glossary
-			array('custom', array(array(&$this, 'gloss_group_deletion'))),
-
 			// Unset permissions
 			array('permission.permission_unset', array('ROLE_GLOSS_ADMIN', 'a_lmdi_glossary')),
 			array('permission.permission_unset', array('ROLE_GLOSS_EDITOR', 'u_lmdi_glossary')),
@@ -205,6 +203,7 @@ class release_1 extends \phpbb\db\migration\migration
 					'cat' => 'S.',
 					'ilinks' => 'trial',
 					'elinks' =>'',
+					'label' =>'',
 					'picture' => 'nopict.jpg',
 					'lang' => 'en',
 				),
@@ -215,33 +214,13 @@ class release_1 extends \phpbb\db\migration\migration
 					'cat' => 'S.',
 					'ilinks' => 'test',
 					'elinks' =>'',
+					'label' =>'',
 					'picture' => 'nopict.jpg',
 					'lang' => 'en',
 				),
 			);
 		// Insert sample data
 		$this->db->sql_multi_insert($this->table_prefix . 'glossary', $sample_data);
-	}
-
-	// See also group_creation in acp/gloss_module.php
-	public function gloss_group_deletion()
-	{
-		$this->group_del ('GROUP_GLOSS_ADMIN');
-		$this->group_del ('GROUP_GLOSS_EDITOR');
-	}
-
-	public function group_del($string)
-	{
-		global $table_prefix;
-		$sql = "SELECT group_id from ${table_prefix}groups where group_name = '$string'";
-		$result = $this->db->sql_query($sql);
-		$row = $this->db->sql_fetchrow ($result);
-		$group_id = $row['group_id'];
-		$this->db->sql_freeresult ($result);
-		if ($group_id)
-		{
-			group_delete($group_id, '$string');
-		}
 	}
 
 	public function get_nbrows ($table)
