@@ -1,12 +1,11 @@
 <?php
 /**
-* @author Renate Regitz http://www.kaninchenwissen.de/
-* Version reprise pour l'extension Glossary par Pierre Duhem
-* Ce code est utilisé pour extraire de la table glossary le terme correspondant
-* au code passé en paramètre. Il renvoie le contenu de la rubrique qui va
-* apparaître dans la fenêtre surgissante.
-* Extraction of the term from the glossary table. The returned text will
-* be the code for the popup window.
+* (c) LMDI Pierre Duhem 2015-2016
+* Original author Renate Regitz http://www.kaninchenwissen.de/
+* Rewritten by Pierre Duhem for the extension Glossary
+* This code extracts from table glossary the contents of term id.
+* The returned contents is displayed in the popup window.
+* This code gets called from jquery.lexicon.js.
 **/
 
 define('IN_PHPBB', true);

@@ -14,7 +14,7 @@ namespace lmdi\gloss\migrations;
 
 class release_1 extends \phpbb\db\migration\migration
 {
-	
+
 	public function effectively_installed()
 	{
 		return isset($this->config['lmdi_glossary']);

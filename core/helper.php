@@ -15,9 +15,7 @@ class helper
 
 	/** @var string */
 	protected $glossary_table;
-	
-	
-	
+
 	/**
 	* Constructor
 	*/
@@ -45,7 +43,7 @@ class helper
 			$row = $this->db->sql_fetchrow ($result);
 			$code = $row['term_id'];
 			$this->db->sql_freeresult ($result);
-			if ($code) 
+			if ($code)
 			{
 				if (strlen ($string))
 				{
@@ -98,9 +96,7 @@ class helper
 
 		public function get_def_language ($table, $colonne)
 	{
-		$sql = "SELECT DEFAULT($colonne) lg 
-			FROM (SELECT 1) AS dummy
-			LEFT JOIN $table ON True LIMIT 1";
+		$sql = "SELECT DEFAULT($colonne) lg FROM (SELECT 1) AS dummy LEFT JOIN $table ON True LIMIT 1";
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow ($result);
 		$default = $row['lg'];
@@ -157,12 +153,12 @@ class helper
 		$this->db->sql_query($sql);
 	}
 
-	
+
 	public function build_lang_select ()
 	{
 		$table = $this->table_prefix . 'glossary';
 		$lg = $this->get_def_language ($table, 'lang');
-		$select  = "";
+		$select = "";
 
 		$sql = 'SELECT lang_iso FROM ' . LANG_TABLE . ' ORDER BY lang_iso';
 		$result = $this->db->sql_query($sql);

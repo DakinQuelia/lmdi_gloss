@@ -31,7 +31,7 @@ class gloss_module {
 		$action_config = $this->u_action . "&action=config";
 
 		// var_dump ($action);
-		if ($action == 'config') 
+		if ($action == 'config')
 		{
 			if (!check_form_key('acp_gloss_body'))
 			{
