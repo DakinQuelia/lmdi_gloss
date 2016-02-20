@@ -11,14 +11,6 @@
 namespace lmdi\gloss\ucp;
 
 /**
-* @ignore
-*/
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
-/**
 * Class name must be the same as the file name.
 * @package ucp
 */

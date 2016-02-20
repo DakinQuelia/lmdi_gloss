@@ -92,7 +92,7 @@ class helper
 		}
 	}
 
-		public function get_def_language ($table, $colonne)
+	public function get_def_language ($table, $colonne)
 	{
 		$sql = "SELECT DEFAULT($colonne) lg FROM (SELECT 1) AS dummy LEFT JOIN $table ON True LIMIT 1";
 		$result = $this->db->sql_query($sql);
