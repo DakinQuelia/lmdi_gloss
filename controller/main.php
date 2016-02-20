@@ -14,6 +14,7 @@ class main
 	protected $glossaire;
 	protected $glossedit;
 	protected $glosspict;
+	protected $glossclean;
 	/** @var \phpbb\template\template */
 	protected $template;
 	/** @var \phpbb\user */
@@ -35,6 +36,7 @@ class main
 		\lmdi\gloss\core\glossaire $glossaire,
 		\lmdi\gloss\core\glossedit $glossedit,
 		\lmdi\gloss\core\glosspict $glosspict,
+		\lmdi\gloss\core\glossclean $glossclean,
 		\phpbb\template\template $template,
 		\phpbb\user $user,
 		\phpbb\request\request $request,
@@ -45,6 +47,7 @@ class main
 		$this->glossaire		 	= $glossaire;
 		$this->glossedit		 	= $glossedit;
 		$this->glosspict		 	= $glosspict;
+		$this->glossclean		 	= $glossclean;
 		$this->template 			= $template;
 		$this->user 				= $user;
 		$this->request 			= $request;
@@ -84,6 +87,9 @@ class main
 
 		switch ($mode)
 		{
+			case 'glossclean':
+				$this->glossclean->main();
+			break;
 			case 'glosspict':
 				$this->glosspict->main();
 			break;

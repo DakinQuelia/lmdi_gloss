@@ -59,9 +59,9 @@ class glossedit
 		$this->db 			= $db;
 		$this->ext_manager	 	= $ext_manager;
 		$this->path_helper	 	= $path_helper;
-		$this->config            = $config;
-		$this->request 		= $request;
-		$this->cache             = $cache;
+		$this->config			= $config;
+		$this->request			= $request;
+		$this->cache			= $cache;
 		$this->gloss_helper		= $gloss_helper;
 		$this->phpEx 			= $phpEx;
 		$this->phpbb_root_path 	= $phpbb_root_path;
@@ -395,7 +395,7 @@ class glossedit
 				{
 					$l = $row['a'];
 					$abc_links .= "&nbsp;<a class=\"cap\" href =\"#$l\">$l</a>&nbsp;" ;
-				
+
 					$sql  = "SELECT * ";
 					$sql .= "FROM $table ";
 					$sql .= "WHERE LEFT($table.term, 1) = \"$l\" ";

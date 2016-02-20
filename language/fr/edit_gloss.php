@@ -82,5 +82,7 @@ $lang = array_merge ($lang, array(
 	'LMDI_GLOSS_WRONG_FILESIZE'		=> 'La taille du fichier doit être inférieure à %1d ko.',
 	'LMDI_GLOSS_WRONG_SIZE'			=> 'Le fichier téléchargé a une largeur de %3$d pixels et une hauteur de %4$d pixels. Les fichiers doivent faire au plus %1$d pixels de large et %2$d pixels de haut.',
 	'LMDI_CLICK_BACK'				=> 'Cliquez <a href="javascript:history.go(-1);"><b>ici</b></a> pour revenir au formulaire d\'édition.',
-
-	));
+// Glossary cleaning page
+	'LMDI_GLOSS_CLEAN'				=> 'Le nettoyage s\'est bien déroulé.',
+	'GLOSS_CLEAN'					=> 'Nettoyage des structures',
+));

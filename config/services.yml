@@ -21,6 +21,7 @@ services:
             - '@lmdi.gloss.core.glossaire'
             - '@lmdi.gloss.core.glossedit'
             - '@lmdi.gloss.core.glosspict'
+            - '@lmdi.gloss.core.glossclean'
             - '@template'
             - '@user'
             - '@request'
@@ -68,6 +69,20 @@ services:
             - '@ext.manager'
             - '@path_helper'
             - '@request'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+
+     lmdi.gloss.core.glossclean:
+        class: lmdi\gloss\core\glossclean
+        arguments:
+            - '@template'
+            - '@user'
+            - '@ext.manager'
+            - '@path_helper'
+            - '@request'
+            - '@dbal.conn'
+            - '@cache'
+            - '%core.table_prefix%'
             - '%core.php_ext%'
             - '%core.root_path%'
 

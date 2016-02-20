@@ -9,10 +9,8 @@ class helper
 {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
-
 	/** @var string $table_prefix */
 	protected $table_prefix;
-
 	/** @var string */
 	protected $glossary_table;
 
