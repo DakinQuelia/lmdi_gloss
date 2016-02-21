@@ -92,3 +92,5 @@ services:
             - '@dbal.conn'
             - '%core.table_prefix%'
             - '%lmdi.gloss.tables.glossary%'
+            - '%core.root_path%'
+            - '%core.php_ext%'
