@@ -143,7 +143,7 @@ class glossaire
 				}
 				$corps .= "</td>";
 				$corps .= "<td class='deg1'>";
-				/*	Nous ne mettons un lien cliquable que si l'image est différente de nopict.
+				/*	Lien cliquable si l'image est différente de nopict.
 					Link only if the picture is not nopict.jpg.
 					*/
 				if ($pict != "nopict.jpg")
@@ -156,7 +156,7 @@ class glossaire
 					$corps .= "&nbsp;</td>";
 				}
 				$corps .= "</tr>";
-			}	// Fin du while sur le contenu - end of while on contents
+			}	// Fin du while sur le contenu - End of while on contents
 			$this->db->sql_freeresult ($result2);
 		}	// Fin du while sur les initiales - End of while on initial caps
 		$this->db->sql_freeresult ($result);
@@ -185,10 +185,10 @@ class glossaire
 			'body' => 'gloss/glossaire.html',
 		));
 		$this->template->assign_vars (array (
-			'U_TITRE'			=> $titre,
+			'U_TITLE'		=> $titre,
 			'U_ABC'			=> $abc_links,
 			'U_ILLUST'		=> $illustration,
-			'U_CORPS'			=> $corps,
+			'U_CORPS'		=> $corps,
 			'U_BIBLIO'		=> $biblio,
 		));
 

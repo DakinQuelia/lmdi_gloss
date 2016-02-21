@@ -17,20 +17,20 @@ class helper
 	protected $phpbb_root_path;
 	/** @var string phpEx */
 	protected $php_ext;
-
 	/**
 	* Constructor
 	*/
 	public function __construct(
 		\phpbb\db\driver\driver_interface $db,
 		$table_prefix,
-		$glossary_table, $phpbb_root_path, $php_ext)
+		$glossary_table,
+		$phpbb_root_path, $php_ext)
 	{
 		$this->db 			= $db;
 		$this->table_prefix 	= $table_prefix;
 		$this->glossary_table 	= $glossary_table;
-		$this->phpbb_root_path = $phpbb_root_path;
-		$this->php_ext = $php_ext;
+		$this->phpbb_root_path	= $phpbb_root_path;
+		$this->php_ext			= $php_ext;
 	}
 
 	public function calcul_ilinks ($ilinks)
@@ -94,6 +94,10 @@ class helper
 		$group_id = $this->get_group_id ($group);
 		if ($group_id)
 		{
+			if (!function_exists('group_delete') )
+			{
+				include($this->phpbb_root_path . 'includes/functions_user.' . $this->php_ext);
+			}
 			group_delete($group_id, $group);
 		}
 	}
@@ -149,21 +153,17 @@ class helper
 			'group_legend' => 0,
 			'group_receive_pm' => 0,
 			);
-		
 		// Function in file includes/functions_user.php
-		if (!function_exists('group_create'))
+		if (!function_exists('group_create') )
 		{
 			include($this->phpbb_root_path . 'includes/functions_user.' . $this->php_ext);
 		}
-		
 		group_create($group_id, $group_type, $group_name, $group_desc, $group_attributes);
-		
 		// Mark group hidden
 		$sql = "UPDATE {$prefix}groups SET group_type = 2 
 			WHERE group_name = '$group' AND group_desc = '$desc'";
 		$this->db->sql_query($sql);
 	}
-
 
 	public function build_lang_select ()
 	{

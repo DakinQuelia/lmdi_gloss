@@ -118,7 +118,7 @@ class glossclean
 		));
 
 		$params = "mode=glossedit";
-		$str_glossedit = append_sid ($this->phpbb_root_path . 'app.' . $this->phpEx . '/gloss', $params);
+		$str_glossedit = append_sid ($this->phpbb_rooU_path . 'app.' . $this->phpEx . '/gloss', $params);
 		$this->template->assign_block_vars('navlinks', array(
 				'U_VIEW_FORUM'	=> $str_glossedit,
 				'FORUM_NAME'	=> $this->user->lang['GLOSS_EDITION'],

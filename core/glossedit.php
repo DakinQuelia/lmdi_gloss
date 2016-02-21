@@ -230,24 +230,33 @@ class glossedit
 				$form .= "<dd><input type=\"text\" tabindex=\"8\" name=\"lang\" ";
 				$form .= "id=\"lang\" size=\"10\" value=\"$lang\" class=\"inputbox autowidth\" /></dd>";
 				$form .= "</dl>";
+				// Radio button block - Pavé de boutons radio
 				$form .= "\n<dl>";
 				$form .= "<dt><label for=\"upload_file\">$str_pict</label><br />";
 				$form .= "<span>$str_pictex</span></dt>";
-				$form .= "<dd><input type=\"radio\" name=\"upload\" value=\"noup\" tabindex=\"9\" >$str_noup<br>";
-				if ($pict != $str_nopict)
+				if ($num > 0)
 				{
-					$form .= "<input type=\"radio\" name=\"upload\" value=\"existe\" tabindex=\"10\" checked>$str_existe $pict<br>";
-					$form .= "<input type=\"hidden\" name=\"pict\" id=\"pict\" value=\"$pict\">";
+					if ($pict == $str_nopict)
+					{
+						$form .= "<dd><input type=\"radio\" name=\"upload\" value=\"noup\" tabindex=\"9\" checked>$str_noup<br>";
+					}
+					else
+					{
+						$form .= "<input type=\"radio\" name=\"upload\" value=\"existe\" tabindex=\"10\" checked>$str_existe $pict<br>";
+						$form .= "<input type=\"hidden\" name=\"pict\" id=\"pict\" value=\"$pict\">";
+					}
 				}
 				else
 				{
-					$form .= "<input type=\"radio\" name=\"upload\" value=\"nouv\" tabindex=\"10\" checked>$str_upload";
-					$form .= "&nbsp;&nbsp;&nbsp;<input type=\"file\" name=\"upload_file\" tabindex=\"11\" id=\"upload_file\" class=\"inputbox autowidth\" /><br>";
+					$form .= "<dd><input type=\"radio\" name=\"upload\" value=\"noup\" tabindex=\"9\" checked>$str_noup<br>";
 				}
+				$form .= "<input type=\"radio\" name=\"upload\" value=\"nouv\" tabindex=\"10\">$str_upload";
+				$form .= "&nbsp;&nbsp;&nbsp;<input type=\"file\" name=\"upload_file\" tabindex=\"11\" id=\"upload_file\" class=\"inputbox autowidth\" /><br>";
 				$form .= "<input type=\"radio\" name=\"upload\" value=\"reuse\" tabindex=\"12\" >$str_reuse";
 				$form .= "&nbsp;&nbsp;&nbsp;<input type=\"text\" tabindex=\"13\" name=\"reuse\" class=\"inputbox autowidth\" />";
 				$form .= "</dd>";
 				$form .= "</dl>";
+				// End of radio button block
 				$form .= "\n<dl>";
 				$form .= "<dt>&nbsp;</dt>";
 				$form .= "<dd><input type=\"submit\" name=\"save\" id=\"save\" tabindex=\"5\" value=\"$str_regis\" class=\"button1\" />&nbsp;&nbsp;";
